@@ -145,11 +145,37 @@ const { title = "SciencePedia", description = "SciencePedia - The Free Science E
       }
 
       @media (max-width: 768px) {
-        header, main, footer {
-          width: 90%;
-          padding: 1rem;
-        }
-      }
+  header, main, footer {
+    width: 95%;
+    padding: 1rem;
+    margin: auto;
+  }
+
+  header {
+    padding: 0.8rem 1rem;
+    text-align: center;
+  }
+
+  main {
+    padding: 1.5rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  footer {
+    padding: 1rem 0.5rem;
+  }
+
+  /* Responsive footer icons */
+  footer .social-media {
+    gap: 15px;
+  }
+
+  footer .icon-link {
+    width: 55px;
+    height: 55px;
+    font-size: 26px;
+  }
+}
     </style>
   </head>
 
