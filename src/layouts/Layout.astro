@@ -207,165 +207,113 @@ main {
   document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.querySelector('.search-input');
     const searchButton = document.querySelector('.search-button');
-    
-    // This will be populated with your actual blog data
+
     let blogData = [];
-    
-    // Fetch your blog data (you'll need to implement this)
+
     async function loadBlogData() {
-  try {
-    // If using Content Collections:
-    const posts = await getCollection("blog");
-    blogData = posts.map(post => ({
-      id: post.slug,
-      title: post.data.title,
-      description: post.data.description,
-      content: post.body, // The actual blog content
-      tags: post.data.tags || []
-    }));
-  } catch (error) {
-    // Fallback to sample data
-    blogData = [
-  {
-    id: 'quantum-physics',
-    title: 'Understanding Quantum Physics',
-    description: 'Quantum physics is very interesting subject...',
-    content: 'Your blog content here...',
-    tags: ['physics', 'science']
-  },
-  {
-    id: 'ai-future', 
-    title: 'The Future of Artificial Intelligence',
-    description: 'Exploring AI advancements and machine learning',
-    content: 'Artificial intelligence is transforming how we live and work...',
-    tags: ['ai', 'technology', 'machine-learning']
-  }
-  // Add more blogs as you create them
-];
-}
-        {
-          id: 'ai-future', 
-          title: 'The Future of Artificial Intelligence',
-          description: 'Exploring AI advancements and machine learning',
-          content: 'Artificial intelligence is transforming how we live and work...',
-          tags: ['ai', 'technology', 'machine-learning']
-        }
-        // Add more blogs as you create them
-      ];
+      try {
+        // If using Content Collections (you’ll replace this later)
+        const posts = await getCollection("blog");
+        blogData = posts.map(post => ({
+          id: post.slug,
+          title: post.data.title,
+          description: post.data.description,
+          content: post.body,
+          tags: post.data.tags || []
+        }));
+      } catch (error) {
+        // Fallback demo data
+        blogData = [
+          {
+            id: 'quantum-physics',
+            title: 'Understanding Quantum Physics',
+            description: 'Quantum physics is very interesting subject...',
+            content: 'Your blog content here...',
+            tags: ['physics', 'science']
+          },
+          {
+            id: 'ai-future',
+            title: 'The Future of Artificial Intelligence',
+            description: 'Exploring AI advancements and machine learning',
+            content: 'Artificial intelligence is transforming how we live and work...',
+            tags: ['ai', 'technology', 'machine-learning']
+          }
+        ];
+      }
     }
-    
+
     let suggestionsDiv = null;
-    
+
     function searchBlogs(searchTerm) {
       const term = searchTerm.toLowerCase().trim();
       if (!term) return [];
-      
-      return blogData.filter(blog => {
-        // Search in title
-        if (blog.title.toLowerCase().includes(term)) return true;
-        
-        // Search in description
-        if (blog.description.toLowerCase().includes(term)) return true;
-        
-        // Search in content (first 200 chars)
-        if (blog.content.toLowerCase().includes(term)) return true;
-        
-        // Search in tags
-        if (blog.tags.some(tag => tag.toLowerCase().includes(term))) return true;
-        
-        return false;
-      });
+      return blogData.filter(blog =>
+        blog.title.toLowerCase().includes(term) ||
+        blog.description.toLowerCase().includes(term) ||
+        blog.content.toLowerCase().includes(term) ||
+        blog.tags.some(tag => tag.toLowerCase().includes(term))
+      );
     }
-    
+
     function showSuggestions() {
       const searchTerm = searchInput.value;
-      
-      // Remove existing suggestions
-      if (suggestionsDiv) {
-        suggestionsDiv.remove();
-      }
-      
-      if (!searchTerm) {
-        return;
-      }
-      
+      if (suggestionsDiv) suggestionsDiv.remove();
+      if (!searchTerm) return;
+
       const results = searchBlogs(searchTerm);
-      
+      suggestionsDiv = document.createElement('div');
+      suggestionsDiv.className = 'search-suggestions';
+
       if (results.length > 0) {
-        // Create suggestions dropdown
-        suggestionsDiv = document.createElement('div');
-        suggestionsDiv.className = 'search-suggestions';
-        
         suggestionsDiv.innerHTML = results.map(blog => `
           <div class="suggestion-item" data-blog-id="${blog.id}">
             <div class="suggestion-title">${blog.title}</div>
             <div class="suggestion-desc">${blog.description}</div>
           </div>
         `).join('');
-        
-        // Position below search bar
-        const searchContainer = searchInput.closest('.search-container');
-        searchContainer.appendChild(suggestionsDiv);
-        
-        // Add click handlers to suggestions
-        suggestionsDiv.querySelectorAll('.suggestion-item').forEach(item => {
-          item.addEventListener('click', function() {
-            const blogId = this.dataset.blogId;
-            window.location.href = `/blog/${blogId}`;
-          });
-        });
       } else {
-        // No results found
-        suggestionsDiv = document.createElement('div');
-        suggestionsDiv.className = 'search-suggestions';
         suggestionsDiv.innerHTML = '<div class="no-results">No blogs found matching your search</div>';
-        
-        const searchContainer = searchInput.closest('.search-container');
-        searchContainer.appendChild(suggestionsDiv);
       }
+
+      const searchContainer = searchInput.closest('.search-container');
+      searchContainer.appendChild(suggestionsDiv);
+
+      suggestionsDiv.querySelectorAll('.suggestion-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const blogId = item.dataset.blogId;
+          window.location.href = `/blog/${blogId}`;
+        });
+      });
     }
-    
+
     function performSearch() {
       const searchTerm = searchInput.value.trim();
-      if (searchTerm) {
-        const results = searchBlogs(searchTerm);
-        if (results.length > 0) {
-          // Redirect to first result or show search results page
-          window.location.href = `/blog/${results[0].id}`;
-        } else {
-          alert(`No blogs found for "${searchTerm}"`);
-        }
-        hideSuggestions();
+      if (!searchTerm) return;
+      const results = searchBlogs(searchTerm);
+      if (results.length > 0) {
+        window.location.href = `/blog/${results[0].id}`;
+      } else {
+        alert(`No blogs found for "${searchTerm}"`);
       }
+      hideSuggestions();
     }
-    
+
     function hideSuggestions() {
       if (suggestionsDiv) {
         suggestionsDiv.remove();
         suggestionsDiv = null;
       }
     }
-    
-    // Initialize
+
     loadBlogData();
-    
-    // Event listeners
+
     searchInput.addEventListener('input', showSuggestions);
     searchInput.addEventListener('focus', showSuggestions);
-    
     searchButton.addEventListener('click', performSearch);
-    
-    searchInput.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        performSearch();
-      }
-    });
-    
-    // Hide suggestions when clicking outside
-    document.addEventListener('click', function(e) {
-      if (!e.target.closest('.search-container')) {
-        hideSuggestions();
-      }
+    searchInput.addEventListener('keypress', e => e.key === 'Enter' && performSearch());
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.search-container')) hideSuggestions();
     });
   });
 </script>
