@@ -3,138 +3,84 @@
 
 
 <footer>
-  <!-- Social Media Links -->
-  <div class="social-section">
+  <div class="footer-container">
     <h3>Follow Us</h3>
     <div class="social-media">
-      <a href="https://www.facebook.com/profile.php?id=61583067824148" target="_blank" rel="noopener noreferrer">
-        <i class="fab fa-facebook"></i>
+      <a href="https://www.facebook.com/profile.php?id=61583067824148" target="_blank" rel="noopener noreferrer" class="facebook">
+        <i class="fab fa-facebook-f"></i>
       </a>
-      <a href="https://x.com/PhysicsP32590" target="_blank" rel="noopener noreferrer">
+      <a href="https://x.com/PhysicsP32590" target="_blank" rel="noopener noreferrer" class="twitter">
         <i class="fab fa-twitter"></i>
       </a>
-      <a href="https://www.instagram.com/physicsinphysics/" target="_blank" rel="noopener noreferrer">
+      <a href="https://www.instagram.com/physicsinphysics/" target="_blank" rel="noopener noreferrer" class="instagram">
         <i class="fab fa-instagram"></i>
       </a>
-      <a href="https://www.linkedin.com/me?trk=p_mwlite_feed-secondary_nav" target="_blank" rel="noopener noreferrer">
-        <i class="fab fa-linkedin"></i>
+      <a href="https://www.linkedin.com/me?trk=p_mwlite_feed-secondary_nav" target="_blank" rel="noopener noreferrer" class="linkedin">
+        <i class="fab fa-linkedin-in"></i>
       </a>
-      <a href="https://m.youtube.com/channel/UCQeEKqqidI7I0etj-Io0CZA/videos" target="_blank" rel="noopener noreferrer">
+      <a href="https://m.youtube.com/channel/UCQeEKqqidI7I0etj-Io0CZA/videos" target="_blank" rel="noopener noreferrer" class="youtube">
         <i class="fab fa-youtube"></i>
       </a>
-    </div>
-  </div>
-
-  <!-- Comments Section -->
-  <div class="comments-section">
-    <h3>Comments</h3>
-    <form class="comment-form">
-      <textarea placeholder="Write your comment..." rows="4"></textarea>
-      <button type="submit">Post Comment</button>
-    </form>
-
-    <div class="comments-list">
-      <div class="comment">
-        <strong>John Doe</strong>
-        <p>Great article! Very informative.</p>
-      </div>
-      <div class="comment">
-        <strong>Jane Smith</strong>
-        <p>Thanks for sharing this knowledge.</p>
-      </div>
     </div>
   </div>
 </footer>
 
 <style>
   footer {
-    background: #111;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 2rem 0;
     color: #fff;
-    padding: 2rem;
     text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .social-section {
+  .footer-container h3 {
+    font-size: 1.3rem;
     margin-bottom: 1.5rem;
-  }
-
-  .social-section h3 {
-    margin-bottom: 1rem;
-    color: #f5f5f5;
     font-weight: 600;
+    color: #e0e0ff;
   }
 
   .social-media {
     display: flex;
     justify-content: center;
-    gap: 1.2rem;
+    gap: 1.5rem;
     flex-wrap: wrap;
   }
 
   .social-media a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    font-size: 1.6rem;
     color: #fff;
-    font-size: 1.5rem;
-    transition: transform 0.2s ease, color 0.2s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
   }
 
   .social-media a:hover {
     transform: scale(1.2);
-    color: #1e90ff;
+    box-shadow: 0 0 20px currentColor;
   }
 
-  .comments-section {
-    margin-top: 2rem;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-    padding: 1rem;
+  /* Platform colors */
+  .facebook:hover {
+    color: #1877f2;
   }
-
-  .comments-section h3 {
-    margin-bottom: 1rem;
-    font-weight: 600;
+  .twitter:hover {
+    color: #1da1f2;
   }
-
-  .comment-form textarea {
-    width: 100%;
-    padding: 0.8rem;
-    border: none;
-    border-radius: 8px;
-    resize: none;
-    margin-bottom: 0.8rem;
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
+  .instagram:hover {
+    color: #e4405f;
   }
-
-  .comment-form button {
-    background: #1e90ff;
-    color: #fff;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.2s ease;
+  .linkedin:hover {
+    color: #0a66c2;
   }
-
-  .comment-form button:hover {
-    background: #63b3ff;
-  }
-
-  .comments-list {
-    margin-top: 1rem;
-    text-align: left;
-  }
-
-  .comment {
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 6px;
-    padding: 0.8rem;
-    margin-bottom: 0.6rem;
-  }
-
-  .comment strong {
-    color: #1e90ff;
+  .youtube:hover {
+    color: #ff0000;
   }
 </style>
