@@ -197,15 +197,15 @@ const sortedPosts = posts.sort((a, b) =>
   --gradient: linear-gradient(120deg, #667eea 0%, #764ba2 40%, #a18cd1 80%, #fbc2eb 100%);
 }
 
-/* ✨ Balanced Advanced Physics Blog Card Theme */
+/* 🌤️ Light Balanced Physics Theme for Blog Cards */
 .blog-card {
   background: linear-gradient(
     145deg,
-    rgba(148, 163, 184, 0.3) 0%,   /* soft silver-blue glow */
-    rgba(165, 180, 252, 0.3) 100%  /* pale violet end */
+    rgba(241, 245, 249, 0.7) 0%,    /* near-white misty blue */
+    rgba(229, 231, 235, 0.7) 100%   /* soft gray tint */
   );
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(180, 200, 255, 0.35);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(200, 210, 230, 0.5);
   border-radius: 20px;
   padding: 2.5rem 2rem;
   text-decoration: none;
@@ -213,7 +213,47 @@ const sortedPosts = posts.sort((a, b) =>
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 0 25px rgba(165, 180, 252, 0.2);
+  box-shadow: 0 0 15px rgba(220, 225, 240, 0.25);
+}
+
+/* Keep gradient slightly shifting for flow between cards */
+.blog-card:nth-child(odd) {
+  background: linear-gradient(
+    150deg,
+    rgba(243, 244, 246, 0.7) 0%,
+    rgba(229, 231, 235, 0.6) 100%
+  );
+}
+
+.blog-card:nth-child(even) {
+  background: linear-gradient(
+    140deg,
+    rgba(229, 231, 235, 0.6) 0%,
+    rgba(243, 244, 246, 0.7) 100%
+  );
+}
+
+.blog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 25px rgba(220, 225, 240, 0.4);
+  border-color: rgba(180, 190, 220, 0.6);
+}
+
+.blog-card h3 {
+  color: #1f2937;
+}
+
+.blog-card p {
+  color: #475569;
+}
+
+.read-more {
+  color: #4f46e5;
+  transition: color 0.2s ease;
+}
+
+.blog-card:hover .read-more {
+  color: #7c3aed;
 }
 
 /* Flowing gradient pattern across posts */
