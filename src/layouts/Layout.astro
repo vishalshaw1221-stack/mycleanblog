@@ -41,9 +41,11 @@ const { title = "SciencePedia", description = "SciencePedia - The Free Science E
         background: linear-gradient(135deg, var(--space-blue) 0%, var(--quantum-purple) 100%);
         color: white;
         font-family: 'Arial', sans-serif;
+        padding: 0;
+        width: 100%;
       }
 
-      /* Background Watermark with Subtle Fade in Content Area */
+      /* Background Watermark */
       body::before {
         content: '';
         position: fixed;
@@ -60,7 +62,7 @@ const { title = "SciencePedia", description = "SciencePedia - The Free Science E
         pointer-events: none;
       }
 
-      /* Create a subtle blur overlay only on the main content area */
+      /* Main content blur overlay */
       main::before {
         content: '';
         position: absolute;
@@ -93,8 +95,7 @@ const { title = "SciencePedia", description = "SciencePedia - The Free Science E
         max-width: 1200px;
         border-radius: 15px;
         box-sizing: border-box;
-        margin-left: auto;
-        margin-right: 5%;
+        margin: 0 auto 2rem auto; /* Fixed: removed margin-right issue */
       }
 
       /* === HEADER === */
@@ -103,8 +104,7 @@ const { title = "SciencePedia", description = "SciencePedia - The Free Science E
         border: 1px solid var(--electron-blue);
         box-shadow: 0 0 25px rgba(59, 130, 246, 0.25);
         padding: 1rem;
-        margin-top: 1.5rem;
-        margin-bottom: 1.5rem;
+        margin: 1.5rem auto; /* Centered */
       }
 
       /* === MAIN === */
@@ -114,7 +114,6 @@ const { title = "SciencePedia", description = "SciencePedia - The Free Science E
         border: 1px solid rgba(59, 130, 246, 0.3);
         box-shadow: 0 0 40px rgba(59, 130, 246, 0.25);
         padding: 3rem 2rem;
-        margin-bottom: 2rem;
       }
 
       /* === FOOTER === */
@@ -129,6 +128,7 @@ const { title = "SciencePedia", description = "SciencePedia - The Free Science E
         display: flex;
         flex-direction: column;
         justify-content: center;
+        margin: 0 auto 2rem auto; /* Centered */
       }
 
       footer::before {
@@ -144,82 +144,80 @@ const { title = "SciencePedia", description = "SciencePedia - The Free Science E
         border-radius: 5px;
       }
 
-      /* 🌙 Mobile layout optimization */
-/* 🌐 Mobile Scaling Fix */
-@media (max-width: 768px) {
-  html {
-    font-size: 14px; /* smaller base text size */
-  }
+      /* 🔥 CRITICAL FIX: Mobile Styles */
+      @media (max-width: 768px) {
+        html {
+          font-size: 14px;
+        }
 
-  body {
-    flex-direction: column;
-    align-items: center;
-    background-size: cover;
-  }
+        body {
+          padding: 0 10px; /* Added padding for small screens */
+          width: 100%;
+          box-sizing: border-box;
+        }
 
-  header {
-    width: 95%;
-    padding: 0.8rem;
-    margin-top: 0.8rem;
-    margin-bottom: 0.8rem;
-    text-align: center;
-  }
+        header, main, footer {
+          width: 100% !important; /* Force full width */
+          max-width: 100% !important;
+          margin-left: auto !important;
+          margin-right: auto !important;
+          border-radius: 10px;
+        }
 
-  main {
-    width: 95%;
-    padding: 1rem;
-    margin: 0 auto 1.5rem auto;
-    border-radius: 12px;
-  }
+        header {
+          padding: 0.8rem;
+          margin: 0.8rem auto;
+        }
 
-  .post-card {
-    padding: 1rem;
-    font-size: 0.9rem;
-  }
+        main {
+          padding: 1.5rem 1rem !important;
+          margin: 0 auto 1rem auto !important;
+        }
 
-  h1, h2, h3 {
-    font-size: 1.1rem;
-  }
+        footer {
+          padding: 1.5rem 1rem !important;
+          margin: 0 auto 1rem auto !important;
+          min-height: 150px;
+        }
 
-  p {
-    font-size: 0.9rem;
-  }
+        /* Fix for potential content issues */
+        .post-card, .search-bar, nav {
+          max-width: 100%;
+          box-sizing: border-box;
+        }
 
-  nav a {
-    font-size: 0.95rem;
-    padding: 0.3rem 0.6rem;
-  }
+        /* Ensure text is readable */
+        h1 { font-size: 1.5rem !important; }
+        h2 { font-size: 1.3rem !important; }
+        h3 { font-size: 1.1rem !important; }
+        p, li { font-size: 0.95rem !important; }
 
-  .search-bar input {
-    font-size: 0.9rem;
-    height: 36px;
-  }
+        /* Fix search suggestions for mobile */
+        .search-suggestions {
+          position: fixed !important;
+          left: 10px !important;
+          right: 10px !important;
+          width: calc(100% - 20px) !important;
+        }
+      }
 
-  .search-bar button {
-    height: 36px;
-    width: 36px;
-    font-size: 0.9rem;
-  }
+      /* Extra small devices */
+      @media (max-width: 480px) {
+        html {
+          font-size: 13px;
+        }
 
-  footer {
-    width: 95%;
-    padding: 1.2rem;
-    margin-bottom: 0.8rem;
-  }
+        header, main, footer {
+          border-radius: 8px;
+        }
 
-  footer .social-media {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-  }
+        main {
+          padding: 1rem 0.8rem !important;
+        }
 
-  footer .icon-link {
-    width: 50px;
-    height: 50px;
-    font-size: 22px;
-  }
-}
+        h1 { font-size: 1.3rem !important; }
+        h2 { font-size: 1.1rem !important; }
+      }
     </style>
   </head>
 
@@ -404,6 +402,28 @@ const { title = "SciencePedia", description = "SciencePedia - The Free Science E
       
       .search-container {
         position: relative;
+      }
+
+      /* Mobile search fixes */
+      @media (max-width: 768px) {
+        .search-suggestions {
+          position: fixed;
+          left: 10px;
+          right: 10px;
+          width: calc(100% - 20px);
+        }
+        
+        .suggestion-item {
+          padding: 10px 12px;
+        }
+        
+        .suggestion-title {
+          font-size: 0.95rem;
+        }
+        
+        .suggestion-desc {
+          font-size: 0.75rem;
+        }
       }
     </style>
   </body>
