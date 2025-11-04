@@ -197,23 +197,62 @@ const sortedPosts = posts.sort((a, b) =>
   --gradient: linear-gradient(120deg, #667eea 0%, #764ba2 40%, #a18cd1 80%, #fbc2eb 100%);
 }
 
-/* 🌌 Lighter Quantum Field Blog Card Theme */
+/* ✨ Balanced Advanced Physics Blog Card Theme */
 .blog-card {
   background: linear-gradient(
     145deg,
-    rgba(51, 65, 85, 0.75) 0%,   /* lighter blue-gray */
-    rgba(109, 40, 217, 0.65) 100% /* lighter violet */
+    rgba(148, 163, 184, 0.3) 0%,   /* soft silver-blue glow */
+    rgba(165, 180, 252, 0.3) 100%  /* pale violet end */
   );
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(147, 197, 253, 0.45);
-  border-radius: 18px;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(180, 200, 255, 0.35);
+  border-radius: 20px;
   padding: 2.5rem 2rem;
   text-decoration: none;
-  color: #e5e7eb;
+  color: #1e293b;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 0 25px rgba(109, 40, 217, 0.25);
+  box-shadow: 0 0 25px rgba(165, 180, 252, 0.2);
+}
+
+/* Flowing gradient pattern across posts */
+.blog-card:nth-child(odd) {
+  background: linear-gradient(
+    160deg,
+    rgba(191, 219, 254, 0.35) 0%,
+    rgba(221, 214, 254, 0.35) 100%
+  );
+}
+
+.blog-card:nth-child(even) {
+  background: linear-gradient(
+    140deg,
+    rgba(221, 214, 254, 0.35) 0%,
+    rgba(191, 219, 254, 0.35) 100%
+  );
+}
+
+.blog-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 35px rgba(180, 200, 255, 0.45);
+  border-color: rgba(165, 180, 252, 0.6);
+}
+
+.blog-card h3 {
+  color: #1e293b;
+}
+
+.blog-card p {
+  color: #334155;
+}
+
+.read-more {
+  color: #6366f1;
+}
+
+.blog-card:hover .read-more {
+  color: #7c3aed;
 }
 
 /* Maintain gradient flow across posts */
