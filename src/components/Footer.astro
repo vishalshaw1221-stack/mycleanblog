@@ -1,44 +1,84 @@
 ---
-import "../styles/footer.css";
+// Remove the import line
 ---
 
 <footer>
-  <div class="social-section">
-    <h3>Follow Us</h3>
-    <div class="social-media">
-      <a href="https://www.facebook.com/profile.php?id=61583067824148" target="_blank" rel="noopener noreferrer">
-        <i class="fab fa-facebook"></i> Facebook
-      </a>
-      <a href="https://x.com/PhysicsP32590" target="_blank" rel="noopener noreferrer">
-        <i class="fab fa-twitter"></i> Twitter
-      </a>
-      <a href="https://www.instagram.com/physicsinphysics/" target="_blank" rel="noopener noreferrer">
-        <i class="fab fa-instagram"></i> Instagram
-      </a>
-      <a href="https://www.linkedin.com/me?trk=p_mwlite_feed-secondary_nav" target="_blank" rel="noopener noreferrer">
-        <i class="fab fa-linkedin"></i> LinkedIn
-      </a>
-      <a href="https://m.youtube.com/channel/UCQeEKqqidI7I0etj-Io0CZA/videos" target="_blank" rel="noopener noreferrer">
-        <i class="fab fa-youtube"></i> YouTube
-      </a>
-    </div>
-  </div>
-
-  <div class="contact-section">
-    <h3>Get In Touch</h3>
-    <p>Have questions or suggestions? Reach out to us!</p>
-    
-    <form class="contact-form" action="https://formspree.io/f/xqagvnkp" method="POST">
-      <input type="text" name="name" placeholder="Your Name" required>
-      <input type="email" name="email" placeholder="Your Email" required>
-      <textarea name="message" placeholder="Your message..." rows="4" required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
-  </div>
-
-  <!-- Force Font Awesome to load -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- your footer content -->
 </footer>
+
+<style>
+  /* Add the CSS directly here */
+  .social-section {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .social-section h3 {
+    color: white;
+    margin-bottom: 1rem;
+  }
+
+  .social-media {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .social-media a {
+    color: white;
+    text-decoration: none;
+    padding: 0.8rem 1.2rem;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .social-media a:hover {
+    background: rgba(59, 130, 246, 0.2);
+    transform: translateY(-2px);
+    border-color: rgba(59, 130, 246, 0.6);
+  }
+
+  .contact-section {
+    text-align: center;
+    color: white;
+    margin-top: 2rem;
+  }
+
+  .contact-form {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+
+  .contact-form button {
+    background: #3b82f6;
+    color: white;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .contact-form button:hover {
+    background: #2563eb;
+  }
+</style>
 
 <style>
   /* Basic styling to make sure links are visible */
