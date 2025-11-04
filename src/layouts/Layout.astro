@@ -207,5 +207,141 @@ main {
       </div>
       <p>© 2025 SciencePedia — Exploring the Universe of Knowledge</p>
     </footer>
+    <script>
+  // Search with recommendations
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.querySelector('.search-input');
+    const searchButton = document.querySelector('.search-button');
+    
+    // Sample recommendations
+    const recommendations = [
+      'quantum physics',
+      'artificial intelligence', 
+      'black holes',
+      'quantum computing',
+      'space exploration',
+      'particle physics',
+      'neural networks',
+      'astrophysics',
+      'machine learning',
+      'string theory'
+    ];
+    
+    let suggestionsDiv = null;
+    
+    function showSuggestions() {
+      const searchTerm = searchInput.value.toLowerCase();
+      
+      // Remove existing suggestions
+      if (suggestionsDiv) {
+        suggestionsDiv.remove();
+      }
+      
+      if (!searchTerm) {
+        return;
+      }
+      
+      // Filter recommendations
+      const filtered = recommendations.filter(rec => 
+        rec.toLowerCase().includes(searchTerm)
+      );
+      
+      if (filtered.length > 0) {
+        // Create suggestions dropdown
+        suggestionsDiv = document.createElement('div');
+        suggestionsDiv.className = 'search-suggestions';
+        suggestionsDiv.innerHTML = filtered.map(rec => 
+          `<div class="suggestion-item">${rec}</div>`
+        ).join('');
+        
+        // Position below search bar
+        const searchContainer = searchInput.closest('.search-container');
+        searchContainer.appendChild(suggestionsDiv);
+        
+        // Add click handlers to suggestions
+        suggestionsDiv.querySelectorAll('.suggestion-item').forEach(item => {
+          item.addEventListener('click', function() {
+            searchInput.value = this.textContent;
+            performSearch();
+          });
+        });
+      }
+    }
+    
+    function performSearch() {
+      const searchTerm = searchInput.value.trim();
+      if (searchTerm) {
+        alert(`Searching for: "${searchTerm}"\n\nThis would show results for "${searchTerm}" in a real implementation.`);
+        hideSuggestions();
+        searchInput.value = '';
+      }
+    }
+    
+    function hideSuggestions() {
+      if (suggestionsDiv) {
+        suggestionsDiv.remove();
+        suggestionsDiv = null;
+      }
+    }
+    
+    // Event listeners
+    searchInput.addEventListener('input', showSuggestions);
+    searchInput.addEventListener('focus', showSuggestions);
+    
+    searchButton.addEventListener('click', performSearch);
+    
+    searchInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        performSearch();
+      }
+    });
+    
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.search-container')) {
+        hideSuggestions();
+      }
+    });
+  });
+</script>
+
+<style>
+  /* Search suggestions styling */
+  .search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid var(--electron-blue);
+    border-radius: 8px;
+    margin-top: 5px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  .suggestion-item {
+    padding: 10px 15px;
+    color: white;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+    transition: background 0.2s;
+  }
+  
+  .suggestion-item:hover {
+    background: rgba(59, 130, 246, 0.3);
+    color: var(--atom-red);
+  }
+  
+  .suggestion-item:last-child {
+    border-bottom: none;
+  }
+  
+  .search-container {
+    position: relative;
+  }
+</style>
   </body>
 </html>
