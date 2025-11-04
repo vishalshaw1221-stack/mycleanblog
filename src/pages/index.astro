@@ -194,6 +194,34 @@ const sortedPosts = posts.sort((a, b) =>
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     gap: 2.5rem;
   }
+  /* Continuous flowing gradient across all blog cards */
+.blog-grid {
+  background: linear-gradient(120deg, #667eea, #764ba2, #a18cd1);
+  padding: 2px; /* soft edges */
+  border-radius: 20px;
+}
+
+.blog-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.blog-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: inherit; /* use same gradient */
+  opacity: 0.1;
+  z-index: 0;
+}
+
+.blog-card > * {
+  position: relative;
+  z-index: 1;
+}
 
   .blog-card {
     background: linear-gradient(145deg, #ffffff, #f8f9fa);
