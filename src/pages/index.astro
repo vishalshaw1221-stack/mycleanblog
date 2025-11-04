@@ -197,13 +197,13 @@ const sortedPosts = posts.sort((a, b) =>
   --gradient: linear-gradient(120deg, #667eea 0%, #764ba2 40%, #a18cd1 80%, #fbc2eb 100%);
 }
 
-.blog-card {
+  .blog-card {
   background: linear-gradient(
     135deg,
-    rgba(160, 140, 255, 0.25) 0%,
-    rgba(180, 160, 255, 0.25) 100%
+    rgba(160, 140, 255, 0.4) 0%,  /* Increased opacity */
+    rgba(180, 160, 255, 0.4) 100% /* Increased opacity */
   );
-  border: 1px solid rgba(200, 180, 255, 0.35);
+  border: 1px solid rgba(200, 180, 255, 0.5); /* Brighter border */
   border-radius: 20px;
   padding: 2.5rem 2rem;
   text-decoration: none;
@@ -212,7 +212,17 @@ const sortedPosts = posts.sort((a, b) =>
   position: relative;
   overflow: hidden;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(6px);
+}
+
+.blog-card:hover {
+  transform: translateY(-5px);
+  background: linear-gradient(
+    135deg,
+    rgba(170, 150, 255, 0.5) 0%,  /* Even brighter on hover */
+    rgba(190, 170, 255, 0.5) 100%
+  );
+  border-color: rgba(220, 200, 255, 0.7);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
 }
 
 .blog-card:hover {
