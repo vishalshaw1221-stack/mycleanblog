@@ -144,30 +144,62 @@ const { title = "SciencePedia", description = "SciencePedia - The Free Science E
         border-radius: 5px;
       }
 
-      @media (max-width: 768px) {
-  header, main, footer {
-    width: 95%;
-    padding: 1rem;
-    margin: auto;
-  }
-
+      /* 🌙 Mobile layout optimization */
+@media (max-width: 768px) {
   header {
-    padding: 0.8rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem;
     text-align: center;
   }
 
+  nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  nav a {
+    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .search-bar {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .search-bar input {
+    width: 100%;
+    font-size: 1rem;
+  }
+
   main {
-    padding: 1.5rem 1rem;
-    font-size: 0.95rem;
+    padding: 1rem;
+  }
+
+  .post-card {
+    width: 100%;
+    margin: 0.5rem 0;
+    padding: 1.2rem;
   }
 
   footer {
-    padding: 1rem 0.5rem;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    padding: 1.2rem 0.5rem;
   }
 
-  /* Responsive footer icons */
   footer .social-media {
     gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
   }
 
   footer .icon-link {
