@@ -14,7 +14,7 @@ const { title = "SciencePedia", description = "SciencePedia - The Free Science E
     <title>{title} | SciencePedia</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     
-    <!-- SINGLE Font Awesome import -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <style>
@@ -144,49 +144,13 @@ const { title = "SciencePedia", description = "SciencePedia - The Free Science E
         border-radius: 5px;
       }
 
-      .social-icons {
-        display: flex;
-        justify-content: center;
-        gap: 1.5rem;
-        margin: 1rem 0;
-      }
-
-      .social-icons a {
-        color: white;
-        font-size: 2.5rem; /* Fixed size - was 4rem (too big) */
-        transition: all 0.3s ease;
-        text-shadow: 0 0 10px var(--electron-blue);
-      }
-
-      .social-icons a:hover {
-        color: var(--atom-red);
-        transform: scale(1.2);
-        text-shadow: 0 0 15px var(--atom-red);
-      }
-
-      footer p {
-        font-size: 1.1rem;
-        color: #cbd5e1;
-        opacity: 0.8;
-        margin-top: 1rem;
-      }
-
       @media (max-width: 768px) {
         header, main, footer {
           width: 90%;
           padding: 1rem;
         }
-        
-        .social-icons a {
-          font-size: 2rem; /* Smaller on mobile */
-        }
       }
     </style>
-  
-  <!-- Other meta tags -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Your other stylesheets -->
-
   </head>
 
   <body>
@@ -199,35 +163,178 @@ const { title = "SciencePedia", description = "SciencePedia - The Free Science E
     </main>
 
     <footer>
-      <div class="social-icons">
-        <!-- ACTUAL SOCIAL LINKS -->
-        <a href="https://www.facebook.com/profile.php?id=61583067824148" target="_blank" rel="noopener noreferrer">
-          <i class="fab fa-facebook-f"></i>
-        </a>
-        <a href="https://x.com/PhysicsP32590" target="_blank" rel="noopener noreferrer">
-          <i class="fab fa-twitter"></i>
-        </a>
-        <a href="https://www.instagram.com/physicsinphysics/" target="_blank" rel="noopener noreferrer">
-          <i class="fab fa-instagram"></i>
-        </a>
-        <!-- Remove or update these with your actual links -->
-        <a href="#" target="_blank" rel="noopener noreferrer">
-          <i class="fab fa-linkedin"></i>
-        </a>
-        <a href="#" target="_blank" rel="noopener noreferrer">
-          <i class="fab fa-youtube"></i>
-        </a>
-      </div>
-      <p>© 2025 SciencePedia — Exploring the Universe of Knowledge</p>
+      <Footer />
     </footer>
 
-    <!-- Keep your search script here if needed -->
+    <!-- Search Script -->
     <script>
-      // Your existing search script...
+      document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.querySelector('.search-input');
+        const searchButton = document.querySelector('.search-button');
+
+        let blogData = [];
+
+        async function loadBlogData() {
+          try {
+            const posts = await getCollection("blog");
+            blogData = posts.map(post => ({
+              id: post.slug,
+              title: post.data.title,
+              description: post.data.description,
+              content: post.body,
+              tags: post.data.tags || []
+            }));
+          } catch (error) {
+            blogData = [
+              {
+                id: 'quantum-physics',
+                title: 'Understanding Quantum Physics',
+                description: 'Quantum physics is very interesting subject...',
+                content: 'Your blog content here...',
+                tags: ['physics', 'science']
+              },
+              {
+                id: 'ai-future',
+                title: 'The Future of Artificial Intelligence',
+                description: 'Exploring AI advancements and machine learning',
+                content: 'Artificial intelligence is transforming how we live and work...',
+                tags: ['ai', 'technology', 'machine-learning']
+              }
+            ];
+          }
+        }
+
+        let suggestionsDiv = null;
+
+        function searchBlogs(searchTerm) {
+          const term = searchTerm.toLowerCase().trim();
+          if (!term) return [];
+          return blogData.filter(blog =>
+            blog.title.toLowerCase().includes(term) ||
+            blog.description.toLowerCase().includes(term) ||
+            blog.content.toLowerCase().includes(term) ||
+            blog.tags.some(tag => tag.toLowerCase().includes(term))
+          );
+        }
+
+        function showSuggestions() {
+          const searchTerm = searchInput.value;
+          if (suggestionsDiv) suggestionsDiv.remove();
+          if (!searchTerm) return;
+
+          const results = searchBlogs(searchTerm);
+          suggestionsDiv = document.createElement('div');
+          suggestionsDiv.className = 'search-suggestions';
+
+          if (results.length > 0) {
+            suggestionsDiv.innerHTML = results.map(blog => `
+              <div class="suggestion-item" data-blog-id="${blog.id}">
+                <div class="suggestion-title">${blog.title}</div>
+                <div class="suggestion-desc">${blog.description}</div>
+              </div>
+            `).join('');
+          } else {
+            suggestionsDiv.innerHTML = '<div class="no-results">No blogs found matching your search</div>';
+          }
+
+          const searchContainer = searchInput.closest('.search-container');
+          searchContainer.appendChild(suggestionsDiv);
+
+          suggestionsDiv.querySelectorAll('.suggestion-item').forEach(item => {
+            item.addEventListener('click', () => {
+              const blogId = item.dataset.blogId;
+              window.location.href = `/blog/${blogId}`;
+            });
+          });
+        }
+
+        function performSearch() {
+          const searchTerm = searchInput.value.trim();
+          if (!searchTerm) return;
+          const results = searchBlogs(searchTerm);
+          if (results.length > 0) {
+            window.location.href = `/blog/${results[0].id}`;
+          } else {
+            alert(`No blogs found for "${searchTerm}"`);
+          }
+          hideSuggestions();
+        }
+
+        function hideSuggestions() {
+          if (suggestionsDiv) {
+            suggestionsDiv.remove();
+            suggestionsDiv = null;
+          }
+        }
+
+        loadBlogData();
+
+        if (searchInput) {
+          searchInput.addEventListener('input', showSuggestions);
+          searchInput.addEventListener('focus', showSuggestions);
+          searchButton.addEventListener('click', performSearch);
+          searchInput.addEventListener('keypress', e => e.key === 'Enter' && performSearch());
+
+          document.addEventListener('click', e => {
+            if (!e.target.closest('.search-container')) hideSuggestions();
+          });
+        }
+      });
     </script>
 
     <style>
-      /* Your existing search styles... */
+      .search-suggestions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(15, 23, 42, 0.98);
+        border: 1px solid var(--electron-blue);
+        border-radius: 8px;
+        margin-top: 5px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+      
+      .suggestion-item {
+        padding: 12px 15px;
+        color: white;
+        cursor: pointer;
+        border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+        transition: background 0.2s;
+      }
+      
+      .suggestion-item:hover {
+        background: rgba(59, 130, 246, 0.3);
+      }
+      
+      .suggestion-item:last-child {
+        border-bottom: none;
+      }
+      
+      .suggestion-title {
+        font-weight: bold;
+        font-size: 1rem;
+        margin-bottom: 4px;
+      }
+      
+      .suggestion-desc {
+        font-size: 0.8rem;
+        color: #cbd5e1;
+        opacity: 0.8;
+      }
+      
+      .no-results {
+        padding: 12px 15px;
+        color: var(--neutron-gray);
+        text-align: center;
+      }
+      
+      .search-container {
+        position: relative;
+      }
     </style>
   </body>
 </html>
