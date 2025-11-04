@@ -145,67 +145,79 @@ const { title = "SciencePedia", description = "SciencePedia - The Free Science E
       }
 
       /* 🌙 Mobile layout optimization */
+/* 🌐 Mobile Scaling Fix */
 @media (max-width: 768px) {
+  html {
+    font-size: 14px; /* smaller base text size */
+  }
+
+  body {
+    flex-direction: column;
+    align-items: center;
+    background-size: cover;
+  }
+
   header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.8rem;
-    padding: 1rem;
+    width: 95%;
+    padding: 0.8rem;
+    margin-top: 0.8rem;
+    margin-bottom: 0.8rem;
     text-align: center;
-  }
-
-  nav {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  nav a {
-    font-size: 1rem;
-    padding: 0.4rem 0.8rem;
-  }
-
-  .search-bar {
-    width: 90%;
-    display: flex;
-    justify-content: center;
-  }
-
-  .search-bar input {
-    width: 100%;
-    font-size: 1rem;
   }
 
   main {
+    width: 95%;
     padding: 1rem;
+    margin: 0 auto 1.5rem auto;
+    border-radius: 12px;
   }
 
   .post-card {
-    width: 100%;
-    margin: 0.5rem 0;
-    padding: 1.2rem;
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+
+  h1, h2, h3 {
+    font-size: 1.1rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+
+  nav a {
+    font-size: 0.95rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .search-bar input {
+    font-size: 0.9rem;
+    height: 36px;
+  }
+
+  .search-bar button {
+    height: 36px;
+    width: 36px;
+    font-size: 0.9rem;
   }
 
   footer {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 1rem;
-    padding: 1.2rem 0.5rem;
+    width: 95%;
+    padding: 1.2rem;
+    margin-bottom: 0.8rem;
   }
 
   footer .social-media {
-    gap: 15px;
-    justify-content: center;
+    display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
   }
 
   footer .icon-link {
-    width: 55px;
-    height: 55px;
-    font-size: 26px;
+    width: 50px;
+    height: 50px;
+    font-size: 22px;
   }
 }
     </style>
