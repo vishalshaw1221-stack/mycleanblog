@@ -1,0 +1,247 @@
+---
+export interface Props {
+  blogId: string;
+  currentRating?: number;
+  totalRatings?: number;
+  comments?: Array<{
+    user: string;
+    text: string;
+    date: string;
+  }>;
+}
+
+const { 
+  blogId, 
+  currentRating = 4.5, 
+  totalRatings = 42,
+  comments = [
+    { user: 'PhysicsStudent', text: 'Amazing explanation!', date: '2 days ago' },
+    { user: 'ScienceLover', text: 'Great article!', date: '1 week ago' }
+  ] 
+} = Astro.props;
+---
+
+<!-- Rating System -->
+<div class="blog-rating-bottom">
+  <h4>Rate this article</h4>
+  <div class="rating-stars-interactive">
+    <span class="star" data-rating="1">😊</span>
+    <span class="star" data-rating="2">😊</span>
+    <span class="star" data-rating="3">😊</span>
+    <span class="star" data-rating="4">😊</span>
+    <span class="star" data-rating="5">😊</span>
+  </div>
+  <div class="rating-stats">
+    <span class="average-rating">{currentRating}</span>
+    <span class="total-ratings">({totalRatings} ratings)</span>
+  </div>
+</div>
+
+<!-- Comment Section -->
+<div class="blog-comments-bottom">
+  <h4>Comments ({comments.length})</h4>
+  
+  <!-- Comment Form -->
+  <form class="comment-form-simple" id="commentForm">
+    <textarea placeholder="Share your thoughts on this article..." rows="3" required></textarea>
+    <div class="comment-form-row">
+      <input type="text" placeholder="Your name" required />
+      <button type="submit">Post Comment</button>
+    </div>
+  </form>
+
+  <!-- Comments List -->
+  <div class="comments-list-simple">
+    {comments.map(comment => (
+      <div class="comment-item">
+        <div class="comment-header">
+          <strong>{comment.user}</strong>
+          <span class="comment-date">{comment.date}</span>
+        </div>
+        <p class="comment-text">{comment.text}</p>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .blog-rating-bottom {
+    text-align: center;
+    margin: 3rem 0 1rem 0;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  .blog-rating-bottom h4 {
+    margin-bottom: 1rem;
+    color: white;
+    font-size: 1.2rem;
+  }
+
+  .rating-stars-interactive {
+    display: flex;
+    justify-content: center;
+    gap: 0.8rem;
+    margin: 1.5rem 0;
+  }
+
+  .rating-stars-interactive .star {
+    font-size: 2.5rem;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+    filter: grayscale(1);
+  }
+
+  .rating-stars-interactive .star:hover,
+  .rating-stars-interactive .star.active {
+    opacity: 1;
+    filter: grayscale(0);
+    transform: scale(1.2);
+  }
+
+  .rating-stats {
+    color: var(--neutron-gray);
+    font-size: 1rem;
+  }
+
+  .average-rating {
+    color: var(--atom-red);
+    font-weight: bold;
+    font-size: 1.3rem;
+  }
+
+  .blog-comments-bottom {
+    margin: 2rem 0 1rem 0;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  .blog-comments-bottom h4 {
+    margin-bottom: 1.5rem;
+    color: white;
+    font-size: 1.2rem;
+  }
+
+  .comment-form-simple {
+    margin-bottom: 2rem;
+  }
+
+  .comment-form-simple textarea {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--electron-blue);
+    border-radius: 8px;
+    padding: 1rem;
+    color: white;
+    margin-bottom: 1rem;
+    font-family: inherit;
+    resize: vertical;
+  }
+
+  .comment-form-row {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .comment-form-simple input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--electron-blue);
+    border-radius: 8px;
+    padding: 0.8rem;
+    color: white;
+  }
+
+  .comment-form-simple button {
+    background: var(--atom-red);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .comment-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+  }
+
+  .comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .comment-date {
+    color: var(--neutron-gray);
+    font-size: 0.8rem;
+  }
+
+  .comment-text {
+    color: #cbd5e1;
+    line-height: 1.5;
+    margin: 0;
+  }
+</style>
+
+<script>
+  // Rating functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('.rating-stars-interactive .star');
+    
+    stars.forEach(star => {
+      star.addEventListener('click', function() {
+        const rating = parseInt(this.dataset.rating);
+        
+        // Update star visuals
+        stars.forEach((s, index) => {
+          if (index < rating) {
+            s.classList.add('active');
+          } else {
+            s.classList.remove('active');
+          }
+        });
+        
+        alert(`Thank you for rating this article ${rating} stars! 🌟`);
+      });
+      
+      // Hover effects
+      star.addEventListener('mouseover', function() {
+        const rating = parseInt(this.dataset.rating);
+        stars.forEach((s, index) => {
+          s.style.opacity = index < rating ? '0.8' : '0.5';
+        });
+      });
+      
+      star.addEventListener('mouseout', function() {
+        stars.forEach(s => {
+          if (!s.classList.contains('active')) {
+            s.style.opacity = '0.5';
+          }
+        });
+      });
+    });
+
+    // Comment functionality
+    const commentForm = document.getElementById('commentForm');
+    if (commentForm) {
+      commentForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const textarea = this.querySelector('textarea');
+        const input = this.querySelector('input');
+        
+        alert(`Thanks for your comment, ${input.value}!`);
+        this.reset();
+      });
+    }
+  });
+</script>

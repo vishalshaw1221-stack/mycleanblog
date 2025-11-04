@@ -1,0 +1,121 @@
+---
+---
+
+<header class="main-header">
+  <div class="nav-bar">
+    <a href="/" class="nav-link">HOME</a>
+    <a href="/about" class="nav-link">ABOUT</a>
+    <a href="/contact" class="nav-link">CONTACT US</a>
+    
+    <!-- Search Bar -->
+    <div class="search-container">
+      <input type="text" placeholder="Search..." class="search-input">
+      <button class="search-button">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .main-header {
+    background: rgba(15, 23, 42, 0.9);
+    
+    padding: 0.5rem 0;
+  }
+  
+  .nav-bar {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 0.8rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #3b82f6;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+  
+  .nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    text-shadow: 0 0 10px #3b82f6;
+  }
+  
+  .nav-link:hover {
+    color: #dc2626;
+    text-shadow: 0 0 15px #dc2626;
+  }
+  
+  /* Search Bar Styles */
+  .search-container {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    padding: 0.3rem;
+    border: 1px solid #3b82f6;
+  }
+  
+  .search-input {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    outline: none;
+    width: 200px;
+  }
+  
+  .search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .search-button {
+    background: #3b82f6;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+  }
+  
+  .search-button:hover {
+    background: #dc2626;
+  }
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.querySelector('.search-input');
+    const searchButton = document.querySelector('.search-button');
+    
+    function performSearch() {
+      const searchTerm = searchInput.value.trim();
+      if (searchTerm) {
+        // For now, just show an alert - you can replace this with actual search
+        alert(`Searching for: "${searchTerm}"\n\nThis is a demo search. In a real website, this would search your blog content.`);
+        searchInput.value = ''; // Clear the input
+      }
+    }
+    
+    // Search when button is clicked
+    searchButton.addEventListener('click', performSearch);
+    
+    // Search when Enter key is pressed
+    searchInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        performSearch();
+      }
+    });
+  });
+</script>
+</style>
