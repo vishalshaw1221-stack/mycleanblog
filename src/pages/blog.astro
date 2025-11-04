@@ -1,0 +1,126 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Blog">
+  <section class="page-hero">
+    <div class="container">
+      <h1>Our Articles</h1>
+      <p>Explore our latest insights on physics, technology, and innovation</p>
+    </div>
+  </section>
+
+  <section class="blog-content">
+    <div class="container">
+      <div class="blog-grid">
+        <article class="blog-card">
+          <div class="blog-category science">Science Simplified</div>
+          <h3>Understanding Quantum Mechanics for Beginners</h3>
+          <p>A gentle introduction to the fascinating world of quantum physics, breaking down complex concepts into understandable pieces.</p>
+          <a href="#" class="read-more">Read More →</a>
+        </article>
+
+        <article class="blog-card">
+          <div class="blog-category tech">Tech + Thought</div>
+          <h3>The Future of AI in Scientific Discovery</h3>
+          <p>Exploring how artificial intelligence is revolutionizing the way we approach scientific research and discovery.</p>
+          <a href="#" class="read-more">Read More →</a>
+        </article>
+
+        <article class="blog-card">
+          <div class="blog-category inspiration">Inspiration Hub</div>
+          <h3>How Curiosity Drives Innovation</h3>
+          <p>Examining the role of curiosity in scientific breakthroughs and technological advancements throughout history.</p>
+          <a href="#" class="read-more">Read More →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-hero {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: var(--white);
+    padding: 120px 2rem 60px;
+    text-align: center;
+  }
+
+  .page-hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .blog-content {
+    padding: 80px 0;
+  }
+
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+
+  .blog-card {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+  }
+
+  .blog-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .blog-category {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .blog-category.science {
+    background: rgba(52, 152, 219, 0.1);
+    color: var(--secondary);
+  }
+
+  .blog-category.tech {
+    background: rgba(231, 76, 60, 0.1);
+    color: var(--accent);
+  }
+
+  .blog-category.inspiration {
+    background: rgba(46, 204, 113, 0.1);
+    color: #2ecc71;
+  }
+
+  .blog-card h3 {
+    margin-bottom: 1rem;
+    color: var(--primary);
+  }
+
+  .blog-card p {
+    margin-bottom: 1.5rem;
+    color: var(--text-light);
+  }
+
+  .read-more {
+    color: var(--secondary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+
+  .read-more:hover {
+    color: var(--primary);
+  }
+</style>

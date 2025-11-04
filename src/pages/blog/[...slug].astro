@@ -1,0 +1,48 @@
+---
+// src/pages/blog/[...slug].astro
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const blogPosts = await getCollection('blog');
+  return blogPosts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{post.data.title}</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+        line-height: 1.6;
+      }
+      h1 {
+        color: #333;
+        border-bottom: 2px solid #3b82f6;
+        padding-bottom: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <article>
+      <h1>{post.data.title}</h1>
+      <p><strong>Published:</strong> {new Date(post.data.pubDate).toLocaleDateString()}</p>
+      <hr>
+      <Content />
+    </article>
+    
+    <br><br>
+    <a href="/">← Back to Home</a>
+  </body>
+</html>
