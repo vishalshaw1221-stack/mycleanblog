@@ -1,28 +1,211 @@
 ---
-import { getCollection } from 'astro:content';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
-// Fetch all blog posts
-const posts = await getCollection('blog');
+export interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "SciencePedia - The Free Science Encyclopedia" } = Astro.props;
 ---
 
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>My New Blog</title>
-  </head>
-  <body>
-    <main style="font-family: sans-serif; padding: 2rem; max-width: 800px; margin: auto;">
-      <h1>Welcome to My Blog 🚀</h1>
-      <p>Read my latest posts below:</p>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title} | SciencePedia</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-      <ul>
-        {posts.map(post => (
-          <li>
-            <a href={`/blog/${post.slug}/`}>{post.data.title}</a>
-          </li>
-        ))}
-      </ul>
+    <style>
+      :root {
+        --space-blue: #0f172a;
+        --quantum-purple: #4c1d95;
+        --atom-red: #dc2626;
+        --lab-white: #f8fafc;
+        --neutron-gray: #64748b;
+        --electron-blue: #3b82f6;
+      }
+
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, var(--space-blue) 0%, var(--quantum-purple) 100%);
+        color: white;
+        font-family: 'Arial', sans-serif;
+      }
+      /* Background Watermark with Content Area Protection */
+/* Background Watermark with Subtle Fade in Content Area */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    /* Quantum wave function patterns */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M0,50 Q25,30 50,50 T100,50' stroke='rgba(59,130,246,0.12)' stroke-width='1.5' fill='none'/%3E%3Cpath d='M0,30 Q25,70 50,30 T100,30' stroke='rgba(220,38,38,0.12)' stroke-width='1.5' fill='none'/%3E%3C/svg%3E") center/250px 250px,
+    
+    /* Particle collision trails */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cline x1='20' y1='20' x2='80' y2='80' stroke='rgba(59,130,246,0.08)' stroke-width='1.5'/%3E%3Cline x1='80' y1='20' x2='20' y2='80' stroke='rgba(220,38,38,0.08)' stroke-width='1.5'/%3E%3C/svg%3E") center/200px 200px,
+    
+    /* Main gradient */
+    linear-gradient(135deg, #0f172a 0%, #4c1d95 100%);
+  opacity: 1;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Create a subtle blur overlay only on the main content area */
+main::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.3); /* Semi-transparent overlay */
+  backdrop-filter: blur(2px); /* Very subtle blur */
+  border-radius: 15px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Ensure main content stays readable */
+main {
+  position: relative;
+  z-index: 1;
+}
+
+      header, footer {
+  width: 80%;
+  max-width: 1100px;
+  border-radius: 15px;
+  box-sizing: border-box;
+      }
+
+main {
+  width: 85%; /* Slightly wider than header/footer */
+  max-width: 1200px; /* Wider max width */
+  border-radius: 15px;
+  box-sizing: border-box;
+  margin-left: auto; /* Push to right */
+  margin-right: 5%; /* Add some right margin */
+     }
+
+      /* === HEADER === */
+      header {
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid var(--electron-blue);
+        box-shadow: 0 0 25px rgba(59, 130, 246, 0.25);
+        padding: 1rem;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      /* === MAIN === */
+      main {
+        flex-grow: 1;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        box-shadow: 0 0 40px rgba(59, 130, 246, 0.25);
+        padding: 3rem 2rem;
+        margin-bottom: 2rem;
+      }
+
+      /* === FOOTER === */
+      /* === FOOTER === */
+  footer {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid var(--electron-blue);
+  box-shadow: 0 0 25px rgba(59, 130, 246, 0.25);
+  padding: 3rem 2rem 2rem; /* Increased padding */
+  text-align: center;
+  position: relative;
+  min-height: 200px; /* Added minimum height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content vertically */
+  }
+
+      footer::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        height: 2px;
+        background: linear-gradient(90deg, var(--electron-blue), var(--atom-red), var(--quantum-purple));
+        box-shadow: 0 0 15px var(--electron-blue);
+        border-radius: 5px;
+      }
+
+      .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin: 1rem 0;
+      }
+
+      .social-icons a {
+        color: white;
+        font-size: 4rem;
+        transition: all 0.3s ease;
+        text-shadow: 0 0 10px var(--electron-blue);
+      }
+
+      .social-icons a:hover {
+        color: var(--atom-red);
+        transform: scale(1.2);
+        text-shadow: 0 0 15px var(--atom-red);
+      }
+
+      footer p {
+  font-size: 1.1rem; /* Increased from 0.9rem */
+  color: #cbd5e1;
+  opacity: 0.8;
+  margin-top: 1rem;
+    }
+
+      @media (max-width: 768px) {
+        header, main, footer {
+          width: 90%;
+          padding: 1rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <Header />
+    </header>
+
+    <main>
+      <slot />
     </main>
+
+    <footer>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
+      </div>
+      <p>© 2025 SciencePedia — Exploring the Universe of Knowledge</p>
+    </footer>
   </body>
 </html>
