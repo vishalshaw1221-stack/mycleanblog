@@ -1,47 +1,78 @@
 ---
 ---
-
 <footer>
-  <!-- Social Media Links -->
   <div class="social-media">
-  <a href="https://www.facebook.com/profile.php?id=61583067824148" target="_blank">
-    <i class="fab fa-facebook"></i> Facebook
-  </a>
-  <a href="https://x.com/PhysicsP32590" target="_blank">
-    <i class="fab fa-twitter"></i> Twitter
-  </a>
-  <a href="https://www.instagram.com/physicsinphysics/" target="_blank">
-    <i class="fab fa-instagram"></i> Instagram
-  </a>
-  <a href="#" target="_blank">
-    <i class="fab fa-linkedin"></i> LinkedIn
-  </a>
-  <a href="#" target="_blank">
-    <i class="fab fa-youtube"></i> YouTube
-  </a>
-</div>
+    <a href="https://www.facebook.com/profile.php?id=61583067824148" target="_blank" class="icon-link">
+      <i class="fab fa-facebook"></i>
+    </a>
+    <a href="https://x.com/PhysicsP32590" target="_blank" class="icon-link">
+      <i class="fab fa-twitter"></i>
+    </a>
+    <a href="https://www.instagram.com/physicsinphysics/" target="_blank" class="icon-link">
+      <i class="fab fa-instagram"></i>
+    </a>
+    <a href="#" target="_blank" class="icon-link">
+      <i class="fab fa-linkedin"></i>
+    </a>
+    <a href="#" target="_blank" class="icon-link">
+      <i class="fab fa-youtube"></i>
+    </a>
   </div>
 
-  <!-- Comments Section -->
-  <div class="comments-section">
-    <h3>Comments</h3>
-    
-    <!-- Comment Form -->
-    <form class="comment-form">
-      <textarea placeholder="Write your comment..." rows="4"></textarea>
-      <button type="submit">Post Comment</button>
-    </form>
+  <style>
+    footer {
+      text-align: center;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      margin-top: 3rem;
+      padding: 2rem 0;
+    }
 
-    <!-- Comments List -->
-    <div class="comments-list">
-      <div class="comment">
-        <strong>John Doe</strong>
-        <p>Great article! Very informative.</p>
-      </div>
-      <div class="comment">
-        <strong>Jane Smith</strong>
-        <p>Thanks for sharing this knowledge.</p>
-      </div>
-    </div>
-  </div>
+    .social-media {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 25px;
+    }
+
+    .icon-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 70px;
+      height: 70px;
+      font-size: 30px;
+      color: white;
+      border-radius: 16px;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.25);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .icon-link::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      padding: 1px;
+      background: linear-gradient(135deg, #3b82f6, #9333ea, #ef4444);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      -webkit-mask-composite: destination-out;
+      pointer-events: none;
+    }
+
+    .icon-link:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 25px rgba(147, 51, 234, 0.6);
+    }
+
+    .icon-link:hover i {
+      color: #60a5fa;
+    }
+  </style>
 </footer>
