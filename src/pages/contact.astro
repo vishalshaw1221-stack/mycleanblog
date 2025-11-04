@@ -55,6 +55,17 @@ import Layout from '../layouts/Layout.astro';
 </Layout>
 
 <style>
+  /* Define your color variables to match your theme */
+  :root {
+    --primary: #3b82f6;
+    --secondary: #4c1d95;
+    --accent: #dc2626;
+    --white: #ffffff;
+    --text: #0f172a;
+    --border-radius: 8px;
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
   .page-hero {
     background: linear-gradient(135deg, var(--accent) 0%, var(--secondary) 100%);
     color: var(--white);
@@ -65,6 +76,11 @@ import Layout from '../layouts/Layout.astro';
   .page-hero h1 {
     font-size: 2.5rem;
     margin-bottom: 1rem;
+  }
+
+  .page-hero p {
+    font-size: 1.2rem;
+    opacity: 0.9;
   }
 
   .container {
@@ -87,6 +103,7 @@ import Layout from '../layouts/Layout.astro';
   .contact-info h2 {
     margin-bottom: 2rem;
     color: var(--primary);
+    font-size: 1.8rem;
   }
 
   .contact-item {
@@ -96,6 +113,12 @@ import Layout from '../layouts/Layout.astro';
   .contact-item h3 {
     color: var(--secondary);
     margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+  }
+
+  .contact-item p {
+    color: var(--lab-white, #f8fafc);
+    font-size: 1.1rem;
   }
 
   .social-links {
@@ -104,25 +127,35 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .social-links a {
-    color: var(--secondary);
+    color: var(--electron-blue, #3b82f6);
     text-decoration: none;
     transition: color 0.3s ease;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--electron-blue, #3b82f6);
+    border-radius: var(--border-radius);
+    transition: all 0.3s ease;
   }
 
   .social-links a:hover {
-    color: var(--primary);
+    color: var(--white);
+    background: var(--electron-blue, #3b82f6);
   }
 
   .contact-form {
-    background: var(--white);
-    padding: 2rem;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2.5rem;
+    border-radius: 15px;
+    border: 1px solid var(--electron-blue, #3b82f6);
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+    backdrop-filter: blur(10px);
   }
 
   .contact-form h2 {
     margin-bottom: 2rem;
-    color: var(--primary);
+    color: var(--electron-blue, #3b82f6);
+    font-size: 1.8rem;
+    text-align: center;
   }
 
   .form-group {
@@ -133,45 +166,200 @@ import Layout from '../layouts/Layout.astro';
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: var(--text);
+    color: var(--lab-white, #f8fafc);
   }
 
   .form-group input,
   .form-group textarea {
     width: 100%;
-    padding: 0.8rem;
-    border: 1px solid #ddd;
+    padding: 1rem;
+    border: 1px solid rgba(59, 130, 246, 0.3);
     border-radius: var(--border-radius);
     font-size: 1rem;
-    transition: border-color 0.3s ease;
+    transition: all 0.3s ease;
+    background: rgba(15, 23, 42, 0.8);
+    color: var(--lab-white, #f8fafc);
   }
 
   .form-group input:focus,
   .form-group textarea:focus {
     outline: none;
-    border-color: var(--secondary);
+    border-color: var(--electron-blue, #3b82f6);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: rgba(255, 255, 255, 0.6);
   }
 
   .submit-btn {
-    background: var(--secondary);
+    background: var(--electron-blue, #3b82f6);
     color: var(--white);
-    padding: 12px 30px;
+    padding: 1rem 2rem;
     border: none;
     border-radius: var(--border-radius);
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 1rem;
   }
 
   .submit-btn:hover {
-    background: var(--primary);
+    background: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
   }
 
+  /* 🔥 MOBILE RESPONSIVE STYLES */
   @media (max-width: 768px) {
+    .page-hero {
+      padding: 80px 1.5rem 40px;
+    }
+
+    .page-hero h1 {
+      font-size: 2rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .page-hero p {
+      font-size: 1.1rem;
+    }
+
+    .container {
+      padding: 0 1.5rem;
+    }
+
+    .contact-content {
+      padding: 60px 0;
+    }
+
     .contact-grid {
       grid-template-columns: 1fr;
       gap: 2rem;
+    }
+
+    .contact-info h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .contact-item h3 {
+      font-size: 1.1rem;
+    }
+
+    .contact-item p {
+      font-size: 1rem;
+    }
+
+    .social-links {
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .social-links a {
+      padding: 0.6rem 1rem;
+      font-size: 0.9rem;
+    }
+
+    .contact-form {
+      padding: 2rem 1.5rem;
+      border-radius: 12px;
+    }
+
+    .contact-form h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      padding: 0.8rem;
+      font-size: 1rem;
+    }
+
+    .submit-btn {
+      padding: 0.9rem 1.5rem;
+      font-size: 1rem;
+    }
+  }
+
+  /* Extra small phones */
+  @media (max-width: 480px) {
+    .page-hero {
+      padding: 60px 1rem 30px;
+    }
+
+    .page-hero h1 {
+      font-size: 1.7rem;
+    }
+
+    .page-hero p {
+      font-size: 1rem;
+    }
+
+    .container {
+      padding: 0 1rem;
+    }
+
+    .contact-content {
+      padding: 40px 0;
+    }
+
+    .contact-form {
+      padding: 1.5rem 1rem;
+      border-radius: 10px;
+    }
+
+    .contact-info h2 {
+      font-size: 1.3rem;
+    }
+
+    .contact-form h2 {
+      font-size: 1.3rem;
+    }
+
+    .social-links {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .social-links a {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      padding: 0.7rem;
+      font-size: 0.95rem;
+    }
+
+    .submit-btn {
+      padding: 0.8rem 1.2rem;
+    }
+  }
+
+  /* Large desktop enhancement */
+  @media (min-width: 1200px) {
+    .page-hero h1 {
+      font-size: 3rem;
+    }
+
+    .page-hero p {
+      font-size: 1.3rem;
+    }
+
+    .contact-grid {
+      gap: 5rem;
     }
   }
 </style>

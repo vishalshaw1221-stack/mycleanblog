@@ -38,6 +38,13 @@ import Layout from '../layouts/Layout.astro';
 </Layout>
 
 <style>
+  /* Define your color variables */
+  :root {
+    --primary: #3b82f6;
+    --secondary: #4c1d95;
+    --white: #ffffff;
+  }
+
   .page-hero {
     background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
     color: var(--white);
@@ -48,6 +55,11 @@ import Layout from '../layouts/Layout.astro';
   .page-hero h1 {
     font-size: 2.5rem;
     margin-bottom: 1rem;
+  }
+
+  .page-hero p {
+    font-size: 1.2rem;
+    opacity: 0.9;
   }
 
   .container {
@@ -68,11 +80,14 @@ import Layout from '../layouts/Layout.astro';
   .text-content h2 {
     color: var(--primary);
     margin: 2rem 0 1rem;
+    font-size: 1.8rem;
   }
 
   .text-content p {
     margin-bottom: 1.5rem;
     line-height: 1.8;
+    font-size: 1.1rem;
+    color: var(--lab-white, #f8fafc);
   }
 
   .text-content ul {
@@ -82,5 +97,115 @@ import Layout from '../layouts/Layout.astro';
 
   .text-content li {
     margin-bottom: 0.5rem;
+    line-height: 1.6;
+    color: var(--lab-white, #f8fafc);
+  }
+
+  /* 🔥 MOBILE RESPONSIVE STYLES */
+  /* These only activate on phones - desktop stays perfect! */
+  @media (max-width: 768px) {
+    .page-hero {
+      padding: 80px 1.5rem 40px; /* Reduced padding */
+    }
+
+    .page-hero h1 {
+      font-size: 2rem; /* Smaller heading */
+      margin-bottom: 0.8rem;
+    }
+
+    .page-hero p {
+      font-size: 1.1rem; /* Smaller subtitle */
+    }
+
+    .container {
+      padding: 0 1.5rem; /* Reduced side padding */
+    }
+
+    .page-content {
+      padding: 60px 0; /* Reduced padding */
+    }
+
+    .content-grid {
+      max-width: 100%; /* Use full width on mobile */
+    }
+
+    .text-content h2 {
+      font-size: 1.5rem; /* Smaller subheadings */
+      margin: 1.5rem 0 0.8rem;
+    }
+
+    .text-content p {
+      font-size: 1rem; /* Smaller body text */
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+    }
+
+    .text-content ul {
+      margin-left: 1.5rem; /* Reduced indentation */
+      margin-bottom: 1.2rem;
+    }
+
+    .text-content li {
+      font-size: 0.95rem; /* Smaller list items */
+      margin-bottom: 0.4rem;
+    }
+  }
+
+  /* Extra small phones */
+  @media (max-width: 480px) {
+    .page-hero {
+      padding: 60px 1rem 30px;
+    }
+
+    .page-hero h1 {
+      font-size: 1.7rem;
+    }
+
+    .page-hero p {
+      font-size: 1rem;
+    }
+
+    .container {
+      padding: 0 1rem;
+    }
+
+    .page-content {
+      padding: 40px 0;
+    }
+
+    .text-content h2 {
+      font-size: 1.3rem;
+    }
+
+    .text-content p {
+      font-size: 0.95rem;
+    }
+
+    .text-content ul {
+      margin-left: 1rem;
+    }
+
+    .text-content li {
+      font-size: 0.9rem;
+    }
+  }
+
+  /* Large desktop enhancement */
+  @media (min-width: 1200px) {
+    .page-hero h1 {
+      font-size: 3rem;
+    }
+
+    .page-hero p {
+      font-size: 1.3rem;
+    }
+
+    .text-content h2 {
+      font-size: 2rem;
+    }
+
+    .text-content p {
+      font-size: 1.2rem;
+    }
   }
 </style>

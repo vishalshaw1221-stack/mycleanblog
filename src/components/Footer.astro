@@ -74,5 +74,53 @@
     .icon-link:hover i {
       color: #60a5fa;
     }
+
+    /* 🔥 MOBILE RESPONSIVE STYLES */
+    /* These only activate on phones - desktop stays perfect! */
+    @media (max-width: 768px) {
+      footer {
+        margin-top: 1.5rem;
+        padding: 1rem 0;
+      }
+
+      .social-media {
+        gap: 15px; /* Tighter spacing on mobile */
+        padding: 0 10px; /* Add some padding on sides */
+      }
+
+      .icon-link {
+        width: 60px;  /* Smaller on mobile */
+        height: 60px; /* Smaller on mobile */
+        font-size: 28px; /* Smaller icons on mobile */
+        border-radius: 12px;
+      }
+
+      /* Better touch targets for mobile */
+      .icon-link:active {
+        transform: scale(0.95);
+        background: rgba(255, 255, 255, 0.08);
+      }
+    }
+
+    /* Extra small phones */
+    @media (max-width: 480px) {
+      .social-media {
+        gap: 12px;
+      }
+
+      .icon-link {
+        width: 55px;
+        height: 55px;
+        font-size: 24px;
+        border-radius: 10px;
+      }
+    }
+
+    /* Large desktop screens */
+    @media (min-width: 1200px) {
+      .social-media {
+        gap: 30px; /* More space on huge screens */
+      }
+    }
   </style>
 </footer>

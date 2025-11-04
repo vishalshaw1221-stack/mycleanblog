@@ -15,13 +15,329 @@ const { Content } = await post.render();
 ---
 
 <Layout title={post.data.title} description={post.data.description || "Science blog article"}>
-  <article>
-    <h1>{post.data.title}</h1>
-    <p><strong>Published:</strong> {new Date(post.data.pubDate).toLocaleDateString()}</p>
-    <hr />
-    <Content />
-  </article>
+  <article class="blog-post">
+    <header class="post-header">
+      <h1 class="post-title">{post.data.title}</h1>
+      <div class="post-meta">
+        <span class="publish-date">
+          📅 Published: {new Date(post.data.pubDate).toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          })}
+        </span>
+        {post.data.readTime && (
+          <span class="read-time">⏱️ {post.data.readTime}</span>
+        )}
+      </div>
+    </header>
+    
+    <div class="content-wrapper">
+      <Content />
+    </div>
 
-  <br /><br />
-  <a href="/">← Back to Home</a>
+    <footer class="post-footer">
+      <a href="/" class="back-home">
+        ← Back to Home
+      </a>
+    </footer>
+  </article>
 </Layout>
+
+<style>
+  .blog-post {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    color: var(--lab-white);
+  }
+
+  .post-header {
+    margin-bottom: 3rem;
+    text-align: center;
+    border-bottom: 2px solid var(--electron-blue);
+    padding-bottom: 2rem;
+  }
+
+  .post-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--electron-blue), var(--atom-red));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+  }
+
+  .post-meta {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    color: var(--neutron-gray);
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .publish-date, .read-time {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .content-wrapper {
+    line-height: 1.7;
+    font-size: 1.1rem;
+  }
+
+  /* Style the rendered markdown content */
+  .content-wrapper h2 {
+    font-size: 1.8rem;
+    margin: 2.5rem 0 1rem 0;
+    color: var(--electron-blue);
+    border-bottom: 1px solid var(--neutron-gray);
+    padding-bottom: 0.5rem;
+  }
+
+  .content-wrapper h3 {
+    font-size: 1.5rem;
+    margin: 2rem 0 1rem 0;
+    color: var(--atom-red);
+  }
+
+  .content-wrapper p {
+    margin-bottom: 1.5rem;
+    text-align: justify;
+  }
+
+  .content-wrapper ul, .content-wrapper ol {
+    margin: 1.5rem 0;
+    padding-left: 2rem;
+  }
+
+  .content-wrapper li {
+    margin-bottom: 0.5rem;
+  }
+
+  .content-wrapper blockquote {
+    border-left: 4px solid var(--electron-blue);
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    background: rgba(59, 130, 246, 0.1);
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+  }
+
+  .content-wrapper code {
+    background: rgba(15, 23, 42, 0.8);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    border: 1px solid var(--neutron-gray);
+  }
+
+  .content-wrapper pre {
+    background: rgba(15, 23, 42, 0.9);
+    padding: 1.5rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    border: 1px solid var(--electron-blue);
+  }
+
+  .content-wrapper pre code {
+    background: none;
+    padding: 0;
+    border: none;
+    font-size: 0.95em;
+  }
+
+  .content-wrapper img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  .content-wrapper table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    background: rgba(15, 23, 42, 0.8);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .content-wrapper th, .content-wrapper td {
+    padding: 0.8rem;
+    border: 1px solid var(--neutron-gray);
+    text-align: left;
+  }
+
+  .content-wrapper th {
+    background: var(--electron-blue);
+    color: white;
+    font-weight: 600;
+  }
+
+  .post-footer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--neutron-gray);
+    text-align: center;
+  }
+
+  .back-home {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--electron-blue);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.8rem 1.5rem;
+    border: 1px solid var(--electron-blue);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background: rgba(59, 130, 246, 0.1);
+  }
+
+  .back-home:hover {
+    background: var(--electron-blue);
+    color: white;
+    transform: translateX(-5px);
+  }
+
+  /* 🔥 MOBILE RESPONSIVE STYLES */
+  @media (max-width: 768px) {
+    .blog-post {
+      padding: 1rem;
+      margin: 0 0.5rem;
+    }
+
+    .post-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .post-title {
+      font-size: 1.8rem; /* Smaller title on mobile */
+      line-height: 1.3;
+      text-align: left;
+    }
+
+    .post-meta {
+      justify-content: flex-start;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .content-wrapper {
+      font-size: 1rem; /* Smaller base text */
+      line-height: 1.6;
+    }
+
+    .content-wrapper h2 {
+      font-size: 1.5rem; /* Smaller headings */
+      margin: 2rem 0 1rem 0;
+    }
+
+    .content-wrapper h3 {
+      font-size: 1.3rem;
+      margin: 1.5rem 0 1rem 0;
+    }
+
+    .content-wrapper p {
+      text-align: left; /* Better for mobile reading */
+      margin-bottom: 1.2rem;
+    }
+
+    .content-wrapper ul, .content-wrapper ol {
+      padding-left: 1.5rem;
+      margin: 1.2rem 0;
+    }
+
+    .content-wrapper blockquote {
+      padding: 1rem;
+      margin: 1.2rem 0;
+    }
+
+    .content-wrapper pre {
+      padding: 1rem;
+      margin: 1.2rem 0;
+      font-size: 0.9em;
+    }
+
+    .content-wrapper table {
+      font-size: 0.9rem;
+      display: block;
+      overflow-x: auto; /* Horizontal scroll for tables */
+      white-space: nowrap;
+    }
+
+    .content-wrapper th, .content-wrapper td {
+      padding: 0.6rem;
+    }
+
+    .post-footer {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+    }
+
+    .back-home {
+      width: 100%; /* Full width button on mobile */
+      justify-content: center;
+      padding: 1rem;
+    }
+  }
+
+  /* Extra small phones */
+  @media (max-width: 480px) {
+    .blog-post {
+      padding: 0.8rem;
+      margin: 0 0.3rem;
+    }
+
+    .post-title {
+      font-size: 1.5rem;
+    }
+
+    .post-meta {
+      flex-direction: column;
+      gap: 0.8rem;
+      align-items: flex-start;
+    }
+
+    .content-wrapper {
+      font-size: 0.95rem;
+    }
+
+    .content-wrapper h2 {
+      font-size: 1.3rem;
+    }
+
+    .content-wrapper h3 {
+      font-size: 1.1rem;
+    }
+
+    .content-wrapper pre {
+      padding: 0.8rem;
+      font-size: 0.85em;
+    }
+  }
+
+  /* Large desktop enhancement */
+  @media (min-width: 1200px) {
+    .blog-post {
+      max-width: 900px;
+      padding: 3rem;
+    }
+
+    .post-title {
+      font-size: 3rem;
+    }
+  }
+</style>
