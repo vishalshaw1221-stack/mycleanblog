@@ -5,24 +5,82 @@ import { getCollection } from "astro:content";
 const posts = await getCollection("blog");
 ---
 
-<Layout title="Home | My Blog">
-  <header style="text-align:center;margin-bottom:3rem;">
-    <h1>🪐 My Blog</h1>
-    <p class="subtitle">Explore my latest posts and experiments.</p>
-  </header>
-
-  <main>
-    <ul style="list-style:none;display:grid;gap:1.5rem;padding:0;">
+<Layout title="Home">
+  <div class="blogs-section">
+    <h1>RECENT BLOGS</h1>
+    
+    <div class="blog-grid">
       {posts.map((post) => (
-        <li style="background:#1e293b;border-radius:1rem;padding:1.5rem;">
-          <a href={`/blog/${post.slug}/`} style="color:#38bdf8;text-decoration:none;font-size:1.2rem;">
-            {post.data.title || post.slug}
-          </a>
-          <span style="display:block;color:#94a3b8;font-size:0.9rem;margin-top:0.3rem;">
-            {post.data.pubDate ? new Date(post.data.pubDate).toDateString() : ""}
-          </span>
-        </li>
+        <a href={`/blog/${post.slug}`} class="blog-card">
+          <div class="blog-icon">📄</div>
+          <h3>{post.data.title || post.slug}</h3>
+          <p>{post.data.description || 'Click to read this article...'}</p>
+          <div class="blog-meta">
+            <span class="read-time">
+              {post.data.readTime || '5 min read'}
+            </span>
+            <span class="blog-date">
+              {post.data.pubDate ? new Date(post.data.pubDate).toDateString() : ''}
+            </span>
+          </div>
+        </a>
       ))}
-    </ul>
-  </main>
+    </div>
+  </div>
 </Layout>
+
+<style>
+  .blogs-section {
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .blog-card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 12px;
+    padding: 2rem;
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s ease;
+    display: block;
+  }
+
+  .blog-card:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--electron-blue);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+  }
+
+  .blog-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .blog-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: white;
+  }
+
+  .blog-card p {
+    color: #cbd5e1;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .blog-meta {
+    display: flex;
+    justify-content: space-between;
+    color: var(--neutron-gray);
+    font-size: 0.9rem;
+  }
+</style>
