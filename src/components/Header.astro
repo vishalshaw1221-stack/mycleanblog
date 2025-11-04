@@ -1,94 +1,120 @@
 ---
 ---
 
-
-<footer>
-  <div class="footer-container">
-    <h3>Follow Us</h3>
-    <div class="social-media">
-      <a href="https://www.facebook.com/profile.php?id=61583067824148" target="_blank" rel="noopener noreferrer" class="facebook">
-        <i class="fab fa-facebook-f"></i>
-      </a>
-      <a href="https://x.com/PhysicsP32590" target="_blank" rel="noopener noreferrer" class="twitter">
-        <i class="fab fa-twitter"></i>
-      </a>
-      <a href="https://www.instagram.com/physicsinphysics/" target="_blank" rel="noopener noreferrer" class="instagram">
-        <i class="fab fa-instagram"></i>
-      </a>
-      <a href="https://www.linkedin.com/me?trk=p_mwlite_feed-secondary_nav" target="_blank" rel="noopener noreferrer" class="linkedin">
-        <i class="fab fa-linkedin-in"></i>
-      </a>
-      <a href="https://m.youtube.com/channel/UCQeEKqqidI7I0etj-Io0CZA/videos" target="_blank" rel="noopener noreferrer" class="youtube">
-        <i class="fab fa-youtube"></i>
-      </a>
+<header class="main-header">
+  <div class="nav-bar">
+    <a href="/" class="nav-link">HOME</a>
+    <a href="/about" class="nav-link">ABOUT</a>
+    <a href="/contact" class="nav-link">CONTACT US</a>
+    
+    <!-- Search Bar -->
+    <div class="search-container">
+      <input type="text" placeholder="Search..." class="search-input">
+      <button class="search-button">
+        <i class="fas fa-search"></i>
+      </button>
     </div>
   </div>
-</footer>
+</header>
 
 <style>
-  footer {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    padding: 2rem 0;
-    text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 15px;
+  .main-header {
+    background: rgba(15, 23, 42, 0.9);
+    padding: 0.5rem 0;
   }
-
-  .footer-container h3 {
-    font-size: 1.4rem;
-    margin-bottom: 2rem;
-    font-weight: 600;
-    color: #e0e0ff;
-    letter-spacing: 1px;
-  }
-
-  .social-media {
+  
+  .nav-bar {
+    max-width: 1000px;
+    margin: 0 auto;
     display: flex;
-    justify-content: center;
-    gap: 2rem;
-    flex-wrap: wrap;
-  }
-
-  .social-media a {
-    display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 4.5rem;
-    height: 4.5rem;
+    gap: 2rem;
+    padding: 0.8rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #3b82f6;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+  
+  .nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    text-shadow: 0 0 10px #3b82f6;
+  }
+  
+  .nav-link:hover {
+    color: #dc2626;
+    text-shadow: 0 0 15px #dc2626;
+  }
+  
+  /* Search Bar Styles */
+  .search-container {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    padding: 0.3rem;
+    border: 1px solid #3b82f6;
+  }
+  
+  .search-input {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    outline: none;
+    width: 200px;
+  }
+  
+  .search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .search-button {
+    background: #3b82f6;
+    border: none;
     border-radius: 50%;
-    font-size: 2rem;
-    color: #fff;
-    transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+    width: 35px;
+    height: 35px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
   }
-
-  .social-media a:hover {
-    transform: scale(1.15);
-    box-shadow: 0 0 25px currentColor;
-  }
-
-  /* Platform colors for hover glow */
-  .facebook:hover {
-    color: #1877f2;
-  }
-
-  .twitter:hover {
-    color: #1da1f2;
-  }
-
-  .instagram:hover {
-    color: #e4405f;
-  }
-
-  .linkedin:hover {
-    color: #0a66c2;
-  }
-
-  .youtube:hover {
-    color: #ff0000;
+  
+  .search-button:hover {
+    background: #dc2626;
   }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.querySelector('.search-input');
+    const searchButton = document.querySelector('.search-button');
+    
+    function performSearch() {
+      const searchTerm = searchInput.value.trim();
+      if (searchTerm) {
+        alert(`Searching for: "${searchTerm}"\n\nThis is a demo search. In a real website, this would search your blog content.`);
+        searchInput.value = ''; // Clear the input
+      }
+    }
+    
+    // Search when button is clicked
+    searchButton.addEventListener('click', performSearch);
+    
+    // Search when Enter key is pressed
+    searchInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        performSearch();
+      }
+    });
+  });
+</script>
