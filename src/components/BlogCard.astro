@@ -1,0 +1,96 @@
+---
+export interface Props {
+  title: string;
+  excerpt: string;
+  href: string;
+  date: string;
+  tag: string;
+  readTime: string;
+}
+
+const { title, excerpt, href, date, tag, readTime } = Astro.props;
+---
+
+<style>
+/* Same CSS as above */
+.blog-card {
+  background: linear-gradient(
+    135deg,
+    rgba(160, 140, 255, 0.25) 0%,
+    rgba(180, 160, 255, 0.25) 100%
+  );
+  border: 1px solid rgba(200, 180, 255, 0.35);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  text-decoration: none;
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(6px);
+  display: block;
+  color: inherit;
+}
+
+.blog-card .card-title {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.blog-card .card-excerpt {
+  color: #f0e6ff;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.blog-card .card-meta {
+  color: #e2d4ff;
+  font-size: 0.9rem;
+  display: flex;
+  gap: 1rem;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.blog-card .card-tag {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  backdrop-filter: blur(4px);
+}
+
+.blog-card:hover {
+  transform: translateY(-5px);
+  background: linear-gradient(
+    135deg,
+    rgba(170, 150, 255, 0.35) 0%,
+    rgba(190, 170, 255, 0.35) 100%
+  );
+  border-color: rgba(220, 200, 255, 0.5);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+}
+
+.blog-card:hover .card-title {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.blog-card:hover .card-excerpt {
+  color: #f5f0ff;
+}
+</style>
+
+<a href={href} class="blog-card">
+  <h3 class="card-title">{title}</h3>
+  <p class="card-excerpt">{excerpt}</p>
+  <div class="card-meta">
+    <span class="card-date">{date}</span>
+    <span class="card-tag">{tag}</span>
+    <span class="card-read-time">{readTime}</span>
+  </div>
+</a>
