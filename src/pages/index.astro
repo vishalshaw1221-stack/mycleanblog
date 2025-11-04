@@ -197,25 +197,63 @@ const sortedPosts = posts.sort((a, b) =>
   --gradient: linear-gradient(120deg, #667eea 0%, #764ba2 40%, #a18cd1 80%, #fbc2eb 100%);
 }
 
-/* 🪐 Advanced Physics Aesthetic — deep cosmic gradient */
+/* 🪐 Unified Quantum Field Blog Card Theme */
 .blog-card {
   background: linear-gradient(
-    135deg,
-    #0b0c10 0%,     /* Near black (quantum void) */
-    #1f2833 30%,    /* Deep space gray-blue */
-    #2c3e50 60%,    /* Cosmic indigo */
-    #3a506b 80%,    /* Cool dark teal */
-    #5bc0be 100%    /* Ion glow */
+    145deg,
+    rgba(30, 41, 59, 0.85) 0%,   /* dark blue-gray transparency */
+    rgba(76, 29, 149, 0.75) 100% /* deep purple transparency */
   );
-  color: #e0e6ed;
-  border: none;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(99, 102, 241, 0.4);
   border-radius: 18px;
   padding: 2.5rem 2rem;
   text-decoration: none;
+  color: #e5e7eb;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 20px rgba(76, 29, 149, 0.2);
+}
+
+/* Subtle “flow” gradient continuation */
+.blog-card:nth-child(odd) {
+  background: linear-gradient(
+    160deg,
+    rgba(15, 23, 42, 0.85) 0%,
+    rgba(76, 29, 149, 0.75) 100%
+  );
+}
+
+.blog-card:nth-child(even) {
+  background: linear-gradient(
+    140deg,
+    rgba(76, 29, 149, 0.75) 0%,
+    rgba(30, 41, 59, 0.85) 100%
+  );
+}
+
+.blog-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 0 35px rgba(99, 102, 241, 0.4);
+  border-color: rgba(147, 197, 253, 0.6);
+}
+
+/* Inner text colors tuned for readability */
+.blog-card h3 {
+  color: #f1f5f9;
+}
+
+.blog-card p {
+  color: #cbd5e1;
+}
+
+.read-more {
+  color: #93c5fd;
+}
+
+.blog-card:hover .read-more {
+  color: #c084fc;
 }
 
 .blog-card:nth-child(odd) {
