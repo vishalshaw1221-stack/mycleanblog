@@ -13,14 +13,14 @@ const posts = await getCollection("blog");
       {posts.map((post) => (
         <a href={`/blog/${post.slug}`} class="blog-card">
           <div class="blog-icon">📄</div>
-          <h3>{post.data.title || post.slug}</h3>
-          <p>{post.data.description || 'Click to read this article...'}</p>
+          <h3>{post.data.title}</h3>
+          <p>{post.data.description || 'Click to read this fascinating article...'}</p>
           <div class="blog-meta">
             <span class="read-time">
               {post.data.readTime || '5 min read'}
             </span>
             <span class="blog-date">
-              {post.data.pubDate ? new Date(post.data.pubDate).toDateString() : ''}
+              {post.data.pubDate ? new Date(post.data.pubDate).toLocaleDateString() : ''}
             </span>
           </div>
         </a>
