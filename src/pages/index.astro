@@ -197,21 +197,45 @@ const sortedPosts = posts.sort((a, b) =>
   --gradient: linear-gradient(120deg, #667eea 0%, #764ba2 40%, #a18cd1 80%, #fbc2eb 100%);
 }
 
-/* Smooth flowing gradient across all blog cards */
+/* 🪐 Advanced Physics Aesthetic — deep cosmic gradient */
 .blog-card {
-  background: var(--gradient);
-  background-size: 400% 400%;
-  background-position: calc(var(--i, 0) * 100%) 0%;
+  background: linear-gradient(
+    135deg,
+    #0b0c10 0%,     /* Near black (quantum void) */
+    #1f2833 30%,    /* Deep space gray-blue */
+    #2c3e50 60%,    /* Cosmic indigo */
+    #3a506b 80%,    /* Cool dark teal */
+    #5bc0be 100%    /* Ion glow */
+  );
+  color: #e0e6ed;
   border: none;
-  border-radius: 16px;
+  border-radius: 18px;
   padding: 2.5rem 2rem;
   text-decoration: none;
-  color: white;
-  transition: all 0.4s ease;
-  display: block;
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.blog-card:nth-child(odd) {
+  filter: brightness(1);
+}
+
+.blog-card:nth-child(even) {
+  filter: brightness(0.92);
+}
+
+.blog-card:hover {
+  transform: translateY(-10px);
+  filter: brightness(1.15);
+  box-shadow: 0 20px 50px rgba(91, 192, 190, 0.3);
+}
+
+.blog-card h3,
+.blog-card p,
+.blog-card .read-more {
+  color: #eaf2f8;
 }
 
 /* Optional shimmer flow */
