@@ -3,21 +3,71 @@ import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 
 const posts = await getCollection("blog");
+
+// Smart icon generator based on content
+function getPostIcon(title, description) {
+  const text = (title + ' ' + (description || '')).toLowerCase();
+  
+  if (text.includes('termux') || text.includes('android') || text.includes('mobile')) return '📱';
+  if (text.includes('test') || text.includes('check') || text.includes('experiment')) return '🧪';
+  if (text.includes('tutorial') || text.includes('guide') || text.includes('learn')) return '📚';
+  if (text.includes('code') || text.includes('programming') || text.includes('developer')) return '💻';
+  if (text.includes('web') || text.includes('site') || text.includes('design')) return '🌐';
+  if (text.includes('update') || text.includes('news') || text.includes('latest')) return '🆕';
+  if (text.includes('thought') || text.includes('idea') || text.includes('philosophy')) return '💭';
+  if (text.includes('project') || text.includes('build') || text.includes('create')) return '🛠️';
+  if (text.includes('bug') || text.includes('fix') || text.includes('error')) return '🐛';
+  if (text.includes('future') || text.includes('plan') || text.includes('roadmap')) return '🔮';
+  
+  return '📄'; // default
+}
+
+const sortedPosts = posts.sort((a, b) => 
+  new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
+);
 ---
 
 <Layout title="Home">
   <div class="blogs-section">
-    <div class="hero-section">
-      <h1 class="main-title">Recent Blogs</h1>
-      <p class="subtitle">Discover the latest thoughts and insights</p>
-    </div>
-    
+    <!-- Header Section -->
+    <header class="blog-header">
+      <div class="header-content">
+        <div class="logo-section">
+          <div class="logo">📝</div>
+          <div class="blog-info">
+            <h1 class="blog-title">Modern Blog</h1>
+            <p class="blog-description">
+              Welcome to my digital notebook. I write about technology, development, 
+              and everything in between. Simple thoughts, clear explanations.
+            </p>
+          </div>
+        </div>
+        <div class="header-stats">
+          <div class="stat">
+            <span class="stat-number">{posts.length}</span>
+            <span class="stat-label">Articles</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">
+              {new Date().getFullYear()}
+            </span>
+            <span class="stat-label">Established</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Blog Posts Grid -->
     <div class="blog-grid">
-      {posts.map((post) => (
+      {sortedPosts.map((post) => (
         <a href={`/blog/${post.slug}`} class="blog-card">
           <div class="card-header">
-            <div class="blog-icon">📄</div>
-            <div class="card-badge">New</div>
+            <div class="post-icon">
+              {post.data.icon || getPostIcon(post.data.title, post.data.description)}
+            </div>
+            <div class="card-badge">
+              {new Date(post.data.pubDate) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) ? 'New' : 'Popular'}
+            </div>
           </div>
           <h3>{post.data.title}</h3>
           <p>{post.data.description || 'Click to read this fascinating article...'}</p>
@@ -26,15 +76,28 @@ const posts = await getCollection("blog");
               ⏱️ {post.data.readTime || '5 min read'}
             </span>
             <span class="blog-date">
-              📅 {post.data.pubDate ? new Date(post.data.pubDate).toLocaleDateString() : ''}
+              📅 {post.data.pubDate ? new Date(post.data.pubDate).toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+              }) : ''}
             </span>
           </div>
           <div class="read-more">
-            Read More →
+            Read Article →
           </div>
         </a>
       ))}
     </div>
+
+    <!-- Empty State -->
+    {posts.length === 0 && (
+      <div class="empty-state">
+        <div class="empty-icon">📝</div>
+        <h3>No Articles Yet</h3>
+        <p>Blog posts will appear here once they're published. Check back soon!</p>
+      </div>
+    )}
   </div>
 </Layout>
 
@@ -43,37 +106,93 @@ const posts = await getCollection("blog");
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
+    min-height: 100vh;
   }
 
-  .hero-section {
-    text-align: center;
-    margin-bottom: 4rem;
-    padding: 3rem 0;
-  }
-
-  .main-title {
-    font-size: 3.5rem;
+  /* Header Styles */
+  .blog-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    padding: 3rem 2.5rem;
+    margin-bottom: 4rem;
+    color: white;
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+  }
+
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .logo-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    flex: 1;
+  }
+
+  .logo {
+    font-size: 4rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 1rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .blog-info {
+    flex: 1;
+  }
+
+  .blog-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #fff, #e0e7ff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 1rem;
-    font-weight: 700;
   }
 
-  .subtitle {
+  .blog-description {
     font-size: 1.2rem;
-    color: #6c757d;
-    max-width: 600px;
-    margin: 0 auto;
     line-height: 1.6;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0;
   }
 
+  .header-stats {
+    display: flex;
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Blog Grid Styles */
   .blog-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     gap: 2.5rem;
-    margin-top: 2rem;
   }
 
   .blog-card {
@@ -119,7 +238,7 @@ const posts = await getCollection("blog");
     margin-bottom: 1.5rem;
   }
 
-  .blog-icon {
+  .post-icon {
     font-size: 3rem;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     -webkit-background-clip: text;
@@ -184,14 +303,62 @@ const posts = await getCollection("blog");
     color: #764ba2;
   }
 
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #6c757d;
+  }
+
+  .empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.5;
+  }
+
+  .empty-state h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #2d3748;
+  }
+
   /* Responsive Design */
   @media (max-width: 768px) {
     .blogs-section {
       padding: 1rem;
     }
 
-    .main-title {
-      font-size: 2.5rem;
+    .blog-header {
+      padding: 2rem 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .header-content {
+      flex-direction: column;
+      text-align: center;
+      gap: 2rem;
+    }
+
+    .logo-section {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 3rem;
+    }
+
+    .blog-title {
+      font-size: 2rem;
+    }
+
+    .blog-description {
+      font-size: 1.1rem;
+    }
+
+    .header-stats {
+      justify-content: center;
     }
 
     .blog-grid {
@@ -205,13 +372,20 @@ const posts = await getCollection("blog");
   }
 
   @media (max-width: 480px) {
-    .main-title {
-      font-size: 2rem;
+    .blog-title {
+      font-size: 1.8rem;
     }
 
-    .hero-section {
-      padding: 2rem 0;
-      margin-bottom: 2rem;
+    .blog-description {
+      font-size: 1rem;
+    }
+
+    .header-stats {
+      gap: 1.5rem;
+    }
+
+    .stat-number {
+      font-size: 1.5rem;
     }
 
     .blog-meta {
