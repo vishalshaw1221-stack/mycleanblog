@@ -197,15 +197,15 @@ const sortedPosts = posts.sort((a, b) =>
   --gradient: linear-gradient(120deg, #667eea 0%, #764ba2 40%, #a18cd1 80%, #fbc2eb 100%);
 }
 
-/* 🪐 Unified Quantum Field Blog Card Theme */
+/* 🌌 Lighter Quantum Field Blog Card Theme */
 .blog-card {
   background: linear-gradient(
     145deg,
-    rgba(30, 41, 59, 0.85) 0%,   /* dark blue-gray transparency */
-    rgba(76, 29, 149, 0.75) 100% /* deep purple transparency */
+    rgba(51, 65, 85, 0.75) 0%,   /* lighter blue-gray */
+    rgba(109, 40, 217, 0.65) 100% /* lighter violet */
   );
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(99, 102, 241, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(147, 197, 253, 0.45);
   border-radius: 18px;
   padding: 2.5rem 2rem;
   text-decoration: none;
@@ -213,7 +213,46 @@ const sortedPosts = posts.sort((a, b) =>
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 0 20px rgba(76, 29, 149, 0.2);
+  box-shadow: 0 0 25px rgba(109, 40, 217, 0.25);
+}
+
+/* Maintain gradient flow across posts */
+.blog-card:nth-child(odd) {
+  background: linear-gradient(
+    160deg,
+    rgba(71, 85, 105, 0.75) 0%,
+    rgba(109, 40, 217, 0.65) 100%
+  );
+}
+
+.blog-card:nth-child(even) {
+  background: linear-gradient(
+    140deg,
+    rgba(109, 40, 217, 0.65) 0%,
+    rgba(51, 65, 85, 0.75) 100%
+  );
+}
+
+.blog-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 0 40px rgba(147, 197, 253, 0.45);
+  border-color: rgba(165, 180, 252, 0.6);
+}
+
+.blog-card h3 {
+  color: #f8fafc;
+}
+
+.blog-card p {
+  color: #e2e8f0;
+}
+
+.read-more {
+  color: #a5b4fc;
+}
+
+.blog-card:hover .read-more {
+  color: #c084fc;
 }
 
 /* Subtle “flow” gradient continuation */
