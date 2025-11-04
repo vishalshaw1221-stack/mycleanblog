@@ -189,53 +189,50 @@ const sortedPosts = posts.sort((a, b) =>
   }
 
   /* Blog Grid Styles */
-  .blog-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 2.5rem;
-  }
-  /* Continuous flowing gradient across all blog cards */
-.blog-grid {
-  background: linear-gradient(120deg, #667eea, #764ba2, #a18cd1);
-  padding: 2px; /* soft edges */
-  border-radius: 20px;
+ .blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2.5rem;
+  position: relative;
+  --gradient: linear-gradient(120deg, #667eea 0%, #764ba2 40%, #a18cd1 80%, #fbc2eb 100%);
 }
 
+/* Smooth flowing gradient across all blog cards */
 .blog-card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  transition: all 0.3s ease;
+  background: var(--gradient);
+  background-size: 400% 400%;
+  background-position: calc(var(--i, 0) * 100%) 0%;
+  border: none;
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  text-decoration: none;
+  color: white;
+  transition: all 0.4s ease;
+  display: block;
   position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
-.blog-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: inherit; /* use same gradient */
-  opacity: 0.1;
-  z-index: 0;
+/* Optional shimmer flow */
+.blog-card:hover {
+  background-position: 100% 0%;
+  transform: translateY(-8px);
 }
 
-.blog-card > * {
-  position: relative;
-  z-index: 1;
-}
+/* Smooth gradient per index */
+.blog-card:nth-child(1) { --i: 0; }
+.blog-card:nth-child(2) { --i: 0.25; }
+.blog-card:nth-child(3) { --i: 0.5; }
+.blog-card:nth-child(4) { --i: 0.75; }
+.blog-card:nth-child(5) { --i: 1; }
 
-  .blog-card {
-    background: linear-gradient(145deg, #ffffff, #f8f9fa);
-    border: 1px solid #e9ecef;
-    border-radius: 16px;
-    padding: 2.5rem 2rem;
-    text-decoration: none;
-    color: #2d3748;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: block;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  }
+.blog-card h3, 
+.blog-card p, 
+.blog-meta, 
+.read-more {
+  color: white;
+}
 
   .blog-card::before {
     content: '';
