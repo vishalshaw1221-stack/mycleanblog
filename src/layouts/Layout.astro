@@ -208,29 +208,75 @@ main {
       <p>© 2025 SciencePedia — Exploring the Universe of Knowledge</p>
     </footer>
     <script>
-  // Search with recommendations
+  // Smart Search that searches blog titles and content
   document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.querySelector('.search-input');
     const searchButton = document.querySelector('.search-button');
     
-    // Sample recommendations
-    const recommendations = [
-      'quantum physics',
-      'artificial intelligence', 
-      'black holes',
-      'quantum computing',
-      'space exploration',
-      'particle physics',
-      'neural networks',
-      'astrophysics',
-      'machine learning',
-      'string theory'
+    // This will be populated with your actual blog data
+    let blogData = [];
+    
+    // Fetch your blog data (you'll need to implement this)
+    async function loadBlogData() {
+  try {
+    // If using Content Collections:
+    const posts = await getCollection("blog");
+    blogData = posts.map(post => ({
+      id: post.slug,
+      title: post.data.title,
+      description: post.data.description,
+      content: post.body, // The actual blog content
+      tags: post.data.tags || []
+    }));
+  } catch (error) {
+    // Fallback to sample data
+    blogData = [
+      {
+        id: 'quantum-physics',
+        title: 'Understanding Quantum Physics',
+        description: 'Quantum physics is very interesting subject...',
+        content: 'Your blog content here...',
+        tags: ['physics', 'science']
+      }
     ];
+  }
+},
+        {
+          id: 'ai-future', 
+          title: 'The Future of Artificial Intelligence',
+          description: 'Exploring AI advancements and machine learning',
+          content: 'Artificial intelligence is transforming how we live and work...',
+          tags: ['ai', 'technology', 'machine-learning']
+        }
+        // Add more blogs as you create them
+      ];
+    }
     
     let suggestionsDiv = null;
     
+    function searchBlogs(searchTerm) {
+      const term = searchTerm.toLowerCase().trim();
+      if (!term) return [];
+      
+      return blogData.filter(blog => {
+        // Search in title
+        if (blog.title.toLowerCase().includes(term)) return true;
+        
+        // Search in description
+        if (blog.description.toLowerCase().includes(term)) return true;
+        
+        // Search in content (first 200 chars)
+        if (blog.content.toLowerCase().includes(term)) return true;
+        
+        // Search in tags
+        if (blog.tags.some(tag => tag.toLowerCase().includes(term))) return true;
+        
+        return false;
+      });
+    }
+    
     function showSuggestions() {
-      const searchTerm = searchInput.value.toLowerCase();
+      const searchTerm = searchInput.value;
       
       // Remove existing suggestions
       if (suggestionsDiv) {
@@ -241,18 +287,19 @@ main {
         return;
       }
       
-      // Filter recommendations
-      const filtered = recommendations.filter(rec => 
-        rec.toLowerCase().includes(searchTerm)
-      );
+      const results = searchBlogs(searchTerm);
       
-      if (filtered.length > 0) {
+      if (results.length > 0) {
         // Create suggestions dropdown
         suggestionsDiv = document.createElement('div');
         suggestionsDiv.className = 'search-suggestions';
-        suggestionsDiv.innerHTML = filtered.map(rec => 
-          `<div class="suggestion-item">${rec}</div>`
-        ).join('');
+        
+        suggestionsDiv.innerHTML = results.map(blog => `
+          <div class="suggestion-item" data-blog-id="${blog.id}">
+            <div class="suggestion-title">${blog.title}</div>
+            <div class="suggestion-desc">${blog.description}</div>
+          </div>
+        `).join('');
         
         // Position below search bar
         const searchContainer = searchInput.closest('.search-container');
@@ -261,19 +308,32 @@ main {
         // Add click handlers to suggestions
         suggestionsDiv.querySelectorAll('.suggestion-item').forEach(item => {
           item.addEventListener('click', function() {
-            searchInput.value = this.textContent;
-            performSearch();
+            const blogId = this.dataset.blogId;
+            window.location.href = `/blog/${blogId}`;
           });
         });
+      } else {
+        // No results found
+        suggestionsDiv = document.createElement('div');
+        suggestionsDiv.className = 'search-suggestions';
+        suggestionsDiv.innerHTML = '<div class="no-results">No blogs found matching your search</div>';
+        
+        const searchContainer = searchInput.closest('.search-container');
+        searchContainer.appendChild(suggestionsDiv);
       }
     }
     
     function performSearch() {
       const searchTerm = searchInput.value.trim();
       if (searchTerm) {
-        alert(`Searching for: "${searchTerm}"\n\nThis would show results for "${searchTerm}" in a real implementation.`);
+        const results = searchBlogs(searchTerm);
+        if (results.length > 0) {
+          // Redirect to first result or show search results page
+          window.location.href = `/blog/${results[0].id}`;
+        } else {
+          alert(`No blogs found for "${searchTerm}"`);
+        }
         hideSuggestions();
-        searchInput.value = '';
       }
     }
     
@@ -283,6 +343,9 @@ main {
         suggestionsDiv = null;
       }
     }
+    
+    // Initialize
+    loadBlogData();
     
     // Event listeners
     searchInput.addEventListener('input', showSuggestions);
@@ -312,18 +375,18 @@ main {
     top: 100%;
     left: 0;
     right: 0;
-    background: rgba(15, 23, 42, 0.95);
+    background: rgba(15, 23, 42, 0.98);
     border: 1px solid var(--electron-blue);
     border-radius: 8px;
     margin-top: 5px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     z-index: 1000;
-    max-height: 200px;
+    max-height: 300px;
     overflow-y: auto;
   }
   
   .suggestion-item {
-    padding: 10px 15px;
+    padding: 12px 15px;
     color: white;
     cursor: pointer;
     border-bottom: 1px solid rgba(59, 130, 246, 0.2);
@@ -332,11 +395,28 @@ main {
   
   .suggestion-item:hover {
     background: rgba(59, 130, 246, 0.3);
-    color: var(--atom-red);
   }
   
   .suggestion-item:last-child {
     border-bottom: none;
+  }
+  
+  .suggestion-title {
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 4px;
+  }
+  
+  .suggestion-desc {
+    font-size: 0.8rem;
+    color: #cbd5e1;
+    opacity: 0.8;
+  }
+  
+  .no-results {
+    padding: 12px 15px;
+    color: var(--neutron-gray);
+    text-align: center;
   }
   
   .search-container {
