@@ -2,6 +2,7 @@
 title: "My Test Post"
 description: "This is a simple test post to check if blogging works"
 pubDate: 2024-01-16
+icon: "🔥"
 ---
 
 # This is a Test!
