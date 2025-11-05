@@ -64,7 +64,7 @@ const sortedPosts = posts.sort(
     <!-- Blog Posts Grid -->
     <div class="blog-grid">
       {sortedPosts.map((post) => (
-        <a href={`/blog/${post.slug}`} class="blog-card">
+        <a href={`/blog/${post.slug}/`} class="blog-card">
           <div class="card-header">
             <div class="post-icon">
               {post.data.icon || getPostIcon(post.data.title, post.data.description)}
