@@ -3,12 +3,86 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { SEO } from "astro-seo";
 
+/*
+  Layout.astro - merged & SEO-enhanced version for "Physics in physics"
+  - Author: Vishal Kumar Shaw
+  - Default site: https://mycleanblog.vercel.app/
+  - Keeps your original styling and scripts
+  - Adds OpenGraph, Twitter, canonical, robots, JSON-LD structured data
+*/
+
+// Props the pages can pass in (slug.astro will pass these)
 const {
-  title = "SciencePedia",
-  description = "SciencePedia - The Free Science Encyclopedia",
+  title = "Physics in physics",
+  description = "Physics in physics — ideas, explanations, and notes on physics & maths.",
   image = "/og-image.png",
-  url = Astro.site,
+  // Accept seo as an object from pages (contains canonical, keywords, openGraph, twitter)
+  seo = {},
+  url = "https://mycleanblog.vercel.app/", // fallback canonical/base URL
 } = Astro.props;
+
+// Social profiles (you provided these)
+const socialProfiles = [
+  "https://www.facebook.com/profile.php?id=61583067824148",
+  "https://www.instagram.com/physicsinphysics/",
+  "https://x.com/PhysicsP32590",
+  "https://www.linkedin.com/me?trk=p_mwlite_feed-secondary_nav",
+  "https://m.youtube.com/channel/UCQeEKqqidI7I0etj-Io0CZA/videos"
+];
+
+// Build JSON-LD structuredData (Person + Organization + Website)
+// If this page is an article, pages can add more article-specific structured data.
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${url}#person`,
+      "name": "Vishal Kumar Shaw",
+      "url": url,
+      "sameAs": socialProfiles,
+    },
+    {
+      "@type": "Organization",
+      "@id": `${url}#organization`,
+      "name": "Physics in physics",
+      "url": url,
+      "logo": {
+        "@type": "ImageObject",
+        "url": (seo?.openGraph?.images?.[0]?.url) || image || `${url}favicon.ico`
+      },
+      "sameAs": socialProfiles
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${url}#website`,
+      "url": url,
+      "name": title,
+      "description": description,
+      "publisher": {
+        "@id": `${url}#organization`
+      }
+    }
+  ]
+};
+
+// If page sends article-level structured data via seo.articleSchema, merge it:
+if (seo?.articleSchema) {
+  // Insert article schema with mainEntityOfPage referencing this page
+  structuredData["@graph"].push({
+    "@type": "Article",
+    ...seo.articleSchema,
+    mainEntityOfPage: seo?.canonical || Astro.url.href || url
+  });
+}
+
+// Compose final meta values with fallbacks
+const metaTitle = seo?.openGraph?.title || seo?.title || title;
+const metaDescription = seo?.openGraph?.description || seo?.description || description;
+const metaImage = seo?.openGraph?.images?.[0]?.url || seo?.image || image;
+const canonicalUrl = seo?.canonical || Astro.url.href || url;
+const metaKeywords = seo?.keywords || "";
+const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitterhandle";
 ---
 
 <!DOCTYPE html>
@@ -16,37 +90,110 @@ const {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Primary title + description -->
+    <title>{metaTitle}{metaTitle && metaTitle.includes("Physics in physics") ? "" : ` | Physics in physics`}</title>
+    <meta name="description" content={metaDescription} />
+    <meta name="keywords" content={metaKeywords} />
+    <meta name="author" content="Vishal Kumar Shaw" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalUrl} />
 
-    <!-- ✅ SEO AUTO TAGS -->
+    <!-- SEO Helper (astro-seo) - safe to keep, still add manual tags too -->
     <SEO
-      title={title}
-      description={description}
-      canonical={url}
+      title={metaTitle}
+      description={metaDescription}
+      canonical={canonicalUrl}
       openGraph={{
         basic: {
-          title,
-          type: "website",
-          image,
-          url,
+          title: metaTitle,
+          type: seo?.openGraph?.type || "website",
+          image: metaImage,
+          url: canonicalUrl,
+          description: metaDescription,
         },
+        // if the page provided images array, include it
+        images: seo?.openGraph?.images || [{ url: metaImage }],
       }}
       twitter={{
-        card: "summary_large_image",
-        site: "@yourtwitterhandle", // optional
+        card: seo?.twitter?.card || "summary_large_image",
+        site: twitterHandle,
+        creator: twitterHandle,
       }}
     />
+    <!-- ✅ JSON-LD Structured Data -->
+<script type="application/ld+json">
+{JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Physics in Physics",
+  url: "https://mycleanblog.vercel.app/",
+  logo: "https://mycleanblog.vercel.app/favicon.svg",
+  sameAs: [
+    "https://www.facebook.com/profile.php?id=61583067824148",
+    "https://www.instagram.com/physicsinphysics/",
+    "https://x.com/PhysicsP32590",
+    "https://www.linkedin.com/me?trk=p_mwlite_feed-secondary_nav",
+    "https://m.youtube.com/channel/UCQeEKqqidI7I0etj-Io0CZA/videos",
+  ],
+  description: description,
+  founder: {
+    "@type": "Person",
+    name: "Vishal Kumar Shaw",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "Physics in Physics",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://mycleanblog.vercel.app/favicon.svg",
+    },
+  },
+})}
+</script>
 
-    <title>{title} | SciencePedia</title>
-    <meta name="description" content={description} />
+    <!-- Open Graph -->
+    <meta property="og:site_name" content="Physics in physics" />
+    <meta property="og:type" content={seo?.openGraph?.type || "website"} />
+    <meta property="og:title" content={metaTitle} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:image" content={metaImage} />
+    <meta property="og:url" content={canonicalUrl} />
 
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content={seo?.twitter?.card || "summary_large_image"} />
+    <meta name="twitter:title" content={metaTitle} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta name="twitter:image" content={metaImage} />
+    <meta name="twitter:site" content={twitterHandle} />
+    <meta name="twitter:creator" content={twitterHandle} />
+
+    <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-    <!-- Font Awesome -->
+    <!-- Structured data JSON-LD -->
+    <script type="application/ld+json">
+      {JSON.stringify(structuredData)}
+    </script>
+
+    <!-- Performance / fonts -->
+    <meta name="theme-color" content="#0f172a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome (kept from your original) -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
 
+    <!-- Your original styles (kept intact) -->
     <style>
       :root {
         --space-blue: #0f172a;
@@ -329,7 +476,7 @@ const {
       <Footer />
     </footer>
 
-    <!-- Search Script -->
+    <!-- Search Script (keeps your original logic) -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const searchInput = document.querySelector(".search-input");
