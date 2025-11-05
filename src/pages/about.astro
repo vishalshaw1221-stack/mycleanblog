@@ -1,405 +1,695 @@
 ---
-/*
-  Final merged slug file for:
-  src/pages/blog/[...slug].astro
-
-  - Preserves original layout + styles
-  - Adds full automatic SEO + JSON-LD
-  - Uses SITE_URL as canonical base (change if needed)
-*/
-
 import Layout from "../layouts/Layout.astro";
-import { getCollection } from "astro:content";
-import { SEO } from "astro-seo";
 
-const SITE_URL = "https://mycleanblog.vercel.app"; // <-- change to your real site if different
-
-export async function getStaticPaths() {
-  const blogPosts = await getCollection("blog");
-  return blogPosts.map((post) => ({
-    params: { slug: post.slug },
-    props: { post },
-  }));
-}
-
-const { post } = Astro.props;
-
-// Render the content (Astro collections .render may return Content + html)
-const rendered = await post.render();
-const Content = rendered.Content;
-
-// Try to extract plain text safely (use post.body if available, else rendered.html)
-const rawSource = (post?.body) || (rendered?.html) || "";
-const plainText = String(rawSource)
-  .replace(/[\r\n]+/g, " ")
-  .replace(/[#>*_`~\-]{1,}/g, "") // strip markdown marks (best-effort)
-  .replace(/<[^>]*>/g, "") // strip HTML tags
-  .trim();
-
-// ===================
-// AUTO SEO LOGIC
-// ===================
-
-// Title fallback from frontmatter or slug
-const title =
-  (post?.data?.title && String(post.data.title).trim()) ||
-  post.slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-
-// Auto description: prefer frontmatter.description, else first 160 chars of plain text
-const rawDescription =
-  (post?.data?.description && String(post.data.description).trim()) ||
-  (plainText ? plainText.slice(0, 160) : "");
-const description = rawDescription + (rawDescription.length >= 160 ? "..." : "");
-
-// Keywords: top frequent words (>4 letters)
-const textForKeywords = ((title || "") + " " + (plainText || ""))
-  .toLowerCase()
-  .replace(/[^\w\s]/g, "");
-const words = textForKeywords.split(/\s+/).filter(Boolean);
-const frequency = {};
-words.forEach((w) => {
-  if (w.length > 4) frequency[w] = (frequency[w] || 0) + 1;
-});
-const keywords = Object.keys(frequency)
-  .sort((a, b) => frequency[b] - frequency[a])
-  .slice(0, 10)
-  .join(", ");
-
-// Image fallback
-const image = post?.data?.heroImage || post?.data?.image || "/images/default-og.png";
-
-// canonical URL for this post
-const canonicalUrl = Astro.url?.href || `${SITE_URL}/blog/${post.slug}`;
-
-// published / modified timestamps
-const datePublished = post?.data?.pubDate
-  ? new Date(post.data.pubDate).toISOString()
-  : null;
-const dateModified = post?.data?.updated
-  ? new Date(post.data.updated).toISOString()
-  : post?.data?.modified
-  ? new Date(post.data.modified).toISOString()
-  : datePublished;
-
-// JSON-LD Article Schema
-const articleSchema = {
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  headline: title,
-  description,
-  image,
-  author: {
-    "@type": "Person",
-    name: "Vishal Kumar Shaw",
-    url: `${SITE_URL}/about`,
-  },
-  publisher: {
-    "@type": "Organization",
-    name: "Vishal Kumar Shaw",
-    logo: {
-      "@type": "ImageObject",
-      url: `${SITE_URL}/images/logo.png`,
-    },
-  },
-  url: canonicalUrl,
-  datePublished,
-  dateModified,
-  mainEntityOfPage: {
-    "@type": "WebPage",
-    "@id": canonicalUrl,
-  },
-};
-
-// Breadcrumb schema
-const breadcrumbSchema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "Home",
-      item: SITE_URL + "/",
-    },
-    {
-      "@type": "ListItem",
-      position: 2,
-      name: post?.data?.category || "Blog",
-      item:
-        SITE_URL +
-        "/categories/" +
-        ((post?.data?.category || "blog").toString().toLowerCase() || "blog"),
-    },
-    {
-      "@type": "ListItem",
-      position: 3,
-      name: title,
-      item: canonicalUrl,
-    },
-  ],
-};
-
-// Organization + WebSite global schema (helpful to also include at page level)
-const organizationSchema = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Vishal Kumar Shaw",
-  url: SITE_URL,
-  logo: `${SITE_URL}/images/logo.png`,
-  sameAs: [
-    /* replace with your real profiles if you want */
-    "https://x.com/yourprofile",
-    "https://www.linkedin.com/in/yourprofile",
-  ],
-  founder: {
-    "@type": "Person",
-    name: "Vishal Kumar Shaw",
-    jobTitle: "Science Writer & Digital Creator",
-    url: `${SITE_URL}/about`,
-  },
-};
-
-const websiteSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "Vishal Kumar Shaw Blog",
-  url: SITE_URL,
-  potentialAction: {
-    "@type": "SearchAction",
-    target: `${SITE_URL}/search?q={search_term_string}`,
-    "query-input": "required name=search_term_string",
-  },
-};
-
-// Combined SEO props for astro-seo
-const seoProps = {
-  title,
-  description,
-  canonical: canonicalUrl,
-  keywords,
-  openGraph: {
-    basic: {
-      title,
-      type: "article",
-      image,
-      url: canonicalUrl,
-    },
-    article: {
-      publishedTime: datePublished,
-      modifiedTime: dateModified,
-      authors: [`${SITE_URL}/about`],
-    },
-  },
-  twitter: {
-    card: "summary_large_image",
-    site: "@yourtwitterhandle", // replace if you have a Twitter/X handle
-  },
-};
+const SITE_URL = "https://mycleanblog.vercel.app";
 ---
 
 <Layout
-  title={title}
-  description={description}
-  image={image}
-  seo={seoProps}
+  title="About - Seeing Physics in Physics | Vishal Kumar Shaw"
+  description="Explore the hidden patterns of the universe. I make physics visible, intuitive, and beautiful - helping you see the extraordinary in ordinary physical phenomena."
+  image="/images/about-physics.png"
 >
-  <!-- inject SEO meta via astro-seo -->
-  <SEO {...seoProps} />
 
-  <!-- ============================
-       ARTICLE MARKUP (preserved & optimized)
-       ============================ -->
-  <article class="blog-post">
-    <header class="post-header">
-      <h1 class="post-title">{title}</h1>
+<!-- Animated Background Elements -->
+<div class="physics-background">
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
+</div>
 
-      <div class="post-meta">
-        <span class="publish-date">
-          📅 Published:{" "}
-          {post?.data?.pubDate
-            ? new Date(post.data.pubDate).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })
-            : "Unknown"}
-        </span>
-
-        {post?.data?.readTime && (
-          <span class="read-time">⏱️ {post.data.readTime}</span>
-        )}
-
-        {post?.data?.tags && Array.isArray(post.data.tags) && (
-          <span class="tags"> • {post.data.tags.join(", ")}</span>
-        )}
+<main class="about-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <div class="avatar-container">
+        <div class="avatar">⚛️</div>
+        <div class="orbital electron-1"></div>
+        <div class="orbital electron-2"></div>
+        <div class="orbital electron-3"></div>
       </div>
-
-      {image && (
-        <div class="hero-image">
-          <img src={image} alt={post?.data?.title || "Article image"} />
-        </div>
-      )}
-    </header>
-
-    <div class="content-wrapper">
-      <Content />
+      
+      <h1 class="hero-title">
+        Seeing <span class="physics-gradient">Physics</span> 
+        in <span class="physics-underline">Physics</span>
+      </h1>
+      
+      <p class="hero-subtitle">
+        Uncovering the hidden patterns that make our universe tick. 
+        I transform complex concepts into visual, intuitive understanding.
+      </p>
     </div>
+  </section>
 
-    <footer class="post-footer">
-      <a href="/" class="back-home">← Back to Home</a>
-    </footer>
-  </article>
+  <!-- Philosophy Section -->
+  <section class="philosophy-section">
+    <div class="section-header">
+      <h2>My Physics Philosophy</h2>
+      <div class="divider"></div>
+    </div>
+    
+    <div class="philosophy-grid">
+      <div class="philosophy-card">
+        <div class="card-icon">🔍</div>
+        <h3>Observe Deeply</h3>
+        <p>Physics isn't just equations - it's the story behind raindrops, the dance of particles, the rhythm of waves. I help you see what's always been there.</p>
+      </div>
+      
+      <div class="philosophy-card">
+        <div class="card-icon">🎨</div>
+        <h3>Visualize Clearly</h3>
+        <p>Complex ideas become simple when visualized properly. I create mental models that make abstract concepts tangible and memorable.</p>
+      </div>
+      
+      <div class="philosophy-card">
+        <div class="card-icon">🌌</div>
+        <h3>Connect Everything</h3>
+        <p>From quantum fluctuations to cosmic expansion, everything connects. I show you the threads that weave reality together.</p>
+      </div>
+    </div>
+  </section>
 
-  <!-- ============================
-       STRUCTURED DATA FOR GOOGLE
-       (Article, Breadcrumb, Organization, WebSite)
-       ============================ -->
-  <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
-  <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
-  <script type="application/ld+json">{JSON.stringify(organizationSchema)}</script>
-  <script type="application/ld+json">{JSON.stringify(websiteSchema)}</script>
-</Layout>
+  <!-- My Journey -->
+  <section class="journey-section">
+    <div class="section-header">
+      <h2>My Physics Journey</h2>
+      <div class="divider"></div>
+    </div>
+    
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-marker">🌱</div>
+        <div class="timeline-content">
+          <h3>The Spark</h3>
+          <p>It started with wondering why stars twinkle, why rainbows form, why magnets attract. The ordinary world became extraordinary.</p>
+        </div>
+      </div>
+      
+      <div class="timeline-item">
+        <div class="timeline-marker">📚</div>
+        <div class="timeline-content">
+          <h3>Formal Exploration</h3>
+          <p>Delving into classical mechanics, electromagnetism, quantum physics - each layer revealing deeper beauty in mathematical elegance.</p>
+        </div>
+      </div>
+      
+      <div class="timeline-item">
+        <div class="timeline-marker">💡</div>
+        <div class="timeline-content">
+          <h3>The Realization</h3>
+          <p>Physics isn't about memorizing formulas. It's a language that describes reality. My mission: translate this language for everyone.</p>
+        </div>
+      </div>
+      
+      <div class="timeline-item">
+        <div class="timeline-marker">🚀</div>
+        <div class="timeline-content">
+          <h3>Sharing the Vision</h3>
+          <p>Now I write, create, and teach - helping others see the physics hidden in plain sight, in everyday phenomena and cosmic wonders alike.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<!-- ============================
-     STYLES — preserved + responsive
-     ============================ -->
+  <!-- What I Explore -->
+  <section class="topics-section">
+    <div class="section-header">
+      <h2>Physics I Love Exploring</h2>
+      <div class="divider"></div>
+    </div>
+    
+    <div class="topics-grid">
+      <div class="topic-card quantum">
+        <h3>Quantum World</h3>
+        <p>Wave-particle duality, entanglement, the strange rules that govern the very small</p>
+        <div class="topic-tags">
+          <span>Superposition</span>
+          <span>Uncertainty</span>
+          <span>QFT</span>
+        </div>
+      </div>
+      
+      <div class="topic-card relativity">
+        <h3>Relativity</h3>
+        <p>Spacetime curvature, time dilation, the geometry of our universe</p>
+        <div class="topic-tags">
+          <span>Spacetime</span>
+          <span>Gravity</span>
+          <span>Cosmology</span>
+        </div>
+      </div>
+      
+      <div class="topic-card emergent">
+        <h3>Emergent Phenomena</h3>
+        <p>How complexity arises from simple rules - from fluid dynamics to consciousness</p>
+        <div class="topic-tags">
+          <span>Complexity</span>
+          <span>Patterns</span>
+          <span>Systems</span>
+        </div>
+      </div>
+      
+      <div class="topic-card everyday">
+        <h3>Everyday Physics</h3>
+        <p>The science behind rainbows, musical instruments, sports, and daily life</p>
+        <div class="topic-tags">
+          <span>Optics</span>
+          <span>Mechanics</span>
+          <span>Thermodynamics</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2>Ready to See Physics Differently?</h2>
+      <p>Join me in exploring the hidden patterns of our universe. Let's make the invisible visible together.</p>
+      <div class="cta-buttons">
+        <a href="/blog" class="btn primary">Read the Blog</a>
+        <a href="/contact" class="btn secondary">Get in Touch</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AboutPage", 
+  "name": "About - Seeing Physics in Physics",
+  "description": "Explore the hidden patterns of the universe with Vishal Kumar Shaw",
+  "url": "${SITE_URL}/about",
+  "mainEntity": {
+    "@type": "Person",
+    "name": "Vishal Kumar Shaw",
+    "description": "Physics educator and science communicator",
+    "knowsAbout": ["Physics", "Quantum Mechanics", "Relativity", "Science Communication"],
+    "url": "${SITE_URL}"
+  }
+}
+</script>
+
 <style>
+  /* CSS Variables for Physics Theme */
   :root {
-    --space-blue: #0f172a;
-    --quantum-purple: #4c1d95;
-    --atom-red: #dc2626;
-    --lab-white: #f8fafc;
+    --quantum-blue: #0ea5e9;
+    --relativity-purple: #8b5cf6;
+    --energy-orange: #f59e0b;
+    --field-green: #10b981;
+    --dark-space: #0f172a;
     --neutron-gray: #64748b;
-    --electron-blue: #3b82f6;
+    --lab-white: #f8fafc;
+    --particle-glow: rgba(14, 165, 233, 0.3);
   }
 
-  .blog-post {
-    max-width: 900px;
+  /* Animated Background */
+  .physics-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    background: var(--quantum-blue);
+    border-radius: 50%;
+    animation: float 6s infinite ease-in-out;
+  }
+
+  .particle:nth-child(1) {
+    width: 6px;
+    height: 6px;
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+  }
+
+  .particle:nth-child(2) {
+    width: 4px;
+    height: 4px;
+    top: 60%;
+    left: 80%;
+    animation-delay: 2s;
+    background: var(--relativity-purple);
+  }
+
+  .particle:nth-child(3) {
+    width: 8px;
+    height: 8px;
+    top: 80%;
+    left: 20%;
+    animation-delay: 4s;
+    background: var(--energy-orange);
+  }
+
+  .wave {
+    position: absolute;
+    bottom: 0;
+    width: 200%;
+    height: 100px;
+    background: linear-gradient(90deg, transparent, var(--particle-glow), transparent);
+    animation: wave 8s infinite linear;
+    opacity: 0.1;
+  }
+
+  .wave:nth-child(5) {
+    animation-delay: -4s;
+    opacity: 0.05;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) scale(1); }
+    50% { transform: translateY(-20px) scale(1.1); }
+  }
+
+  @keyframes wave {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0%); }
+  }
+
+  /* Main Container */
+  .about-container {
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 2.2rem;
-    color: var(--lab-white);
-    box-sizing: border-box;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
   }
 
-  .post-header {
-    margin-bottom: 2.5rem;
+  /* Hero Section */
+  .hero-section {
     text-align: center;
-    border-bottom: 2px solid rgba(59,130,246,0.12);
-    padding-bottom: 1.8rem;
+    padding: 4rem 0;
+    margin-bottom: 4rem;
   }
 
-  .post-title {
-    font-size: 2.6rem;
+  .avatar-container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 2rem;
+  }
+
+  .avatar {
+    font-size: 4rem;
+    background: linear-gradient(135deg, var(--quantum-blue), var(--relativity-purple));
+    border-radius: 50%;
+    padding: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 50px var(--particle-glow);
+    position: relative;
+    z-index: 2;
+  }
+
+  .orbital {
+    position: absolute;
+    border: 2px solid var(--quantum-blue);
+    border-radius: 50%;
+    animation: orbit 4s linear infinite;
+  }
+
+  .electron-1 {
+    width: 120px;
+    height: 120px;
+    top: 50%;
+    left: 50%;
+    margin: -60px 0 0 -60px;
+    animation-delay: 0s;
+  }
+
+  .electron-2 {
+    width: 160px;
+    height: 160px;
+    top: 50%;
+    left: 50%;
+    margin: -80px 0 0 -80px;
+    animation-delay: -1.33s;
+    border-color: var(--relativity-purple);
+  }
+
+  .electron-3 {
+    width: 200px;
+    height: 200px;
+    top: 50%;
+    left: 50%;
+    margin: -100px 0 0 -100px;
+    animation-delay: -2.66s;
+    border-color: var(--energy-orange);
+  }
+
+  @keyframes orbit {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .hero-title {
+    font-size: 3.5rem;
     font-weight: 800;
-    margin-bottom: 0.8rem;
-    background: linear-gradient(135deg, var(--electron-blue), var(--atom-red));
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+  }
+
+  .physics-gradient {
+    background: linear-gradient(135deg, var(--quantum-blue), var(--relativity-purple));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    line-height: 1.12;
   }
 
-  .post-meta {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    color: var(--neutron-gray);
-    font-size: 0.95rem;
-    align-items: center;
+  .physics-underline {
+    position: relative;
+    display: inline-block;
   }
 
-  .hero-image {
-    margin-top: 1.2rem;
-  }
-
-  .hero-image img {
+  .physics-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
     width: 100%;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    height: 3px;
+    background: linear-gradient(90deg, var(--energy-orange), var(--field-green));
+    border-radius: 2px;
   }
 
-  .content-wrapper {
-    line-height: 1.75;
-    font-size: 1.08rem;
-    margin-top: 1.8rem;
+  .hero-subtitle {
+    font-size: 1.3rem;
+    color: var(--neutron-gray);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Section Styles */
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .section-header h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
     color: var(--lab-white);
   }
 
-  .content-wrapper h2 {
-    font-size: 1.7rem;
-    margin: 2rem 0 1rem;
-    color: var(--electron-blue);
+  .divider {
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--quantum-blue), var(--relativity-purple));
+    margin: 0 auto;
+    border-radius: 2px;
   }
 
-  .content-wrapper h3 {
-    font-size: 1.35rem;
-    margin: 1.5rem 0 0.8rem;
-    color: var(--atom-red);
+  /* Philosophy Grid */
+  .philosophy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
   }
 
-  .content-wrapper p {
-    margin-bottom: 1rem;
-    text-align: justify;
-  }
-
-  .content-wrapper pre {
-    background: rgba(15,23,42,0.92);
-    padding: 1rem;
-    border-radius: 8px;
-    overflow-x: auto;
-    margin: 1rem 0;
-    border: 1px solid rgba(59,130,246,0.08);
-  }
-
-  .content-wrapper code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
-    font-size: 0.95rem;
-  }
-
-  .content-wrapper img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin: 1rem 0;
-  }
-
-  .post-footer {
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(59,130,246,0.06);
+  .philosophy-card {
+    background: rgba(30, 41, 59, 0.6);
+    padding: 2.5rem;
+    border-radius: 20px;
     text-align: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
-  .back-home {
-    display: inline-flex;
-    gap: 0.5rem;
+  .philosophy-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(14, 165, 233, 0.2);
+  }
+
+  .card-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .philosophy-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--lab-white);
+  }
+
+  .philosophy-card p {
+    color: var(--neutron-gray);
+    line-height: 1.6;
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto 4rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 30px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--quantum-blue), var(--relativity-purple));
+  }
+
+  .timeline-item {
+    display: flex;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+
+  .timeline-marker {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--dark-space);
+    border: 3px solid var(--quantum-blue);
+    display: flex;
     align-items: center;
-    color: var(--electron-blue);
-    text-decoration: none;
-    font-weight: 700;
-    padding: 0.6rem 1rem;
-    border-radius: 8px;
-    border: 1px solid rgba(59,130,246,0.15);
-    transition: all 0.18s ease;
-    background: rgba(59,130,246,0.04);
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-right: 2rem;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
   }
 
-  .back-home:hover {
+  .timeline-content {
+    flex: 1;
+    background: rgba(30, 41, 59, 0.6);
+    padding: 2rem;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .timeline-content h3 {
+    color: var(--lab-white);
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+  }
+
+  .timeline-content p {
+    color: var(--neutron-gray);
+    line-height: 1.6;
+  }
+
+  /* Topics Grid */
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .topic-card {
+    padding: 2rem;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .topic-card:hover {
     transform: translateY(-3px);
-    background: rgba(59,130,246,0.12);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   }
 
-  /* Responsive */
-  @media (max-width: 900px) {
-    .post-title { font-size: 2.1rem; }
-    .blog-post { padding: 1.4rem; }
-    .content-wrapper { font-size: 1rem; }
+  .topic-card.quantum {
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(139, 92, 246, 0.1));
+    border-color: rgba(14, 165, 233, 0.3);
+  }
+
+  .topic-card.relativity {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(245, 158, 11, 0.1));
+    border-color: rgba(139, 92, 246, 0.3);
+  }
+
+  .topic-card.emergent {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(14, 165, 233, 0.1));
+    border-color: rgba(16, 185, 129, 0.3);
+  }
+
+  .topic-card.everyday {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(16, 185, 129, 0.1));
+    border-color: rgba(245, 158, 11, 0.3);
+  }
+
+  .topic-card h3 {
+    color: var(--lab-white);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+  }
+
+  .topic-card p {
+    color: var(--neutron-gray);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .topic-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .topic-tags span {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: var(--lab-white);
+  }
+
+  /* CTA Section */
+  .cta-section {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(139, 92, 246, 0.1));
+    border-radius: 20px;
+    margin-top: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .cta-content h2 {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    color: var(--lab-white);
+  }
+
+  .cta-content p {
+    font-size: 1.1rem;
+    color: var(--neutron-gray);
+    margin-bottom: 2rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 0.8rem 2rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+  }
+
+  .btn.primary {
+    background: linear-gradient(135deg, var(--quantum-blue), var(--relativity-purple));
+    color: white;
+  }
+
+  .btn.secondary {
+    background: transparent;
+    color: var(--lab-white);
+    border-color: var(--quantum-blue);
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(14, 165, 233, 0.3);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .about-container {
+      padding: 1rem;
+    }
+
+    .hero-title {
+      font-size: 2.5rem;
+    }
+
+    .avatar {
+      font-size: 3rem;
+      padding: 1.5rem;
+    }
+
+    .orbital {
+      display: none;
+    }
+
+    .philosophy-grid,
+    .topics-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .timeline::before {
+      left: 25px;
+    }
+
+    .timeline-marker {
+      width: 50px;
+      height: 50px;
+      margin-right: 1rem;
+    }
+
+    .cta-buttons {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .btn {
+      width: 200px;
+    }
   }
 
   @media (max-width: 480px) {
-    .post-title { font-size: 1.6rem; }
-    .post-meta { font-size: 0.9rem; gap: 0.6rem; }
+    .hero-title {
+      font-size: 2rem;
+    }
+
+    .section-header h2 {
+      font-size: 2rem;
+    }
+
+    .philosophy-card,
+    .timeline-content,
+    .topic-card {
+      padding: 1.5rem;
+    }
   }
 </style>
+</Layout>
