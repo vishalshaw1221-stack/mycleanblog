@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
+import { SEO } from "astro-seo"; // 👈 add this line for SEO helper
 
 export async function getStaticPaths() {
   const blogPosts = await getCollection("blog");
@@ -12,9 +13,45 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await post.render();
+
+// 🧠 Auto-generate SEO meta data
+const seo = {
+  title: post.data.title,
+  description: post.data.description || post.data.excerpt || "A blog post on science and discovery",
+  image: post.data.heroImage || "/default-image.png",
+  date: post.data.pubDate,
+  type: "article",
+};
 ---
 
-<Layout title={post.data.title} description={post.data.description || "Science blog article"}>
+<Layout
+  title={post.data.title}
+  description={post.data.description || "Science blog article"}
+  image={post.data.heroImage || "/images/default-og.png"}
+  seo={{
+    canonical: Astro.url.href,
+    openGraph: {
+      title: post.data.title,
+      description: post.data.description,
+      type: "article",
+      publishedTime: post.data.pubDate,
+      url: Astro.url.href,
+      images: [
+        {
+          url: post.data.heroImage || "/images/default-og.png",
+          alt: post.data.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.data.title,
+      description: post.data.description,
+      image: post.data.heroImage || "/images/default-og.png",
+    },
+  }}
+>
+  <SEO {...seo} />
   <article class="blog-post">
     <header class="post-header">
       <h1 class="post-title">{post.data.title}</h1>

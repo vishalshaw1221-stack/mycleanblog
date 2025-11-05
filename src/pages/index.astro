@@ -27,8 +27,11 @@ const sortedPosts = posts.sort((a, b) =>
   new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
 );
 ---
-
-<Layout title="Home">
+    <Layout
+  title="Physics Blog — My Digital Notebook"
+  description="Welcome to my digital notebook. I write about physics, maths, ideas in physics, and everything in between — deep thoughts, explained as clearly as possible."
+  image="/images/blog-home.png"
+>
   <div class="blogs-section">
     <!-- Header Section -->
     <header class="blog-header">
@@ -36,13 +39,16 @@ const sortedPosts = posts.sort((a, b) =>
         <div class="logo-section">
           <div class="logo">📝</div>
           <div class="blog-info">
-            <h1 class="blog-title">Modern Blog</h1>
+            <h1 class="blog-title">Physics Blog</h1>
             <p class="blog-description">
-              Welcome to my digital notebook. I write about technology, development, 
-              and everything in between. Simple thoughts, clear explanations.
+              Welcome to my digital notebook. I write about physics, maths, ideas in physics and everything in between — deep thoughts, explained as clearly as possible.
             </p>
           </div>
         </div>
+      </div>
+    </header>
+  </div>
+
         <div class="header-stats">
           <div class="stat">
             <span class="stat-number">{posts.length}</span>

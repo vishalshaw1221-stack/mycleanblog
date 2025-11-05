@@ -8,6 +8,46 @@ const { title = "SciencePedia", description = "SciencePedia - The Free Science E
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    ---
+import { SEO } from "astro-seo";
+
+const {
+  title = "Modern Blog",
+  description = "Welcome to my digital notebook where I share ideas, tutorials, and thoughts.",
+  image = "/og-image.png",
+  url = Astro.site,
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- ✅ SEO AUTO TAGS -->
+    <SEO
+      title={title}
+      description={description}
+      canonical={url}
+      openGraph={{
+        basic: {
+          title,
+          type: "website",
+          image,
+          url,
+        },
+      }}
+      twitter={{
+        card: "summary_large_image",
+        site: "@yourtwitterhandle", // optional
+      }}
+    />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />

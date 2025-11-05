@@ -1,0 +1,39 @@
+---
+import { SEO } from "astro-seo";
+
+const {
+  title = "My Clean Blog",
+  description = "Welcome to my clean and fast Astro-powered blog!",
+  image = "/og-image.png", // optional open graph image
+  url = Astro.site,
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <SEO
+      title={title}
+      description={description}
+      canonical={url}
+      openGraph={{
+        basic: {
+          title,
+          type: "website",
+          image,
+          url,
+        },
+      }}
+      twitter={{
+        card: "summary_large_image",
+        site: "@yourtwitterhandle", // optional
+      }}
+    />
+  </head>
+  <body>
+    <slot /> <!-- your page content -->
+  </body>
+</html>
