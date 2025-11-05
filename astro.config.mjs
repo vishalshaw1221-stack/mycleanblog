@@ -8,7 +8,7 @@ import rss from "@astrojs/rss";
 
 // ✅ MAX SEO CONFIGURATION
 export default defineConfig({
-  site: "https://mycleanblog.vercel.app/", // 🌐 update to your custom domain when ready
+  site: "https://mycleanblog.vercel.app/", // 🌐 update later to your final domain
   trailingSlash: "always",
 
   integrations: [
@@ -29,45 +29,13 @@ export default defineConfig({
     // 🧠 MDX support for interactive blog content
     mdx(),
 
-    // 💨 Auto-compress output for faster loads
+    // 💨 Auto-compress output for faster page loads
     compress({
       css: true,
       html: true,
       img: true,
       js: true,
       svg: true,
-    }),
-
-    // 📰 RSS Feed for Google Discover & News
-    rss({
-      stylesheet: true,
-      limit: 50,
-      title: "Physics in Physics",
-      description:
-        "Physics in Physics — Read simplified, engaging articles about modern science and technology.",
-      site: "https://mycleanblog.vercel.app/",
-      items: async () => {
-        const { getCollection } = await import("astro:content");
-        const posts = await getCollection("blog");
-        return posts
-          .sort(
-            (a, b) => new Date(b.data.pubDate) - new Date(a.data.pubDate)
-          )
-          .map((post) => ({
-            title: post.data.title,
-            description:
-              post.data.description ||
-              post.body.slice(0, 150).replace(/[#>*_`~\-]/g, ""),
-            link: `/blog/${post.slug}/`,
-            pubDate: post.data.pubDate,
-          }));
-      },
-      customData: `<language>en-us</language>
-        <image>
-          <url>https://mycleanblog.vercel.app/favicon.svg</url>
-          <title>Physics in Physics</title>
-          <link>https://mycleanblog.vercel.app/</link>
-        </image>`,
     }),
   ],
 
@@ -89,3 +57,36 @@ export default defineConfig({
     port: 4321,
   },
 });
+
+// 📰 Separate RSS setup (✅ fixes the “promise” error)
+export async function getStaticPaths() {
+  const { getCollection } = await import("astro:content");
+  const posts = await getCollection("blog");
+
+  const items = posts
+    .sort((a, b) => new Date(b.data.pubDate) - new Date(a.data.pubDate))
+    .map((post) => ({
+      title: post.data.title,
+      description:
+        post.data.description ||
+        post.body.slice(0, 150).replace(/[#>*_`~\-]/g, ""),
+      link: `/blog/${post.slug}/`,
+      pubDate: post.data.pubDate,
+    }));
+
+  return rss({
+    stylesheet: true,
+    limit: 50,
+    title: "Physics in Physics",
+    description:
+      "Physics in Physics — Read simplified, engaging articles about modern science and technology.",
+    site: "https://mycleanblog.vercel.app/",
+    items,
+    customData: `<language>en-us</language>
+      <image>
+        <url>https://mycleanblog.vercel.app/favicon.svg</url>
+        <title>Physics in Physics</title>
+        <link>https://mycleanblog.vercel.app/</link>
+      </image>`,
+  });
+}
