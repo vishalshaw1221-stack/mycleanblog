@@ -4,8 +4,8 @@
 <header class="main-header">
   <div class="nav-bar">
     <a href="/" class="nav-link">HOME</a>
-    <a href="/about" class="nav-link">ABOUT</a>
-    <a href="/contact" class="nav-link">CONTACT US</a>
+    <a href="/about/" class="nav-link">ABOUT</a>
+    <a href="/contact/" class="nav-link">CONTACT US</a>
     
     <!-- Search Bar -->
     <div class="search-container">
@@ -94,23 +94,22 @@
   }
 
   /* 🔥 MOBILE RESPONSIVE STYLES */
-  /* These only activate on phones - desktop stays perfect! */
   @media (max-width: 768px) {
     .main-header {
       padding: 0.3rem 0;
     }
     
     .nav-bar {
-      flex-direction: column; /* Stack vertically on mobile */
+      flex-direction: column;
       gap: 1rem;
       padding: 1rem;
       border-radius: 12px;
-      margin: 0 10px; /* Add side margins */
+      margin: 0 10px;
     }
     
     .nav-link {
-      font-size: 1rem; /* Smaller text on mobile */
-      padding: 0.8rem 1rem; /* Larger touch targets */
+      font-size: 1rem;
+      padding: 0.8rem 1rem;
       width: 100%;
       text-align: center;
       border-radius: 6px;
@@ -128,18 +127,17 @@
     }
     
     .search-input {
-      width: 100%; /* Full width on mobile */
+      width: 100%;
       font-size: 0.9rem;
       padding: 0.6rem 1rem;
     }
     
     .search-button {
-      width: 40px; /* Slightly larger for touch */
+      width: 40px;
       height: 40px;
     }
   }
 
-  /* Extra small phones */
   @media (max-width: 480px) {
     .nav-bar {
       gap: 0.8rem;
@@ -161,7 +159,6 @@
     }
   }
 
-  /* Large desktop screens */
   @media (min-width: 1200px) {
     .nav-bar {
       max-width: 1100px;
@@ -179,18 +176,14 @@
       const searchTerm = searchInput.value.trim();
       if (searchTerm) {
         alert(`Searching for: "${searchTerm}"\n\nThis is a demo search. In a real website, this would search your blog content.`);
-        searchInput.value = ''; // Clear the input
+        searchInput.value = '';
       }
     }
     
-    // Search when button is clicked
     searchButton.addEventListener('click', performSearch);
     
-    // Search when Enter key is pressed
     searchInput.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        performSearch();
-      }
+      if (e.key === 'Enter') performSearch();
     });
   });
 </script>
