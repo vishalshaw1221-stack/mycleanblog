@@ -1,19 +1,11 @@
 ---
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-
-const { title = "SciencePedia", description = "SciencePedia - The Free Science Encyclopedia" } = Astro.props;
----
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    ---
 import { SEO } from "astro-seo";
 
 const {
-  title = "Modern Blog",
-  description = "Welcome to my digital notebook where I share ideas, tutorials, and thoughts.",
+  title = "SciencePedia",
+  description = "SciencePedia - The Free Science Encyclopedia",
   image = "/og-image.png",
   url = Astro.site,
 } = Astro.props;
@@ -43,19 +35,17 @@ const {
         site: "@yourtwitterhandle", // optional
       }}
     />
-  </head>
-  <body>
-    <slot />
-  </body>
-</html>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description} />
+
     <title>{title} | SciencePedia</title>
+    <meta name="description" content={description} />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    
+
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
 
     <style>
       :root {
@@ -67,7 +57,8 @@ const {
         --electron-blue: #3b82f6;
       }
 
-      html, body {
+      html,
+      body {
         height: 100%;
         margin: 0;
         padding: 0;
@@ -78,33 +69,37 @@ const {
         flex-direction: column;
         align-items: center;
         min-height: 100vh;
-        background: linear-gradient(135deg, var(--space-blue) 0%, var(--quantum-purple) 100%);
+        background: linear-gradient(
+          135deg,
+          var(--space-blue) 0%,
+          var(--quantum-purple) 100%
+        );
         color: white;
-        font-family: 'Arial', sans-serif;
+        font-family: "Arial", sans-serif;
         padding: 0;
         width: 100%;
       }
 
-      /* Background Watermark */
       body::before {
-        content: '';
+        content: "";
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: 
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M0,50 Q25,30 50,50 T100,50' stroke='rgba(59,130,246,0.12)' stroke-width='1.5' fill='none'/%3E%3Cpath d='M0,30 Q25,70 50,30 T100,30' stroke='rgba(220,38,38,0.12)' stroke-width='1.5' fill='none'/%3E%3C/svg%3E") center/250px 250px,
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cline x1='20' y1='20' x2='80' y2='80' stroke='rgba(59,130,246,0.08)' stroke-width='1.5'/%3E%3Cline x1='80' y1='20' x2='20' y2='80' stroke='rgba(220,38,38,0.08)' stroke-width='1.5'/%3E%3C/svg%3E") center/200px 200px,
+        background:
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M0,50 Q25,30 50,50 T100,50' stroke='rgba(59,130,246,0.12)' stroke-width='1.5' fill='none'/%3E%3Cpath d='M0,30 Q25,70 50,30 T100,30' stroke='rgba(220,38,38,0.12)' stroke-width='1.5' fill='none'/%3E%3C/svg%3E")
+            center/250px 250px,
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cline x1='20' y1='20' x2='80' y2='80' stroke='rgba(59,130,246,0.08)' stroke-width='1.5'/%3E%3Cline x1='80' y1='20' x2='20' y2='80' stroke='rgba(220,38,38,0.08)' stroke-width='1.5'/%3E%3C/svg%3E")
+            center/200px 200px,
           linear-gradient(135deg, #0f172a 0%, #4c1d95 100%);
         opacity: 1;
         z-index: -1;
         pointer-events: none;
       }
 
-      /* Main content blur overlay */
       main::before {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         left: 0;
@@ -117,13 +112,13 @@ const {
         pointer-events: none;
       }
 
-      /* Ensure main content stays readable */
       main {
         position: relative;
         z-index: 1;
       }
 
-      header, footer {
+      header,
+      footer {
         width: 80%;
         max-width: 1100px;
         border-radius: 15px;
@@ -135,19 +130,17 @@ const {
         max-width: 1200px;
         border-radius: 15px;
         box-sizing: border-box;
-        margin: 0 auto 2rem auto; /* Fixed: removed margin-right issue */
+        margin: 0 auto 2rem auto;
       }
 
-      /* === HEADER === */
       header {
         background: rgba(15, 23, 42, 0.9);
         border: 1px solid var(--electron-blue);
         box-shadow: 0 0 25px rgba(59, 130, 246, 0.25);
         padding: 1rem;
-        margin: 1.5rem auto; /* Centered */
+        margin: 1.5rem auto;
       }
 
-      /* === MAIN === */
       main {
         flex-grow: 1;
         background: rgba(255, 255, 255, 0.05);
@@ -156,7 +149,6 @@ const {
         padding: 3rem 2rem;
       }
 
-      /* === FOOTER === */
       footer {
         background: rgba(15, 23, 42, 0.9);
         border: 1px solid var(--electron-blue);
@@ -168,7 +160,7 @@ const {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        margin: 0 auto 2rem auto; /* Centered */
+        margin: 0 auto 2rem auto;
       }
 
       footer::before {
@@ -179,25 +171,32 @@ const {
         transform: translateX(-50%);
         width: 80%;
         height: 2px;
-        background: linear-gradient(90deg, var(--electron-blue), var(--atom-red), var(--quantum-purple));
+        background: linear-gradient(
+          90deg,
+          var(--electron-blue),
+          var(--atom-red),
+          var(--quantum-purple)
+        );
         box-shadow: 0 0 15px var(--electron-blue);
         border-radius: 5px;
       }
 
-      /* 🔥 CRITICAL FIX: Mobile Styles */
+      /* 🔥 MOBILE FIXES */
       @media (max-width: 768px) {
         html {
           font-size: 14px;
         }
 
         body {
-          padding: 0 10px; /* Added padding for small screens */
+          padding: 0 10px;
           width: 100%;
           box-sizing: border-box;
         }
 
-        header, main, footer {
-          width: 100% !important; /* Force full width */
+        header,
+        main,
+        footer {
+          width: 100% !important;
           max-width: 100% !important;
           margin-left: auto !important;
           margin-right: auto !important;
@@ -220,19 +219,20 @@ const {
           min-height: 150px;
         }
 
-        /* Fix for potential content issues */
-        .post-card, .search-bar, nav {
-          max-width: 100%;
-          box-sizing: border-box;
+        h1 {
+          font-size: 1.5rem !important;
+        }
+        h2 {
+          font-size: 1.3rem !important;
+        }
+        h3 {
+          font-size: 1.1rem !important;
+        }
+        p,
+        li {
+          font-size: 0.95rem !important;
         }
 
-        /* Ensure text is readable */
-        h1 { font-size: 1.5rem !important; }
-        h2 { font-size: 1.3rem !important; }
-        h3 { font-size: 1.1rem !important; }
-        p, li { font-size: 0.95rem !important; }
-
-        /* Fix search suggestions for mobile */
         .search-suggestions {
           position: fixed !important;
           left: 10px !important;
@@ -241,13 +241,14 @@ const {
         }
       }
 
-      /* Extra small devices */
       @media (max-width: 480px) {
         html {
           font-size: 13px;
         }
 
-        header, main, footer {
+        header,
+        main,
+        footer {
           border-radius: 8px;
         }
 
@@ -255,8 +256,62 @@ const {
           padding: 1rem 0.8rem !important;
         }
 
-        h1 { font-size: 1.3rem !important; }
-        h2 { font-size: 1.1rem !important; }
+        h1 {
+          font-size: 1.3rem !important;
+        }
+        h2 {
+          font-size: 1.1rem !important;
+        }
+      }
+
+      /* Search Styles */
+      .search-suggestions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(15, 23, 42, 0.98);
+        border: 1px solid var(--electron-blue);
+        border-radius: 8px;
+        margin-top: 5px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+
+      .suggestion-item {
+        padding: 12px 15px;
+        color: white;
+        cursor: pointer;
+        border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+        transition: background 0.2s;
+      }
+
+      .suggestion-item:hover {
+        background: rgba(59, 130, 246, 0.3);
+      }
+
+      .suggestion-title {
+        font-weight: bold;
+        font-size: 1rem;
+        margin-bottom: 4px;
+      }
+
+      .suggestion-desc {
+        font-size: 0.8rem;
+        color: #cbd5e1;
+        opacity: 0.8;
+      }
+
+      .no-results {
+        padding: 12px 15px;
+        color: var(--neutron-gray);
+        text-align: center;
+      }
+
+      .search-container {
+        position: relative;
       }
     </style>
   </head>
@@ -276,38 +331,40 @@ const {
 
     <!-- Search Script -->
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.querySelector('.search-input');
-        const searchButton = document.querySelector('.search-button');
+      document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.querySelector(".search-input");
+        const searchButton = document.querySelector(".search-button");
 
         let blogData = [];
 
         async function loadBlogData() {
           try {
             const posts = await getCollection("blog");
-            blogData = posts.map(post => ({
+            blogData = posts.map((post) => ({
               id: post.slug,
               title: post.data.title,
               description: post.data.description,
               content: post.body,
-              tags: post.data.tags || []
+              tags: post.data.tags || [],
             }));
           } catch (error) {
             blogData = [
               {
-                id: 'quantum-physics',
-                title: 'Understanding Quantum Physics',
-                description: 'Quantum physics is very interesting subject...',
-                content: 'Your blog content here...',
-                tags: ['physics', 'science']
+                id: "quantum-physics",
+                title: "Understanding Quantum Physics",
+                description: "Quantum physics is a very interesting subject...",
+                content: "Your blog content here...",
+                tags: ["physics", "science"],
               },
               {
-                id: 'ai-future',
-                title: 'The Future of Artificial Intelligence',
-                description: 'Exploring AI advancements and machine learning',
-                content: 'Artificial intelligence is transforming how we live and work...',
-                tags: ['ai', 'technology', 'machine-learning']
-              }
+                id: "ai-future",
+                title: "The Future of Artificial Intelligence",
+                description:
+                  "Exploring AI advancements and machine learning",
+                content:
+                  "Artificial intelligence is transforming how we live and work...",
+                tags: ["ai", "technology", "machine-learning"],
+              },
             ];
           }
         }
@@ -317,11 +374,12 @@ const {
         function searchBlogs(searchTerm) {
           const term = searchTerm.toLowerCase().trim();
           if (!term) return [];
-          return blogData.filter(blog =>
-            blog.title.toLowerCase().includes(term) ||
-            blog.description.toLowerCase().includes(term) ||
-            blog.content.toLowerCase().includes(term) ||
-            blog.tags.some(tag => tag.toLowerCase().includes(term))
+          return blogData.filter(
+            (blog) =>
+              blog.title.toLowerCase().includes(term) ||
+              blog.description.toLowerCase().includes(term) ||
+              blog.content.toLowerCase().includes(term) ||
+              blog.tags.some((tag) => tag.toLowerCase().includes(term))
           );
         }
 
@@ -331,29 +389,35 @@ const {
           if (!searchTerm) return;
 
           const results = searchBlogs(searchTerm);
-          suggestionsDiv = document.createElement('div');
-          suggestionsDiv.className = 'search-suggestions';
+          suggestionsDiv = document.createElement("div");
+          suggestionsDiv.className = "search-suggestions";
 
           if (results.length > 0) {
-            suggestionsDiv.innerHTML = results.map(blog => `
+            suggestionsDiv.innerHTML = results
+              .map(
+                (blog) => `
               <div class="suggestion-item" data-blog-id="${blog.id}">
                 <div class="suggestion-title">${blog.title}</div>
                 <div class="suggestion-desc">${blog.description}</div>
-              </div>
-            `).join('');
+              </div>`
+              )
+              .join("");
           } else {
-            suggestionsDiv.innerHTML = '<div class="no-results">No blogs found matching your search</div>';
+            suggestionsDiv.innerHTML =
+              '<div class="no-results">No blogs found matching your search</div>';
           }
 
-          const searchContainer = searchInput.closest('.search-container');
+          const searchContainer = searchInput.closest(".search-container");
           searchContainer.appendChild(suggestionsDiv);
 
-          suggestionsDiv.querySelectorAll('.suggestion-item').forEach(item => {
-            item.addEventListener('click', () => {
-              const blogId = item.dataset.blogId;
-              window.location.href = `/blog/${blogId}`;
+          suggestionsDiv
+            .querySelectorAll(".suggestion-item")
+            .forEach((item) => {
+              item.addEventListener("click", () => {
+                const blogId = item.dataset.blogId;
+                window.location.href = `/blog/${blogId}`;
+              });
             });
-          });
         }
 
         function performSearch() {
@@ -378,93 +442,19 @@ const {
         loadBlogData();
 
         if (searchInput) {
-          searchInput.addEventListener('input', showSuggestions);
-          searchInput.addEventListener('focus', showSuggestions);
-          searchButton.addEventListener('click', performSearch);
-          searchInput.addEventListener('keypress', e => e.key === 'Enter' && performSearch());
+          searchInput.addEventListener("input", showSuggestions);
+          searchInput.addEventListener("focus", showSuggestions);
+          searchButton.addEventListener("click", performSearch);
+          searchInput.addEventListener(
+            "keypress",
+            (e) => e.key === "Enter" && performSearch()
+          );
 
-          document.addEventListener('click', e => {
-            if (!e.target.closest('.search-container')) hideSuggestions();
+          document.addEventListener("click", (e) => {
+            if (!e.target.closest(".search-container")) hideSuggestions();
           });
         }
       });
     </script>
-
-    <style>
-      .search-suggestions {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: rgba(15, 23, 42, 0.98);
-        border: 1px solid var(--electron-blue);
-        border-radius: 8px;
-        margin-top: 5px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        z-index: 1000;
-        max-height: 300px;
-        overflow-y: auto;
-      }
-      
-      .suggestion-item {
-        padding: 12px 15px;
-        color: white;
-        cursor: pointer;
-        border-bottom: 1px solid rgba(59, 130, 246, 0.2);
-        transition: background 0.2s;
-      }
-      
-      .suggestion-item:hover {
-        background: rgba(59, 130, 246, 0.3);
-      }
-      
-      .suggestion-item:last-child {
-        border-bottom: none;
-      }
-      
-      .suggestion-title {
-        font-weight: bold;
-        font-size: 1rem;
-        margin-bottom: 4px;
-      }
-      
-      .suggestion-desc {
-        font-size: 0.8rem;
-        color: #cbd5e1;
-        opacity: 0.8;
-      }
-      
-      .no-results {
-        padding: 12px 15px;
-        color: var(--neutron-gray);
-        text-align: center;
-      }
-      
-      .search-container {
-        position: relative;
-      }
-
-      /* Mobile search fixes */
-      @media (max-width: 768px) {
-        .search-suggestions {
-          position: fixed;
-          left: 10px;
-          right: 10px;
-          width: calc(100% - 20px);
-        }
-        
-        .suggestion-item {
-          padding: 10px 12px;
-        }
-        
-        .suggestion-title {
-          font-size: 0.95rem;
-        }
-        
-        .suggestion-desc {
-          font-size: 0.75rem;
-        }
-      }
-    </style>
   </body>
 </html>
