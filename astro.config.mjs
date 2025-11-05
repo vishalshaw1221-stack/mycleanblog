@@ -30,7 +30,7 @@ export default defineConfig({
     mdx(),
 
     // 💨 Auto-compress output for faster page loads
-    //compress({
+    compress({
       css: true,
       html: true,
       img: true,
