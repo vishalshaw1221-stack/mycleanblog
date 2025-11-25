@@ -1,13 +1,12 @@
 ---
 import { SEO } from "astro-seo";
 
-const {
-  title = "My Clean Blog",
-  description = "Welcome to my clean and fast Astro-powered blog!",
-  image = "/og-image.png",
-  url = Astro.site,
-  math = false, // <- read math flag from page frontmatter (default false)
-} = Astro.props;
+const { frontmatter } = Astro.props;
+const title = frontmatter?.title || "My Clean Blog";
+const description = frontmatter?.description || "Welcome to my clean blog!";
+const image = frontmatter?.image || "/og-image.png";
+const url = Astro.site;
+const math = frontmatter?.math || false; // Now this reads from your frontmatter!
 ---
 
 <!DOCTYPE html>
