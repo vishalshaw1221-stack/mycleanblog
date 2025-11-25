@@ -1,7 +1,16 @@
 ---
-title: "Introduction"
+title: "Introduction to Mean, Median and Mode"
 description: "Mean, Median and Mode – Measures of Central Tendency"
+pubDate: 2024-01-15  # Add this - use current date
+author: "Your Name"   # Add your name
+layout: ../../layouts/BlogPost.astro  # This might be needed
+draft: false          # Explicitly set to false
+published: true       # Explicitly set to true
 math: true
+tags:
+  - statistics
+  - mathematics
+  - data-analysis
 ---
 
 ## **Introduction**
