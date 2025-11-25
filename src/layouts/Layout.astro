@@ -3,9 +3,13 @@ import Analytics from '@vercel/analytics/astro'
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { SEO } from "astro-seo";
-// ADD THIS SECTION FOR MATHJAX
-const { frontmatter = {} } = Astro.props;
-const math = frontmatter.math || false;
+
+// CORRECT MATHJAX SETUP - Access frontmatter from props
+const { frontmatter } = Astro.props;
+const math = frontmatter?.math || false;
+
+// Debug line to check if math is being detected
+console.log('MathJax enabled:', math, 'for page:', Astro.url.pathname);
 
 /*
   Layout.astro - merged & SEO-enhanced version for "Physics in physics"
