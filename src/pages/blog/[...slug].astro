@@ -24,6 +24,9 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 
+// ADD THIS LINE - Pass the math field to layout
+const math = post.data.math || false;
+
 // Render the content (Astro collections .render may return Content + html)
 const rendered = await post.render();
 const Content = rendered.Content;
@@ -202,6 +205,7 @@ const seoProps = {
   description={description}
   image={image}
   seo={seoProps}
+  math={math}  <!-- ADD THIS LINE -->
 >
   <!-- inject SEO meta via astro-seo -->
   <SEO {...seoProps} />

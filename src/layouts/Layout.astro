@@ -5,8 +5,10 @@ import Footer from "../components/Footer.astro";
 import { SEO } from "astro-seo";
 
 // CORRECT MATHJAX SETUP - Access frontmatter from props
-const { frontmatter } = Astro.props;
-const math = frontmatter?.math || false;
+// Get math directly from props (passed from [...slug].astro)
+const math = Astro.props.math || false;
+
+console.log('Math enabled:', math); // Keep this for debugging
 
 // Debug line to check if math is being detected
 console.log('MathJax enabled:', math, 'for page:', Astro.url.pathname);
