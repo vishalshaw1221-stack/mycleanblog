@@ -41,3 +41,5 @@ $$
 $$
 
 It is important to note that a data set may have more than one mode if multiple values occur with the same highest frequency.
+
+the end 
