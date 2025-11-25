@@ -4,8 +4,9 @@ import { SEO } from "astro-seo";
 const {
   title = "My Clean Blog",
   description = "Welcome to my clean and fast Astro-powered blog!",
-  image = "/og-image.png", // optional open graph image
+  image = "/og-image.png",
   url = Astro.site,
+  math = false, // <- read math flag from page frontmatter (default false)
 } = Astro.props;
 ---
 
@@ -29,11 +30,36 @@ const {
       }}
       twitter={{
         card: "summary_large_image",
-        site: "@yourtwitterhandle", // optional
+        site: "@yourtwitterhandle",
       }}
     />
+
+    <!-- ======== MathJax: only load when page sets math: true ======== -->
+    {math && (
+      <>
+        <script>
+          // MathJax config must be set before the script is loaded
+          window.MathJax = {
+            tex: {
+              inlineMath: [['$', '$'], ['\\(', '\\)']],
+              displayMath: [['$$','$$'], ['\\[','\\]']],
+              packages: ['base', 'ams'] // add 'mhchem' etc if you need them
+            },
+            options: {
+              skipHtmlTags: ['script','noscript','style','textarea','pre']
+            },
+            startup: { typeset: true } // auto typeset on load
+          };
+        </script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+      </>
+    )}
+    <!-- ============================================================== -->
   </head>
+
   <body>
     <slot /> <!-- your page content -->
+    <!-- Optional: include the typeset helper for dynamic content usage -->
+    <script type="module" src="/scripts/math-typeset.js"></script>
   </body>
 </html>
