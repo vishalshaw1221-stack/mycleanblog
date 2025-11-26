@@ -2,15 +2,14 @@
 // src/components/AutoPageNav.astro
 // Props:
 //   - current?: string    (optional) pass Astro.url.pathname from the page
-//   - pagesDir?: string   (optional) glob path to your pages folder (default: '/src/pages/topic/*.md')
-const { current = null, pagesDir = '/src/pages/topic/*.md' } = Astro.props;
+
+const { current = null } = Astro.props;
 
 /*
  Collect pages in the folder at build time.
- Use absolute glob '/src/pages/...' or adjust relative path as needed.
- Eager is required so frontmatter is available.
+ Using literal path for statistics content files
 */
-const modules = Object.entries(import.meta.glob(pagesDir, { eager: true }));
+const modules = Object.entries(import.meta.glob('/src/content/blog/statistics/**/index.mdx', { eager: true }));
 
 // Normalize current path (ensure no trailing slash except root)
 const rawCurrent = current ?? Astro.url.pathname;
@@ -18,15 +17,14 @@ const norm = p => (p === '/') ? '/' : p.replace(/\/+$/, '');
 
 // Build page list
 const pages = modules.map(([filePath, mod]) => {
-  // convert '/src/pages/topic/chapter-01.md' -> '/topic/chapter-01'
+  // convert '/src/content/blog/statistics/introduction/index.mdx' -> '/blog/statistics/introduction'
   const route = filePath
-    .replace(/^\/?src\/pages/, '')        // remove leading /src/pages
-    .replace(/(index)?\.(md|mdx|astro)$/, '') // strip extension and optional index
-    .replace(/\/index$/, '')              // remove trailing /index
-    || '/';                               // fallback to root
+    .replace(/^\/?src\/content/, '')        // remove leading /src/content
+    .replace(/(index)?\.(md|mdx)$/, '')     // strip extension and optional index
+    || '/';                                 // fallback to root
 
-  const title = (mod && mod.frontmatter && mod.frontmatter.title) || route.split('/').pop() || 'Untitled';
-  const order = (mod && mod.frontmatter && Number.isFinite(mod.frontmatter.order)) ? mod.frontmatter.order : null;
+  const title = mod?.frontmatter?.title || route.split('/').pop() || 'Untitled';
+  const order = mod?.frontmatter?.order ?? null;
 
   return { route: norm(route), title, order, filePath };
 });
@@ -52,10 +50,28 @@ const next = (idx >= 0 && idx < pages.length - 1) ? pages[idx + 1] : null;
 ---
 
 <style>
-.auto-nav { display:flex; justify-content:space-between; gap:1rem; margin-top:3rem; }
-.auto-nav a { padding: 10px 14px; text-decoration:none; border-radius:8px; background:#0ea5e9; color:white; }
-.auto-nav .disabled { visibility:hidden; } /* keeps layout stable when one side missing */
-.auto-nav .meta { font-size:0.85rem; color:#0b7285; display:block; margin-top:6px; }
+.auto-nav { 
+  display:flex; 
+  justify-content:space-between; 
+  gap:1rem; 
+  margin-top:3rem; 
+}
+.auto-nav a { 
+  padding: 10px 14px; 
+  text-decoration:none; 
+  border-radius:8px; 
+  background:#0ea5e9; 
+  color:white; 
+}
+.auto-nav .disabled { 
+  visibility:hidden; 
+} /* keeps layout stable when one side missing */
+.auto-nav .meta { 
+  font-size:0.85rem; 
+  color:#0b7285; 
+  display:block; 
+  margin-top:6px; 
+}
 </style>
 
 <div class="auto-nav" role="navigation" aria-label="Page navigation">
