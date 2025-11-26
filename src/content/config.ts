@@ -8,7 +8,7 @@ const blog = defineCollection({
     pubDate: z.date(),
     heroImage: z.string().optional(),
     math: z.boolean().optional().default(false),
-    order: z.number().optional(),
+    order: z.number().optional(),  // MAKE SURE THIS IS HERE
   }),
 });
 
