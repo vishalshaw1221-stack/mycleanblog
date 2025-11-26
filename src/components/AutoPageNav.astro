@@ -1,80 +1,70 @@
 ---
 // src/components/AutoPageNav.astro
-// Auto previous/next navigation within each top-level blog folder
+// SMART navigation - works within each folder automatically
 
 const { current = null } = Astro.props;
 
-// Get current path from prop or URL
-const currentPath = current || Astro.url.pathname || '';
-
-// Normalize path to always have trailing slash
+// Helper to keep trailing slashes consistent
 const normalize = (p) => {
-  if (!p) return '';
+  if (!p) return '/';
   return p.endsWith('/') ? p : p + '/';
 };
 
-const normalizedCurrentPath = normalize(currentPath);
+// Get current path from prop or URL and normalize
+const currentPathRaw = current || Astro.url.pathname;
+const currentPath = normalize(currentPathRaw);
 
-// Helper: extract folder name from a route (e.g. "/blog/statistics/descriptive/" → "statistics")
-function getFolderFromRoute(route) {
-  const parts = route.split('/').filter(Boolean); // remove empty segments
-  const blogIndex = parts.indexOf('blog');
-  if (blogIndex === -1) return null;
-  return parts[blogIndex + 1] || null;
-}
+// Example: /blog/statistics/descriptive/ → folder = 'statistics'
+const currentFolder = currentPath.split('/')[2];
 
-const currentFolder = getFolderFromRoute(normalizedCurrentPath);
-
-// Load ALL .mdx posts under /src/content/blog
+// Get ALL posts (any .mdx) from ALL folders
 const allModules = import.meta.glob('/src/content/blog/**/*.mdx', {
   eager: true
 });
 
-// Build list of pages
-const allPages = Object.entries(allModules).map(([filePath, module]) => {
-  // Examples:
-  // "/src/content/blog/statistics/descriptive/index.mdx"
-  // "/src/content/blog/statistics/descriptive.mdx"
+// Process ALL files and filter by current folder
+const pages = Object.entries(allModules)
+  .map(([filePath, module]) => {
+    // Build route:
+    //  "/src/content/blog" → "/blog"
+    //  handle both ".../index.mdx" and "something.mdx"
+    let route = filePath
+      .replace('/src/content/blog', '/blog')
+      .replace(/\/index\.mdx$/, '/')  // .../something/index.mdx → .../something/
+      .replace(/\.mdx$/, '/');        // .../something.mdx → .../something/
 
-  // Build route used on site:
-  //  "/src/content/blog" → "/blog"
-  //  handle both "index.mdx" and normal ".mdx" files
-  let route = filePath
-    .replace('/src/content/blog', '/blog')
-    .replace(/\/index\.mdx$/, '/')  // "....../something/index.mdx" → "....../something/"
-    .replace(/\.mdx$/, '/');        // "....../something.mdx" → "....../something/"
+    route = normalize(route);
 
-  route = normalize(route);
-  const folder = getFolderFromRoute(route);
+    // Extract folder from file path
+    // /src/content/blog/statistics/descriptive/index.mdx → 'statistics'
+    // /src/content/blog/statistics/descriptive.mdx       → 'statistics'
+    const pathParts = filePath.split('/');
+    const fileFolder = pathParts[4]; // consistent with your old working logic
 
-  return {
-    route,
-    title: module.frontmatter?.title || 'Untitled',
-    order: module.frontmatter?.order ?? 999,
-    folder
-  };
-});
-
-// Keep only pages from the current folder
-const pages = allPages
+    return {
+      route,
+      title: module.frontmatter?.title || 'Untitled',
+      order: module.frontmatter?.order || 999,
+      folder: fileFolder
+    };
+  })
+  // FILTER: Only keep pages from the CURRENT folder
   .filter((page) => page.folder === currentFolder)
+  // Sort by order within this folder
   .sort((a, b) => a.order - b.order);
 
-// DEBUG: you can comment these out later
+// DEBUG: check this in devtools console
 console.log('Navigation Debug:');
 console.log('Current path:', currentPath);
-console.log('Normalized current path:', normalizedCurrentPath);
 console.log('Current folder:', currentFolder);
 console.log(
-  'Found pages in folder:',
+  'Found pages:',
   pages.map((p) => ({ route: p.route, folder: p.folder, order: p.order }))
 );
 
-// Find current page index (ignore trailing slash differences just in case)
+// Find current page by normalized route
 const currentIndex = pages.findIndex(
-  (page) =>
-    normalize(page.route) === normalizedCurrentPath ||
-    page.route === currentPath
+  (page) => normalize(page.route) === currentPath
 );
 
 const prevPage = currentIndex > 0 ? pages[currentIndex - 1] : null;
@@ -85,55 +75,55 @@ const nextPage =
 ---
 
 <style>
-  .auto-nav {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid #e5e7eb;
-  }
+.auto-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+}
 
-  .auto-nav a {
-    padding: 12px 16px;
-    text-decoration: none;
-    border-radius: 8px;
-    background: #0ea5e9;
-    color: white;
-    font-size: 0.95rem;
-    transition: background 0.2s;
-    max-width: 200px;
-  }
+.auto-nav a {
+  padding: 12px 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  background: #0ea5e9;
+  color: white;
+  font-size: 0.95rem;
+  transition: background 0.2s;
+  max-width: 200px;
+}
 
-  .auto-nav a:hover {
-    background: #0284c7;
-  }
+.auto-nav a:hover {
+  background: #0284c7;
+}
 
-  .auto-nav .prev {
-    text-align: left;
-  }
+.auto-nav .prev {
+  text-align: left;
+}
 
-  .auto-nav .next {
-    text-align: right;
-  }
+.auto-nav .next {
+  text-align: right;
+}
 
-  .auto-nav .disabled {
-    visibility: hidden;
-    width: 160px;
-  }
+.auto-nav .disabled {
+  visibility: hidden;
+  width: 160px;
+}
 
-  .auto-nav .page-title {
-    display: block;
-    font-weight: 600;
-    font-size: 1rem;
-  }
+.auto-nav .page-title {
+  display: block;
+  font-weight: 600;
+  font-size: 1rem;
+}
 
-  .auto-nav .nav-label {
-    font-size: 0.8rem;
-    opacity: 0.9;
-    display: block;
-    margin-top: 2px;
-  }
+.auto-nav .nav-label {
+  font-size: 0.8rem;
+  opacity: 0.9;
+  display: block;
+  margin-top: 2px;
+}
 </style>
 
 <div class="auto-nav" role="navigation" aria-label="Page navigation">
