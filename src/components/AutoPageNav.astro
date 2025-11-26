@@ -3,33 +3,33 @@
 
 const { current = null } = Astro.props;
 
-// Get all statistics posts with eager loading to access frontmatter
-const modules = import.meta.glob('/src/content/blog/statistics/**/index.mdx', { 
-  eager: true 
+// Get all statistics posts
+const modules = import.meta.glob('/src/content/blog/statistics/**/index.mdx', {
+  eager: true
 });
 
-// Convert to array and extract needed data
+// Convert to array and extract data
 const pages = Object.entries(modules).map(([filePath, module]) => {
+  // Convert file path to URL route
+  // From: /src/content/blog/statistics/introduction/index.mdx
+  // To: /blog/statistics/introduction/
   const route = filePath
-    .replace('/src/content', '')
-    .replace('/index.mdx', '');
-    
+    .replace('/src/content/blog', '/blog')
+    .replace('/index.mdx', '/');
+
   return {
     route: route,
     title: module.frontmatter?.title || 'Untitled',
     order: module.frontmatter?.order || 999,
-    filePath: filePath
   };
 });
 
-// Sort pages by order frontmatter
+// Sort pages by order
 pages.sort((a, b) => a.order - b.order);
 
 // Find current page index
 const currentPath = current || Astro.url.pathname;
-const currentIndex = pages.findIndex(page => 
-  page.route === currentPath.replace('/blog', '')
-);
+const currentIndex = pages.findIndex(page => page.route === currentPath);
 
 // Get previous and next pages
 const prevPage = currentIndex > 0 ? pages[currentIndex - 1] : null;
@@ -90,7 +90,7 @@ const nextPage = currentIndex < pages.length - 1 ? pages[currentIndex + 1] : nul
 
 <div class="auto-nav" role="navigation" aria-label="Page navigation">
   {prevPage ? (
-    <a href={`/blog${prevPage.route}`} class="prev" title={prevPage.title}>
+    <a href={prevPage.route} class="prev" title={prevPage.title}>
       <span class="nav-label">← Previous</span>
       <span class="page-title">{prevPage.title}</span>
     </a>
@@ -99,7 +99,7 @@ const nextPage = currentIndex < pages.length - 1 ? pages[currentIndex + 1] : nul
   )}
 
   {nextPage ? (
-    <a href={`/blog${nextPage.route}`} class="next" title={nextPage.title}>
+    <a href={nextPage.route} class="next" title={nextPage.title}>
       <span class="nav-label">Next →</span>
       <span class="page-title">{nextPage.title}</span>
     </a>
