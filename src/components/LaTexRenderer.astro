@@ -1,31 +1,46 @@
 ---
-const { content } = Astro.props;
+/* No props needed for now */
 ---
 
-<div class="latex-container">
-  <script src="https://cdn.jsdelivr.net/npm/latex.js@0.12.4/dist/latex.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/latex.js@0.12.4/dist/latex.css">
-  
-  <div id="latex-{Math.random().toString(36).substr(2, 9)}">
-    {content}
-  </div>
-  
-  <script is:inline>
-    const container = document.currentScript.previousElementSibling;
-    try {
-      container.innerHTML = latexjs.html(container.textContent);
-    } catch (error) {
-      container.innerHTML = '<div style="color: red;">LaTeX Error: ' + error.message + '</div>';
-    }
-  </script>
+<div class="latexjs-container">
+  <slot />
 </div>
 
-<style>
-  .latex-container {
-    margin: 2rem 0;
-    border: 1px solid #e5e5e5;
-    border-radius: 8px;
-    padding: 20px;
-    background: white;
-  }
-</style>
+<!-- Load LaTeX.js library from CDN (defines global `latexjs`) -->
+<script
+  src="https://cdn.jsdelivr.net/npm/latex.js@0.12.4/dist/latex.js"
+  is:inline
+></script>
+
+<!-- Load the default LaTeX.js CSS so it looks like a PDF -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/latex.js@0.12.4/dist/latex.css"
+/>
+
+<!-- Convert the LaTeX inside .latexjs-container to HTML -->
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", () => {
+    const containers = document.querySelectorAll(".latexjs-container");
+
+    containers.forEach((el) => {
+      const src = el.textContent; // raw LaTeX inside <LaTeXRenderer> ... </LaTeXRenderer>
+
+      // Make sure latexjs is actually loaded
+      if (typeof latexjs === "undefined") {
+        console.error("LaTeX.js library not loaded (latexjs is undefined)");
+        return;
+      }
+
+      const generator = new latexjs.HtmlGenerator({ hyphenate: false });
+
+      latexjs.parse(src, { generator });
+
+      const frag = generator.domFragment();
+
+      // Replace the raw text with generated HTML
+      el.innerHTML = "";
+      el.appendChild(frag);
+    });
+  });
+</script>
