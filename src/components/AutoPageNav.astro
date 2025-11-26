@@ -1,105 +1,126 @@
 ---
 // src/components/AutoPageNav.astro
-// SMART navigation - works within each folder automatically
 
 const { current = null } = Astro.props;
 
-// Get current folder from URL path
-const currentPath = current || Astro.url.pathname;
-// Example: /blog/second-post/what-is-up/ → folder = 'second-post'
-const currentFolder = currentPath.split('/')[2];
+// Get current path from prop or from URL
+const currentPath = current || Astro.url.pathname; 
+// Ensure trailing slash consistency
+const normalizedCurrentPath = currentPath.endsWith('/')
+  ? currentPath
+  : currentPath + '/';
 
-// Get ALL posts from ALL folders
-const allModules = import.meta.glob('/src/content/blog/**/index.mdx', {
+// Helper: extract folder name from a route like "/blog/statistics/introduction/"
+function getFolderFromRoute(route) {
+  const parts = route.split('/').filter(Boolean); // removes empty "" from leading/trailing slashes
+  // parts example: ["blog", "statistics", "introduction"]
+  // folder = parts[1] (after "blog")
+  return parts[1] || null;
+}
+
+const currentFolder = getFolderFromRoute(normalizedCurrentPath);
+
+// Get ALL posts (.mdx) from blog
+const allModules = import.meta.glob('/src/content/blog/**/*.mdx', {
   eager: true
 });
 
-// Process ALL files and filter by current folder
 const pages = Object.entries(allModules)
   .map(([filePath, module]) => {
-    const route = filePath
-      .replace('/src/content/blog', '/blog')
-      .replace('/index.mdx', '/');
+    // filePath example: "/src/content/blog/statistics/introduction/index.mdx"
+    // or: "/src/content/blog/nuclear-physics/intro.mdx"
 
-    // Extract folder from file path - FIXED LOGIC
-    // src/content/blog/second-post/what-is-up/index.mdx → folder = 'second-post'
-    // src/content/blog/statistics/introduction/index.mdx → folder = 'statistics'
-    const pathParts = filePath.split('/');
-    const fileFolder = pathParts[4]; // This should be consistent
-    
+    // Build route:
+    //  "/src/content/blog" → "/blog"
+    //  remove ".mdx" at the end
+    let route = filePath
+      .replace('/src/content/blog', '/blog')
+      .replace(/\.mdx$/, '/');
+
+    const folder = getFolderFromRoute(route);
+
     return {
-      route: route,
+      route,
       title: module.frontmatter?.title || 'Untitled',
-      order: module.frontmatter?.order || 999,
-      folder: fileFolder
+      order: module.frontmatter?.order ?? 999,
+      folder
     };
   })
-  // FILTER: Only keep pages from the CURRENT folder
-  .filter(page => page.folder === currentFolder)
-  // Sort by order within this folder
+  // Only pages from current folder
+  .filter((page) => page.folder === currentFolder)
+  // Sort by `order` within folder
   .sort((a, b) => a.order - b.order);
 
-// DEBUG: Remove this after testing
+// DEBUG: keep for now
 console.log('Navigation Debug:');
+console.log('Current path:', normalizedCurrentPath);
 console.log('Current folder:', currentFolder);
-console.log('Found pages:', pages.map(p => ({ route: p.route, folder: p.folder, order: p.order })));
+console.log(
+  'Found pages:',
+  pages.map((p) => ({ route: p.route, folder: p.folder, order: p.order }))
+);
 
-const currentIndex = pages.findIndex(page => page.route === currentPath);
+// Find current page index
+const currentIndex = pages.findIndex(
+  (page) => page.route === normalizedCurrentPath
+);
 
 const prevPage = currentIndex > 0 ? pages[currentIndex - 1] : null;
-const nextPage = currentIndex < pages.length - 1 ? pages[currentIndex + 1] : null;
+const nextPage = currentIndex >= 0 && currentIndex < pages.length - 1
+  ? pages[currentIndex + 1]
+  : null;
 ---
 
 <style>
-.auto-nav {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 3rem;
-  padding-top: 2rem;
-  border-top: 1px solid #e5e7eb;
-}
+  .auto-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+  }
 
-.auto-nav a {
-  padding: 12px 16px;
-  text-decoration: none;
-  border-radius: 8px;
-  background: #0ea5e9;
-  color: white;
-  font-size: 0.95rem;
-  transition: background 0.2s;
-  max-width: 200px;
-}
+  .auto-nav a {
+    padding: 12px 16px;
+    text-decoration: none;
+    border-radius: 8px;
+    background: #0ea5e9;
+    color: white;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+    max-width: 200px;
+  }
 
-.auto-nav a:hover {
-  background: #0284c7;
-}
+  .auto-nav a:hover {
+    background: #0284c7;
+  }
 
-.auto-nav .prev {
-  text-align: left;
-}
+  .auto-nav .prev {
+    text-align: left;
+  }
 
-.auto-nav .next {
-  text-align: right;
-}
+  .auto-nav .next {
+    text-align: right;
+  }
 
-.auto-nav .disabled {
-  visibility: hidden;
-  width: 160px;
-}
+  .auto-nav .disabled {
+    visibility: hidden;
+    width: 160px;
+  }
 
-.auto-nav .page-title {
-  display: block;
-  font-weight: 600;
-  font-size: 1rem;
-}
+  .auto-nav .page-title {
+    display: block;
+    font-weight: 600;
+    font-size: 1rem;
+  }
 
-.auto-nav .nav-label {
-  font-size: 0.8rem;
-  opacity: 0.9;
-  display: block;
-  margin-top: 2px;
-}
+  .auto-nav .nav-label {
+    font-size: 0.8rem;
+    opacity: 0.9;
+    display: block;
+    margin-top: 2px;
+  }
 </style>
 
 <div class="auto-nav" role="navigation" aria-label="Page navigation">
