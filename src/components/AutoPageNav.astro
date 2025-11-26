@@ -3,36 +3,41 @@
 
 const { current = null } = Astro.props;
 
-// Get current path from prop or from URL
-const currentPath = current || Astro.url.pathname; 
-// Ensure trailing slash consistency
+// 1) Get current path from prop or URL
+const currentPath = current || Astro.url.pathname;
+
+// Normalize: ensure trailing slash so it matches our generated routes
 const normalizedCurrentPath = currentPath.endsWith('/')
   ? currentPath
   : currentPath + '/';
 
 // Helper: extract folder name from a route like "/blog/statistics/introduction/"
-function getFolderFromRoute(route) {
-  const parts = route.split('/').filter(Boolean); // removes empty "" from leading/trailing slashes
-  // parts example: ["blog", "statistics", "introduction"]
-  // folder = parts[1] (after "blog")
+function getFolderFromRoute(route: string) {
+  const parts = route.split('/').filter(Boolean); 
+  // examples:
+  // "/blog/statistics/introduction/" -> ["blog","statistics","introduction"]
+  // "/blog/nuclear-physics/"        -> ["blog","nuclear-physics"]
+  // folder is always parts[1] (after "blog")
   return parts[1] || null;
 }
 
 const currentFolder = getFolderFromRoute(normalizedCurrentPath);
 
-// Get ALL posts (.mdx) from blog
+// 2) Load ALL .mdx posts under /src/content/blog
 const allModules = import.meta.glob('/src/content/blog/**/*.mdx', {
   eager: true
 });
 
+// 3) Build page list (route, title, order, folder)
 const pages = Object.entries(allModules)
-  .map(([filePath, module]) => {
-    // filePath example: "/src/content/blog/statistics/introduction/index.mdx"
-    // or: "/src/content/blog/nuclear-physics/intro.mdx"
+  .map(([filePath, module]: any) => {
+    // filePath examples:
+    // "/src/content/blog/statistics/introduction/index.mdx"
+    // "/src/content/blog/nuclear-physics/intro.mdx"
 
-    // Build route:
-    //  "/src/content/blog" → "/blog"
-    //  remove ".mdx" at the end
+    // Build the public route:
+    //  "/src/content/blog" -> "/blog"
+    //  remove ".mdx" -> add trailing '/'
     let route = filePath
       .replace('/src/content/blog', '/blog')
       .replace(/\.mdx$/, '/');
@@ -46,12 +51,12 @@ const pages = Object.entries(allModules)
       folder
     };
   })
-  // Only pages from current folder
+  // Only keep pages from *this* folder
   .filter((page) => page.folder === currentFolder)
-  // Sort by `order` within folder
+  // Sort within folder by "order"
   .sort((a, b) => a.order - b.order);
 
-// DEBUG: keep for now
+// DEBUG (optional – remove later)
 console.log('Navigation Debug:');
 console.log('Current path:', normalizedCurrentPath);
 console.log('Current folder:', currentFolder);
@@ -60,15 +65,16 @@ console.log(
   pages.map((p) => ({ route: p.route, folder: p.folder, order: p.order }))
 );
 
-// Find current page index
+// 4) Find current page in that folder
 const currentIndex = pages.findIndex(
   (page) => page.route === normalizedCurrentPath
 );
 
 const prevPage = currentIndex > 0 ? pages[currentIndex - 1] : null;
-const nextPage = currentIndex >= 0 && currentIndex < pages.length - 1
-  ? pages[currentIndex + 1]
-  : null;
+const nextPage =
+  currentIndex >= 0 && currentIndex < pages.length - 1
+    ? pages[currentIndex + 1]
+    : null;
 ---
 
 <style>
