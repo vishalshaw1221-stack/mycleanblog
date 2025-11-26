@@ -1,5 +1,5 @@
 ---
-title: "Descriptive Statistics"
+title: "hey"
 pubDate: 2023-11-26
 description: "Learn about descriptive statistics"
 order: 1
