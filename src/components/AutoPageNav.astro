@@ -4,45 +4,42 @@
 
 const { current = null } = Astro.props;
 
-// Helper to keep trailing slashes consistent
+// Normalize helper: ensure trailing slash and lowercase for comparison
 const normalize = (p) => {
   if (!p) return '/';
-  return p.endsWith('/') ? p : p + '/';
+  const withSlash = p.endsWith('/') ? p : p + '/';
+  return withSlash.toLowerCase();
 };
 
-// Get current path from prop or URL and normalize
-const currentPathRaw = current || Astro.url.pathname;
-const currentPath = normalize(currentPathRaw);
+// Get current path from prop or URL and normalize for comparison
+const rawCurrentPath = current || Astro.url.pathname || '/';
+const currentPath = normalize(rawCurrentPath);
 
-// Example: /blog/statistics/descriptive/ → folder = 'statistics'
-const currentFolder = currentPath.split('/')[2];
+// Example: /blog/second-post/how-its-going/ → folder = 'second-post'
+const currentFolder = rawCurrentPath.split('/')[2]; // after '/blog/'
 
-// Get ALL posts (any .mdx) from ALL folders
-const allModules = import.meta.glob('/src/content/blog/**/*.mdx', {
+// Get ALL posts but only index.mdx (your original working pattern)
+const allModules = import.meta.glob('/src/content/blog/**/index.mdx', {
   eager: true
 });
 
 // Process ALL files and filter by current folder
 const pages = Object.entries(allModules)
   .map(([filePath, module]) => {
-    // Build route:
-    //  "/src/content/blog" → "/blog"
-    //  handle both ".../index.mdx" and "something.mdx"
-    let route = filePath
+    const route = filePath
       .replace('/src/content/blog', '/blog')
-      .replace(/\/index\.mdx$/, '/')  // .../something/index.mdx → .../something/
-      .replace(/\.mdx$/, '/');        // .../something.mdx → .../something/
+      .replace('/index.mdx', '/'); // → /blog/second-post/How-its-going/
 
-    route = normalize(route);
+    const normalizedRoute = normalize(route);
 
     // Extract folder from file path
-    // /src/content/blog/statistics/descriptive/index.mdx → 'statistics'
-    // /src/content/blog/statistics/descriptive.mdx       → 'statistics'
+    // /src/content/blog/second-post/How-its-going/index.mdx → 'second-post'
     const pathParts = filePath.split('/');
-    const fileFolder = pathParts[4]; // consistent with your old working logic
+    const fileFolder = pathParts[4]; // this matched your old working logic
 
     return {
-      route,
+      route,               // original route for href
+      normalizedRoute,     // lowercase + slash for comparison
       title: module.frontmatter?.title || 'Untitled',
       order: module.frontmatter?.order || 999,
       folder: fileFolder
@@ -55,16 +52,22 @@ const pages = Object.entries(allModules)
 
 // DEBUG: check this in devtools console
 console.log('Navigation Debug:');
-console.log('Current path:', currentPath);
+console.log('Raw current path:', rawCurrentPath);
+console.log('Normalized current path:', currentPath);
 console.log('Current folder:', currentFolder);
 console.log(
   'Found pages:',
-  pages.map((p) => ({ route: p.route, folder: p.folder, order: p.order }))
+  pages.map((p) => ({
+    route: p.route,
+    normalizedRoute: p.normalizedRoute,
+    folder: p.folder,
+    order: p.order
+  }))
 );
 
-// Find current page by normalized route
+// Find current page by normalized route (case-insensitive, slash-safe)
 const currentIndex = pages.findIndex(
-  (page) => normalize(page.route) === currentPath
+  (page) => page.normalizedRoute === currentPath
 );
 
 const prevPage = currentIndex > 0 ? pages[currentIndex - 1] : null;
