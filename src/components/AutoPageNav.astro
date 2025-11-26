@@ -7,26 +7,34 @@ const { current = null } = Astro.props;
 // Get current folder from URL path
 const currentPath = current || Astro.url.pathname;
 // Example: /blog/statistics/introduction/ → folder = 'statistics'
-const folder = currentPath.split('/')[2]; // Gets 'statistics' from the path
+const folder = currentPath.split('/')[2];
 
-// Only get posts from the CURRENT folder
-const modules = import.meta.glob(`/src/content/blog/${folder}/**/index.mdx`, {
+// Get ALL posts from ALL folders
+const allModules = import.meta.glob('/src/content/blog/**/index.mdx', {
   eager: true
 });
 
-const pages = Object.entries(modules).map(([filePath, module]) => {
-  const route = filePath
-    .replace('/src/content/blog', '/blog')
-    .replace('/index.mdx', '/');
+// Filter to only include posts from the CURRENT folder
+const pages = Object.entries(allModules)
+  .map(([filePath, module]) => {
+    const route = filePath
+      .replace('/src/content/blog', '/blog')
+      .replace('/index.mdx', '/');
 
-  return {
-    route: route,
-    title: module.frontmatter?.title || 'Untitled',
-    order: module.frontmatter?.order || 999,
-  };
-});
-
-pages.sort((a, b) => a.order - b.order);
+    // Extract folder from file path
+    const fileFolder = filePath.split('/')[4]; // src/content/blog/statistics/introduction/index.mdx
+    
+    return {
+      route: route,
+      title: module.frontmatter?.title || 'Untitled',
+      order: module.frontmatter?.order || 999,
+      folder: fileFolder
+    };
+  })
+  // FILTER: Only keep pages from the current folder
+  .filter(page => page.folder === folder)
+  // Sort by order
+  .sort((a, b) => a.order - b.order);
 
 const currentIndex = pages.findIndex(page => page.route === currentPath);
 
