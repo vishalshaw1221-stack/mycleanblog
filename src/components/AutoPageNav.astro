@@ -1,0 +1,79 @@
+---
+// src/components/AutoPageNav.astro
+// Props:
+//   - current?: string    (optional) pass Astro.url.pathname from the page
+//   - pagesDir?: string   (optional) glob path to your pages folder (default: '/src/pages/topic/*.md')
+const { current = null, pagesDir = '/src/pages/topic/*.md' } = Astro.props;
+
+/*
+ Collect pages in the folder at build time.
+ Use absolute glob '/src/pages/...' or adjust relative path as needed.
+ Eager is required so frontmatter is available.
+*/
+const modules = Object.entries(import.meta.glob(pagesDir, { eager: true }));
+
+// Normalize current path (ensure no trailing slash except root)
+const rawCurrent = current ?? Astro.url.pathname;
+const norm = p => (p === '/') ? '/' : p.replace(/\/+$/, '');
+
+// Build page list
+const pages = modules.map(([filePath, mod]) => {
+  // convert '/src/pages/topic/chapter-01.md' -> '/topic/chapter-01'
+  const route = filePath
+    .replace(/^\/?src\/pages/, '')        // remove leading /src/pages
+    .replace(/(index)?\.(md|mdx|astro)$/, '') // strip extension and optional index
+    .replace(/\/index$/, '')              // remove trailing /index
+    || '/';                               // fallback to root
+
+  const title = (mod && mod.frontmatter && mod.frontmatter.title) || route.split('/').pop() || 'Untitled';
+  const order = (mod && mod.frontmatter && Number.isFinite(mod.frontmatter.order)) ? mod.frontmatter.order : null;
+
+  return { route: norm(route), title, order, filePath };
+});
+
+// Sort pages: if any have order use numeric order, otherwise sort by filePath (filename order)
+const anyOrder = pages.some(p => p.order !== null);
+pages.sort((a, b) => {
+  if (anyOrder) {
+    const ao = (a.order === null) ? 999999 : a.order;
+    const bo = (b.order === null) ? 999999 : b.order;
+    return ao - bo || a.filePath.localeCompare(b.filePath);
+  }
+  return a.filePath.localeCompare(b.filePath);
+});
+
+// find current index
+const currentRoute = norm(rawCurrent);
+const idx = pages.findIndex(p => p.route === currentRoute || p.route === currentRoute.replace(/\/$/, ''));
+
+// Determine prev/next
+const prev = (idx > 0) ? pages[idx - 1] : null;
+const next = (idx >= 0 && idx < pages.length - 1) ? pages[idx + 1] : null;
+---
+
+<style>
+.auto-nav { display:flex; justify-content:space-between; gap:1rem; margin-top:3rem; }
+.auto-nav a { padding: 10px 14px; text-decoration:none; border-radius:8px; background:#0ea5e9; color:white; }
+.auto-nav .disabled { visibility:hidden; } /* keeps layout stable when one side missing */
+.auto-nav .meta { font-size:0.85rem; color:#0b7285; display:block; margin-top:6px; }
+</style>
+
+<div class="auto-nav" role="navigation" aria-label="Page navigation">
+  {prev ? (
+    <a href={prev.route} class="prev" title={prev.title}>
+      ← <strong>{prev.title}</strong>
+      <span class="meta">Previous</span>
+    </a>
+  ) : (
+    <div class="disabled" style="width:160px"></div>
+  )}
+
+  {next ? (
+    <a href={next.route} class="next" title={next.title}>
+      <strong>{next.title}</strong> →
+      <span class="meta">Next</span>
+    </a>
+  ) : (
+    <div class="disabled" style="width:160px"></div>
+  )}
+</div>

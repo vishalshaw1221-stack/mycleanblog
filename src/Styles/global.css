@@ -1,3 +1,19 @@
+/* Add spacing between table and its caption */
+table + caption,
+caption + table {
+    margin-top: 5px;
+}
+
+
+/* Increase spacing between lines in MathJax align environment */
+mjx-mtable > mjx-mlabeledtr,
+mjx-mtable > mjx-mtr {
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+
+
 /* === RESET === */
 * {
   margin: 0;
