@@ -4,53 +4,51 @@
 
 const { current = null } = Astro.props;
 
-// Normalize helper: ensure trailing slash and lowercase for comparison
+// Normalize: add trailing slash and lowercase (to match Astro slugs)
 const normalize = (p) => {
   if (!p) return '/';
   const withSlash = p.endsWith('/') ? p : p + '/';
   return withSlash.toLowerCase();
 };
 
-// Get current path from prop or URL and normalize for comparison
+// Current path: raw (for folder), normalized (for comparison)
 const rawCurrentPath = current || Astro.url.pathname || '/';
 const currentPath = normalize(rawCurrentPath);
 
-// Example: /blog/second-post/how-its-going/ → folder = 'second-post'
-const currentFolder = rawCurrentPath.split('/')[2]; // after '/blog/'
+// "/blog/second-post/how-its-going/" → "second-post"
+const currentFolder = rawCurrentPath.split('/')[2];
 
-// Get ALL posts but only index.mdx (your original working pattern)
+// Only index.mdx (your original working pattern)
 const allModules = import.meta.glob('/src/content/blog/**/index.mdx', {
   eager: true
 });
 
-// Process ALL files and filter by current folder
 const pages = Object.entries(allModules)
   .map(([filePath, module]) => {
-    const route = filePath
+    // "/src/content/blog/second-post/What-is-up/index.mdx"
+    //   → "/blog/second-post/What-is-up/"
+    let route = filePath
       .replace('/src/content/blog', '/blog')
-      .replace('/index.mdx', '/'); // → /blog/second-post/How-its-going/
+      .replace('/index.mdx', '/');
 
     const normalizedRoute = normalize(route);
 
-    // Extract folder from file path
-    // /src/content/blog/second-post/How-its-going/index.mdx → 'second-post'
+    // "/src/content/blog/second-post/What-is-up/index.mdx" → "second-post"
     const pathParts = filePath.split('/');
-    const fileFolder = pathParts[4]; // this matched your old working logic
+    const fileFolder = pathParts[4];
 
     return {
-      route,               // original route for href
-      normalizedRoute,     // lowercase + slash for comparison
+      // use LOWERCASED route everywhere
+      route: normalizedRoute,
       title: module.frontmatter?.title || 'Untitled',
-      order: module.frontmatter?.order || 999,
+      order: module.frontmatter?.order ?? 999,
       folder: fileFolder
     };
   })
-  // FILTER: Only keep pages from the CURRENT folder
   .filter((page) => page.folder === currentFolder)
-  // Sort by order within this folder
   .sort((a, b) => a.order - b.order);
 
-// DEBUG: check this in devtools console
+// DEBUG
 console.log('Navigation Debug:');
 console.log('Raw current path:', rawCurrentPath);
 console.log('Normalized current path:', currentPath);
@@ -59,15 +57,13 @@ console.log(
   'Found pages:',
   pages.map((p) => ({
     route: p.route,
-    normalizedRoute: p.normalizedRoute,
     folder: p.folder,
     order: p.order
   }))
 );
 
-// Find current page by normalized route (case-insensitive, slash-safe)
 const currentIndex = pages.findIndex(
-  (page) => page.normalizedRoute === currentPath
+  (page) => page.route === currentPath
 );
 
 const prevPage = currentIndex > 0 ? pages[currentIndex - 1] : null;
