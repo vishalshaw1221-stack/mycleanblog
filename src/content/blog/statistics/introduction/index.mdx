@@ -1,30 +1,98 @@
 ---
-order: 1
-title: "Introduction to Statistics"
-description: "Learn about mean, median and mode"
-pubDate: 2024-11-26
-math: true
+/**
+ * AutoPageNav.astro
+ * Navigates between MDX posts in: /src/content/blog/statistics/**/index.mdx
+ */
+
+const currentPath = Astro.url.pathname;
+
+// Collect all statistics posts
+const modules = Object.entries(
+  import.meta.glob('/src/content/blog/statistics/**/index.mdx', { eager: true })
+);
+
+const norm = (p) => (p === '/' ? '/' : p.replace(/\/+$/, ''));
+
+const pages = modules.map(([filePath, mod]) => {
+  // Example: /src/content/blog/statistics/introduction/index.mdx
+  //   -> /blog/statistics/introduction
+  const route =
+    filePath
+      .replace(/^\/?src\/content/, '')       // /blog/statistics/introduction/index.mdx
+      .replace(/(index)?\.(md|mdx)$/, '') || '/';
+
+  const fm = mod?.frontmatter ?? {};
+  const title = fm.title ?? route.split('/').pop() ?? 'Untitled';
+  const order =
+    typeof fm.order === 'number' && Number.isFinite(fm.order)
+      ? fm.order
+      : null;
+
+  return { route: norm(route), title, order, filePath };
+});
+
+// Sort: use frontmatter.order if any exist, otherwise by file path
+const anyOrder = pages.some((p) => p.order !== null);
+pages.sort((a, b) => {
+  if (anyOrder) {
+    const ao = a.order === null ? 999999 : a.order;
+    const bo = b.order === null ? 999999 : b.order;
+    if (ao !== bo) return ao - bo;
+  }
+  return a.filePath.localeCompare(b.filePath);
+});
+
+const currentRoute = norm(currentPath);
+// e.g. currentPath: /blog/statistics/introduction/
+const idx = pages.findIndex((p) => p.route === currentRoute);
+
+const prev = idx > 0 ? pages[idx - 1] : null;
+const next = idx >= 0 && idx < pages.length - 1 ? pages[idx + 1] : null;
 ---
 
-import AutoPageNav from '../../../../components/AutoPageNav.astro';
+<style>
+.auto-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3rem;
+}
+.auto-nav a {
+  padding: 10px 14px;
+  text-decoration: none;
+  border-radius: 8px;
+  background: #0ea5e9;
+  color: white;
+  font-size: 0.95rem;
+}
+.auto-nav .disabled {
+  visibility: hidden;
+  width: 160px;
+}
+.auto-nav .meta {
+  font-size: 0.8rem;
+  color: #0b7285;
+  display: block;
+  margin-top: 4px;
+}
+</style>
 
+<div class="auto-nav" role="navigation" aria-label="Page navigation">
+  {prev ? (
+    <a href={prev.route} class="prev" title={prev.title}>
+      ← <strong>{prev.title}</strong>
+      <span class="meta">Previous</span>
+    </a>
+  ) : (
+    <div class="disabled"></div>
+  )}
 
-
-**Introduction**
-================
-
-All three are measures of central tendency.
-
-**Mean** is just the average of the data,
-
-**Median** The median is the middle value of the data when it is
-arranged in ascending order. If there is an even number of data points,
-the median is the average of the two middle values, for example, if the
-data is 2, 3, 4, 2,3,4,4, then the median is (3 + 4)/2 =3.5. and,
-
-**Mode** The mode is the number that appears most frequently in a data
-set, as shown in the previous example, where the mode is 4. It is
-important to note that there can be more than one mode in a data set if
-multiple numbers have the same highest frequency of occurrence.
-
-<AutoPageNav pagesDir="/src/content/blog/statistics/**/*.mdx" />
+  {next ? (
+    <a href={next.route} class="next" title={next.title}>
+      <strong>{next.title}</strong> →
+      <span class="meta">Next</span>
+    </a>
+  ) : (
+    <div class="disabled"></div>
+  )}
+</div>
