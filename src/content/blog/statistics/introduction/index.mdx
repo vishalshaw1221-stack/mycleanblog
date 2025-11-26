@@ -1,27 +1,62 @@
 ---
-title: "Introduction to Statistics"
+title: "Descriptive Statistics"
 pubDate: 2023-11-26
-description: "Your introduction to statistics content"
-order: 1
+description: "Learn about descriptive statistics"
+order: 2
+math: true
 ---
 
 import AutoPageNav from '../../../../components/AutoPageNav.astro';
+import LaTeXRenderer from '../../../../components/LaTeXRenderer.astro';
 
-**Introduction**
-================
+# Descriptive Statistics
 
-All three are measures of central tendency.
+$$5+2$$
 
-**Mean** is just the average of the data,
+Your content about descriptive statistics here...
 
-**Median** The median is the middle value of the data when it is
-arranged in ascending order. If there is an even number of data points,
-the median is the average of the two middle values, for example, if the
-data is 2, 3, 4, 2,3,4,4, then the median is (3 + 4)/2 =3.5. and,
+<LaTeXRenderer>
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
 
-**Mode** The mode is the number that appears most frequently in a data
-set, as shown in the previous example, where the mode is 4. It is
-important to note that there can be more than one mode in a data set if
-multiple numbers have the same highest frequency of occurrence.
+\section{Introduction to Descriptive Statistics}
+
+Descriptive statistics are used to describe the basic features of the data in a study.
+
+\subsection{Measures of Central Tendency}
+
+The three main measures of central tendency are:
+
+\begin{itemize}
+    \item \textbf{Mean}: The average value
+    \item \textbf{Median}: The middle value
+    \item \textbf{Mode}: The most frequent value
+\end{itemize}
+
+\subsection{Example Table}
+
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Measure} & \textbf{Formula} & \textbf{Description} \\
+\hline
+Mean & $\bar{x} = \frac{\sum x_i}{n}$ & Average of all values \\
+\hline
+Median & Middle value & Central value in ordered data \\
+\hline
+Mode & Most frequent & Value that appears most often \\
+\hline
+\end{tabular}
+
+\subsection{Mathematical Representation}
+
+The variance formula:
+$$\sigma^2 = \frac{\sum (x_i - \bar{x})^2}{n}$$
+
+And standard deviation:
+$$\sigma = \sqrt{\frac{\sum (x_i - \bar{x})^2}{n}}$$
+
+\end{document}
+</LaTeXRenderer>
 
 <AutoPageNav />
