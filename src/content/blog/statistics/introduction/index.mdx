@@ -6,9 +6,9 @@ pubDate: 2024-11-26
 math: true
 ---
 
-import AutoPageNav from '../../components/AutoPageNav.astro';
+import AutoPageNav from '../../../../components/AutoPageNav.astro';
 
-const currentPath = Astro.url.pathname;
+
 
 **Introduction**
 ================
@@ -27,4 +27,4 @@ set, as shown in the previous example, where the mode is 4. It is
 important to note that there can be more than one mode in a data set if
 multiple numbers have the same highest frequency of occurrence.
 
-<AutoPageNav current={currentPath} pagesDir="/src/content/blog/statistics/**/*.mdx" />
+<AutoPageNav pagesDir="/src/content/blog/statistics/**/*.mdx" />
