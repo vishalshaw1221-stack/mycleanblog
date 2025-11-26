@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 import BlogCard from "../components/BlogCard.astro";
 
-const posts = await getCollection("blog");
+const collectionPosts = await getCollection("blog");
 
 // Smart icon generator based on content
 function getPostIcon(title, description) {
@@ -23,9 +23,30 @@ function getPostIcon(title, description) {
   return "📄"; // default
 }
 
-const sortedPosts = posts.sort(
+// Sort all posts by pubDate (newest first)
+const sortedPosts = collectionPosts.sort(
   (a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
 );
+
+// Format folder name for display (e.g. "second-post" → "Second Post")
+const formatFolderName = (folder) =>
+  folder
+    .split('-')
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+
+// Group posts by top-level folder (based on slug like "statistics/intro")
+const sections = {};
+for (const post of sortedPosts) {
+  const slugParts = post.slug.split('/');
+  const folder = slugParts[0] || 'misc';
+
+  if (!sections[folder]) sections[folder] = [];
+  sections[folder].push(post);
+}
+
+// Sorted list of folder names
+const folderNames = Object.keys(sections).sort();
 ---
 
 <Layout
@@ -33,7 +54,6 @@ const sortedPosts = posts.sort(
   description="Welcome to my digital notebook. I write about physics, maths, and ideas in physics — deep thoughts, explained as clearly as possible."
   image="/images/blog-home.png"
 >
-
   <section class="blogs-section">
     <!-- Header Section -->
     <header class="blog-header">
@@ -51,7 +71,7 @@ const sortedPosts = posts.sort(
 
       <div class="header-stats">
         <div class="stat">
-          <span class="stat-number">{posts.length}</span>
+          <span class="stat-number">{sortedPosts.length}</span>
           <span class="stat-label">Articles</span>
         </div>
         <div class="stat">
@@ -61,45 +81,53 @@ const sortedPosts = posts.sort(
       </div>
     </header>
 
-    <!-- Blog Posts Grid -->
-    <div class="blog-grid">
-      {sortedPosts.map((post) => (
-        <a href={`/blog/${post.slug}/`} class="blog-card">
-          <div class="card-header">
-            <div class="post-icon">
-              {post.data.icon || getPostIcon(post.data.title, post.data.description)}
-            </div>
-            <div class="card-badge">
-              {new Date(post.data.pubDate) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-                ? "New"
-                : "Popular"}
-            </div>
+    <!-- Folder Sections -->
+    {
+      folderNames.map((folder) => (
+        <section class="folder-section">
+          <h2 class="folder-title">{formatFolderName(folder)}</h2>
+
+          <div class="blog-grid">
+            {sections[folder].map((post) => (
+              <a href={`/blog/${post.slug}/`} class="blog-card">
+                <div class="card-header">
+                  <div class="post-icon">
+                    {post.data.icon || getPostIcon(post.data.title, post.data.description)}
+                  </div>
+                  <div class="card-badge">
+                    {new Date(post.data.pubDate) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+                      ? "New"
+                      : "Popular"}
+                  </div>
+                </div>
+
+                <h3>{post.data.title}</h3>
+                <p>{post.data.description || "Click to read this fascinating article..."}</p>
+
+                <div class="blog-meta">
+                  <span class="read-time">⏱️ {post.data.readTime || "5 min read"}</span>
+                  <span class="blog-date">
+                    📅{" "}
+                    {post.data.pubDate
+                      ? new Date(post.data.pubDate).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })
+                      : ""}
+                  </span>
+                </div>
+
+                <div class="read-more">Read Article →</div>
+              </a>
+            ))}
           </div>
-
-          <h3>{post.data.title}</h3>
-          <p>{post.data.description || "Click to read this fascinating article..."}</p>
-
-          <div class="blog-meta">
-            <span class="read-time">⏱️ {post.data.readTime || "5 min read"}</span>
-            <span class="blog-date">
-              📅{" "}
-              {post.data.pubDate
-                ? new Date(post.data.pubDate).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })
-                : ""}
-            </span>
-          </div>
-
-          <div class="read-more">Read Article →</div>
-        </a>
-      ))}
-    </div>
+        </section>
+      ))
+    }
 
     <!-- Empty State -->
-    {posts.length === 0 && (
+    {sortedPosts.length === 0 && (
       <div class="empty-state">
         <div class="empty-icon">📝</div>
         <h3>No Articles Yet</h3>
@@ -195,6 +223,18 @@ const sortedPosts = posts.sort(
     opacity: 0.8;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+  }
+
+  /* Folder sections */
+  .folder-section {
+    margin-bottom: 3rem;
+  }
+
+  .folder-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    color: #111827;
   }
 
   /* Blog Grid Styles */
