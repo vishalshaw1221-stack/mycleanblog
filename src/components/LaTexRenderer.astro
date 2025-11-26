@@ -11,13 +11,11 @@ const { content } = Astro.props;
   </div>
   
   <script is:inline>
-    // Find the div we just created
     const container = document.currentScript.previousElementSibling;
     try {
-      // Convert LaTeX to HTML automatically
       container.innerHTML = latexjs.html(container.textContent);
     } catch (error) {
-      container.innerHTML = '<div style="color: red; padding: 20px; border: 1px solid red;">LaTeX Error: ' + error.message + '</div>';
+      container.innerHTML = '<div style="color: red;">LaTeX Error: ' + error.message + '</div>';
     }
   </script>
 </div>
