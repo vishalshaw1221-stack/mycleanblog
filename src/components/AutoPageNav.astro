@@ -1,20 +1,20 @@
 ---
 // src/components/AutoPageNav.astro
-// SMART navigation - automatically detects current folder
+// SMART navigation - works within each folder automatically
 
 const { current = null } = Astro.props;
 
 // Get current folder from URL path
 const currentPath = current || Astro.url.pathname;
-// Example: /blog/statistics/introduction/ → folder = 'statistics'
-const folder = currentPath.split('/')[2];
+// Example: /blog/second-post/what-is-up/ → folder = 'second-post'
+const currentFolder = currentPath.split('/')[2];
 
 // Get ALL posts from ALL folders
 const allModules = import.meta.glob('/src/content/blog/**/index.mdx', {
   eager: true
 });
 
-// Filter to only include posts from the CURRENT folder
+// Process ALL files and filter by current folder
 const pages = Object.entries(allModules)
   .map(([filePath, module]) => {
     const route = filePath
@@ -22,7 +22,8 @@ const pages = Object.entries(allModules)
       .replace('/index.mdx', '/');
 
     // Extract folder from file path
-    const fileFolder = filePath.split('/')[4]; // src/content/blog/statistics/introduction/index.mdx
+    // src/content/blog/second-post/what-is-up/index.mdx → folder = 'second-post'
+    const fileFolder = filePath.split('/')[4];
     
     return {
       route: route,
@@ -31,9 +32,9 @@ const pages = Object.entries(allModules)
       folder: fileFolder
     };
   })
-  // FILTER: Only keep pages from the current folder
-  .filter(page => page.folder === folder)
-  // Sort by order
+  // FILTER: Only keep pages from the CURRENT folder
+  .filter(page => page.folder === currentFolder)
+  // Sort by order within this folder
   .sort((a, b) => a.order - b.order);
 
 const currentIndex = pages.findIndex(page => page.route === currentPath);
