@@ -1,18 +1,20 @@
 ---
 // src/components/AutoPageNav.astro
+// SMART navigation - automatically detects current folder
 
 const { current = null } = Astro.props;
 
-// Get all statistics posts
-const modules = import.meta.glob('/src/content/blog/statistics/**/index.mdx', {
+// Get current folder from URL path
+const currentPath = current || Astro.url.pathname;
+// Example: /blog/statistics/introduction/ → folder = 'statistics'
+const folder = currentPath.split('/')[2]; // Gets 'statistics' from the path
+
+// Only get posts from the CURRENT folder
+const modules = import.meta.glob(`/src/content/blog/${folder}/**/index.mdx`, {
   eager: true
 });
 
-// Convert to array and extract data
 const pages = Object.entries(modules).map(([filePath, module]) => {
-  // Convert file path to URL route
-  // From: /src/content/blog/statistics/introduction/index.mdx
-  // To: /blog/statistics/introduction/
   const route = filePath
     .replace('/src/content/blog', '/blog')
     .replace('/index.mdx', '/');
@@ -24,14 +26,10 @@ const pages = Object.entries(modules).map(([filePath, module]) => {
   };
 });
 
-// Sort pages by order
 pages.sort((a, b) => a.order - b.order);
 
-// Find current page index
-const currentPath = current || Astro.url.pathname;
 const currentIndex = pages.findIndex(page => page.route === currentPath);
 
-// Get previous and next pages
 const prevPage = currentIndex > 0 ? pages[currentIndex - 1] : null;
 const nextPage = currentIndex < pages.length - 1 ? pages[currentIndex + 1] : null;
 ---
