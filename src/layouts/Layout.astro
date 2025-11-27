@@ -102,21 +102,26 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
     <!-- ======== MathJax: only load when page sets math: true ======== -->
     {math && (
       <>
-        <script>
-          window.MathJax = {
-  tex: {
-    inlineMath: [['$', '$'], ['\\(', '\\)']],
-    displayMath: [['$$','$$'], ['\\[','\\]']],
-    tags: 'ams',           // ✅ ADD THIS LINE (~line 88)
-    packages: ['base', 'ams'],
-  },
-            options: {
-              // don't touch code/pre blocks, but allow math in normal HTML
-              skipHtmlTags: ['script','noscript','style','textarea','pre','code'],
-            },
-            startup: { typeset: true },
-          };
-        </script>
+        
+  <script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+
+      // important bits:
+      packages: { '[+]': ['ams'] },  // add AMS environments
+      tags: 'ams',                   // auto-number "equation", "align", etc.
+      tagSide: 'right',              // number on the right
+      tagIndent: '0.8em',            // small indent from content
+    },
+    options: {
+      skipHtmlTags: ['script','noscript','style','textarea','pre','code'],
+    },
+    startup: { typeset: true },
+  };
+</script>
+            
         <script
           id="MathJax-script"
           async
