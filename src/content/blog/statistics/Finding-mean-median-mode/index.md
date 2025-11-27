@@ -45,7 +45,7 @@ Now, $f_i$ is representing frequency of corresponding value of class interval $x
 
 it's just middle value of class interval means if class interval is 10-15 then class mark is $\frac{10+15}{2}=12.5$
 
-[**Assumed Mean Method:**]{.underline}
+[**Assumed Mean Method:**]
 
 In previous method multiplying $f_ix_i$ and then adding is nice and good for small numbers but for large numbers it's going to be unnecessary pain because we have a simple way to bypass this, but before that let me show you something:
 
@@ -81,7 +81,7 @@ so if we counter a big class mark, we can actually subtract any number we want f
 
 And which number we prefer to subtract? $\rightarrow$ middle number from class mark because above it will become negative and below it will become positive which will help to decrease calculation.
 
-::: {#tab:table3}
+::: 
    Class Interval   Frequency   Class Mark   $d_i=x_i-a$
   ---------------- ----------- ------------ -------------
         0-10            2           5            -10
@@ -91,7 +91,6 @@ And which number we prefer to subtract? $\rightarrow$ middle number from class m
   : An example
 :::
 
-[\[tab:table3\]]{#tab:table3 label="tab:table3"}
 
 15 is apparent mean $a$. Basically we are taking it as a number which will be subtracted from all other number in class mark.
 
