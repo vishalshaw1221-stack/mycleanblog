@@ -31,7 +31,7 @@ Now to our main work, this bit is a little technical, but precession without pro
 
 **Simple Direct Method:** \begin{equation}
 \bar{x}= \frac{\sum\limits_{i=1}^{n}f_ix_i}{\sum\limits_{i=1}^{n}f_i}
-\end{equation}
+\tag{1}\end{equation}
 
 **Extension of equation 1:**
 
