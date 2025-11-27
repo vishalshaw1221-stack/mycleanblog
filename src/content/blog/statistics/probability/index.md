@@ -3,6 +3,7 @@ title: "Probability Basics"
 pubDate: 2023-11-26
 description: "Introduction to probability"
 order: 3
+math: true
 ---
 
 import AutoPageNav from '../../../../components/AutoPageNav.astro';
