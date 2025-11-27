@@ -19,8 +19,8 @@ export async function getStaticPaths() {
   const blogPosts = await getCollection("blog");
 
   return blogPosts.map((post) => ({
-    // [...slug] expects an ARRAY, so split on "/"
-    params: { slug: post.slug.split("/") },
+    // For [...slug], Astro is fine with a string here like "nav-test/first-test"
+    params: { slug: post.slug },
     props: { post },
   }));
 }
