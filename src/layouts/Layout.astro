@@ -104,11 +104,12 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
       <>
         <script>
           window.MathJax = {
-            tex: {
-              inlineMath: [['$', '$'], ['\\(', '\\)']],
-              displayMath: [['$$','$$'], ['\\[','\\]']],
-              packages: ['base', 'ams'],
-            },
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$','$$'], ['\\[','\\]']],
+    tags: 'ams',           // ✅ ADD THIS LINE (~line 88)
+    packages: ['base', 'ams'],
+  },
             options: {
               // don't touch code/pre blocks, but allow math in normal HTML
               skipHtmlTags: ['script','noscript','style','textarea','pre','code'],
