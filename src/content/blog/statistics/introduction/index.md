@@ -1,7 +1,7 @@
 ---
-title: "Probability Basics"
+title: "Introduction"
 pubDate: 2023-11-26
-description: "Introduction to probability"
+description: "Introduction to Statistics"
 order: 1
 math: true
 ---
