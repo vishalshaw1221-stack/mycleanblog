@@ -6,7 +6,7 @@ import { SEO } from "astro-seo";
 
 // CORRECT MATHJAX SETUP - Access frontmatter from props
 // Get math directly from props (passed from [...slug].astro)
-const math = Astro.props.math || false;
+const math = !!Astro.props.math;
 
 console.log('Math enabled:', math); // Keep this for debugging
 
@@ -41,7 +41,6 @@ const socialProfiles = [
 ];
 
 // Build JSON-LD structuredData (Person + Organization + Website)
-// If this page is an article, pages can add more article-specific structured data.
 const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
@@ -78,7 +77,6 @@ const structuredData = {
 
 // If page sends article-level structured data via seo.articleSchema, merge it:
 if (seo?.articleSchema) {
-  // Insert article schema with mainEntityOfPage referencing this page
   structuredData["@graph"].push({
     "@type": "Article",
     ...seo.articleSchema,
@@ -99,65 +97,71 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
 <html lang="en">
   <head>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-75C47971QF"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-75C47971QF"></script>
+
     <!-- ======== MathJax: only load when page sets math: true ======== -->
-{math && (
-  <>
+    {math && (
+      <>
+        <script>
+          window.MathJax = {
+            tex: {
+              inlineMath: [['$', '$'], ['\\(', '\\)']],
+              displayMath: [['$$','$$'], ['\\[','\\]']],
+              packages: ['base', 'ams'],
+            },
+            options: {
+              // don't touch code/pre blocks, but allow math in normal HTML
+              skipHtmlTags: ['script','noscript','style','textarea','pre','code'],
+            },
+            startup: { typeset: true },
+          };
+        </script>
+        <script
+          id="MathJax-script"
+          async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+        ></script>
+      </>
+    )}
+    <!-- ============================================================== -->
+
     <script>
-      window.MathJax = {
-        tex: {
-          inlineMath: [['$', '$'], ['\\(', '\\)']],
-          displayMath: [['$$','$$'], ['\\[','\\]']],
-          packages: ['base', 'ams']
-        },
-        options: {
-          skipHtmlTags: ['script','noscript','style','textarea','pre']
-        },
-        startup: { typeset: true }
-      };
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-75C47971QF');
     </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-  </>
-)}
-<!-- ============================================================== -->
-    
 
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-J0V6QXQ31L');
+    </script>
 
-  gtag('config', 'G-75C47971QF');
-</script>
-
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-J0V6QXQ31L');
-</script>
-
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-4S50023WZL');
-</script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-4S50023WZL');
+    </script>
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
     <!-- Primary title + description -->
-    <title>{metaTitle}{metaTitle && metaTitle.includes("Physics in physics") ? "" : ` | Physics in physics`}</title>
+    <title>
+      {metaTitle}
+      {metaTitle && metaTitle.includes("Physics in physics") ? "" : ` | Physics in physics`}
+    </title>
     <meta name="description" content={metaDescription} />
     <meta name="keywords" content={metaKeywords} />
     <meta name="author" content="Vishal Kumar Shaw" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href={canonicalUrl} />
 
-    <!-- SEO Helper (astro-seo) - safe to keep, still add manual tags too -->
+    <!-- SEO Helper (astro-seo) -->
     <SEO
       title={metaTitle}
       description={metaDescription}
@@ -170,7 +174,6 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
           url: canonicalUrl,
           description: metaDescription,
         },
-        // if the page provided images array, include it
         images: seo?.openGraph?.images || [{ url: metaImage }],
       }}
       twitter={{
@@ -179,36 +182,37 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
         creator: twitterHandle,
       }}
     />
-    <!-- ✅ JSON-LD Structured Data -->
-<script type="application/ld+json">
-{JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Physics in Physics",
-  url: "https://mycleanblog.vercel.app/",
-  logo: "https://mycleanblog.vercel.app/favicon.svg",
-  sameAs: [
-    "https://www.facebook.com/profile.php?id=61583067824148",
-    "https://www.instagram.com/physicsinphysics/",
-    "https://x.com/PhysicsP32590",
-    "https://www.linkedin.com/me?trk=p_mwlite_feed-secondary_nav",
-    "https://m.youtube.com/channel/UCQeEKqqidI7I0etj-Io0CZA/videos",
-  ],
-  description: description,
-  founder: {
-    "@type": "Person",
-    name: "Vishal Kumar Shaw",
-  },
-  publisher: {
-    "@type": "Organization",
-    name: "Physics in Physics",
-    logo: {
-      "@type": "ImageObject",
-      url: "https://mycleanblog.vercel.app/favicon.svg",
-    },
-  },
-})}
-</script>
+
+    <!-- ✅ JSON-LD Structured Data (Organization) -->
+    <script type="application/ld+json">
+      {JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        name: "Physics in Physics",
+        url: "https://mycleanblog.vercel.app/",
+        logo: "https://mycleanblog.vercel.app/favicon.svg",
+        sameAs: [
+          "https://www.facebook.com/profile.php?id=61583067824148",
+          "https://www.instagram.com/physicsinphysics/",
+          "https://x.com/PhysicsP32590",
+          "https://www.linkedin.com/me?trk=p_mwlite_feed-secondary_nav",
+          "https://m.youtube.com/channel/UCQeEKqqidI7I0etj-Io0CZA/videos",
+        ],
+        description: description,
+        founder: {
+          "@type": "Person",
+          name: "Vishal Kumar Shaw",
+        },
+        publisher: {
+          "@type": "Organization",
+          name: "Physics in Physics",
+          logo: {
+            "@type": "ImageObject",
+            url: "https://mycleanblog.vercel.app/favicon.svg",
+          },
+        },
+      })}
+    </script>
 
     <!-- Open Graph -->
     <meta property="og:site_name" content="Physics in physics" />
@@ -231,7 +235,7 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
     <link rel="icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-    <!-- Structured data JSON-LD -->
+    <!-- Structured data JSON-LD (graph) -->
     <script type="application/ld+json">
       {JSON.stringify(structuredData)}
     </script>
@@ -245,13 +249,13 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
       rel="stylesheet"
     />
 
-    <!-- Font Awesome (kept from your original) -->
+    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
 
-    <!-- Your original styles (kept intact) -->
+    <!-- Your original styles -->
     <style>
       :root {
         --space-blue: #0f172a;
