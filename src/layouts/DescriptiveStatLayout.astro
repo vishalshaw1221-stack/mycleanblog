@@ -1,0 +1,14 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import AutoPageNav from '../components/AutoPageNav.astro';
+
+const { frontmatter, children } = Astro.props;
+---
+
+<BaseLayout frontmatter={frontmatter}>
+  <article class="prose">
+    {children}
+  </article>
+
+  <AutoPageNav />
+</BaseLayout>
