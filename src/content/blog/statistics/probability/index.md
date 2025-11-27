@@ -8,7 +8,7 @@ math: true
 
 import AutoPageNav from '../../../../components/AutoPageNav.astro';
 
-$$5+4$$
+$5+4$
 **Introduction**
 ================
 
