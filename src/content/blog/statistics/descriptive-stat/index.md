@@ -4,10 +4,10 @@ pubDate: 2024-01-15
 description: "Testing raw HTML with dollar signs"
 order: 999
 math: true
+layout: ../../../layouts/DescriptiveStatLayout.astro
 ---
 
 
-import AutoPageNav from '../../../components/AutoPageNav.astro';
 
 **Introduction**
 
@@ -197,4 +197,3 @@ where:
 
   - \(f\) = Frequency of Class Interval
 
-<AutoPageNav />
