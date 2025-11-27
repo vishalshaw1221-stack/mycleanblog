@@ -1,13 +1,12 @@
 ---
-author:
-- Vishal Shaw
-date: November 2025
-title: 'Mean, Median, Mode'
+title: "Descriptive Statistics"
 pubDate: 2023-11-26
 description: "Learn about descriptive statistics"
 order: 2
 math: true
+
 ---
+
 
 **Introduction**
 ================
