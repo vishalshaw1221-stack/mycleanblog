@@ -3,10 +3,58 @@ import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 import BlogCard from "../components/BlogCard.astro";
 
+// 1. Grab all Astro blog pages under /src/pages/blog/**
+// Since this file is src/pages/index.astro,
+// the correct relative path is "./blog/**/*.astro"
+const astroPages = import.meta.glob("./blog/**/*.astro", {
+  eager: true,
+});
+
+// 2. Build an array of posts from those modules
+type AstroModule = {
+  frontmatter?: {
+    title?: string;
+    description?: string;
+    pubDate?: string;
+    category?: string;
+  };
+};
+
+type AstroPost = {
+  url: string;
+  title: string;
+  description: string;
+  pubDate: string;
+  category: string;
+};
+
+const astroPosts: AstroPost[] = Object.entries(astroPages)
+  .map(([path, mod]) => {
+    const m = mod as AstroModule;
+    if (!m.frontmatter?.title) return null; // skip if no frontmatter
+
+    // Example path: "./blog/statistics/descriptive-stat/index.astro"
+    // We want:      "/blog/statistics/descriptive-stat/"
+    const url = path
+      .replace("./", "/") // "./blog/..." -> "/blog/..."
+      .replace(/index\.astro$/, "") // remove trailing index.astro
+      .replace(/\.astro$/, "/"); // for non-index astro files, add trailing slash
+
+    return {
+      url,
+      title: m.frontmatter.title!,
+      description: m.frontmatter.description ?? "",
+      pubDate: m.frontmatter.pubDate ?? "",
+      category: m.frontmatter.category ?? "blog",
+    };
+  })
+  .filter((p): p is AstroPost => p !== null);
+
+// 3. Existing collection posts (from src/content/blog/**)
 const collectionPosts = await getCollection("blog");
 
 // Smart icon generator based on content
-function getPostIcon(title, description) {
+function getPostIcon(title: string, description?: string) {
   const text = (title + " " + (description || "")).toLowerCase();
 
   if (text.includes("termux") || text.includes("android") || text.includes("mobile")) return "📱";
@@ -23,26 +71,75 @@ function getPostIcon(title, description) {
   return "📄"; // default
 }
 
-// Sort all posts by pubDate (newest first)
-const sortedPosts = collectionPosts.sort(
-  (a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
+// Normalize both collection posts and astro posts into one type
+type NormalPost = {
+  url: string;
+  title: string;
+  description: string;
+  pubDate: string;
+  readTime?: string;
+  icon?: string;
+  folder: string;
+};
+
+// Collection posts → NormalPost[]
+const normalizedCollectionPosts: NormalPost[] = collectionPosts.map((post) => {
+  const slugParts = post.slug.split("/");
+  const folder = slugParts[0] || "misc";
+
+  const pubDate =
+    post.data.pubDate instanceof Date
+      ? post.data.pubDate.toISOString()
+      : String(post.data.pubDate ?? "");
+
+  return {
+    url: `/blog/${post.slug}/`,
+    title: post.data.title,
+    description: post.data.description || "",
+    pubDate,
+    readTime: post.data.readTime,
+    icon: post.data.icon,
+    folder,
+  };
+});
+
+// Astro posts → NormalPost[]
+const normalizedAstroPosts: NormalPost[] = astroPosts.map((p) => {
+  // /blog/statistics/descriptive-stat/ -> ['blog','statistics','descriptive-stat']
+  const parts = p.url.split("/").filter(Boolean);
+  const folder = parts[1] || "misc"; // parts[0] = 'blog', parts[1] = folder
+
+  return {
+    url: p.url,
+    title: p.title,
+    description: p.description,
+    pubDate: p.pubDate,
+    folder,
+  };
+});
+
+// Combine and sort all posts by date (newest first)
+const allPosts: NormalPost[] = [...normalizedCollectionPosts, ...normalizedAstroPosts].sort(
+  (a, b) =>
+    new Date(b.pubDate || 0).getTime() -
+    new Date(a.pubDate || 0).getTime()
 );
 
+// This is what we use for counts in header & empty state
+const sortedPosts = allPosts;
+
 // Format folder name for display (e.g. "second-post" → "Second Post")
-const formatFolderName = (folder) =>
+const formatFolderName = (folder: string) =>
   folder
-    .split('-')
+    .split("-")
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(' ');
+    .join(" ");
 
-// Group posts by top-level folder (based on slug like "statistics/intro")
-const sections = {};
-for (const post of sortedPosts) {
-  const slugParts = post.slug.split('/');
-  const folder = slugParts[0] || 'misc';
-
-  if (!sections[folder]) sections[folder] = [];
-  sections[folder].push(post);
+// Group all posts by folder (top-level section)
+const sections: Record<string, NormalPost[]> = {};
+for (const post of allPosts) {
+  if (!sections[post.folder]) sections[post.folder] = [];
+  sections[post.folder].push(post);
 }
 
 // Sorted list of folder names
@@ -81,7 +178,7 @@ const folderNames = Object.keys(sections).sort();
       </div>
     </header>
 
-    <!-- Folder Sections -->
+    <!-- Folder Sections (now includes .astro + collection posts) -->
     {
       folderNames.map((folder) => (
         <section class="folder-section">
@@ -89,27 +186,27 @@ const folderNames = Object.keys(sections).sort();
 
           <div class="blog-grid">
             {sections[folder].map((post) => (
-              <a href={`/blog/${post.slug}/`} class="blog-card">
+              <a href={post.url} class="blog-card">
                 <div class="card-header">
                   <div class="post-icon">
-                    {post.data.icon || getPostIcon(post.data.title, post.data.description)}
+                    {post.icon || getPostIcon(post.title, post.description)}
                   </div>
                   <div class="card-badge">
-                    {new Date(post.data.pubDate) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+                    {new Date(post.pubDate) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
                       ? "New"
                       : "Popular"}
                   </div>
                 </div>
 
-                <h3>{post.data.title}</h3>
-                <p>{post.data.description || "Click to read this fascinating article..."}</p>
+                <h3>{post.title}</h3>
+                <p>{post.description || "Click to read this fascinating article..."}</p>
 
                 <div class="blog-meta">
-                  <span class="read-time">⏱️ {post.data.readTime || "5 min read"}</span>
+                  <span class="read-time">⏱️ {post.readTime || "5 min read"}</span>
                   <span class="blog-date">
                     📅{" "}
-                    {post.data.pubDate
-                      ? new Date(post.data.pubDate).toLocaleDateString("en-US", {
+                    {post.pubDate
+                      ? new Date(post.pubDate).toLocaleDateString("en-US", {
                           year: "numeric",
                           month: "short",
                           day: "numeric",
@@ -126,7 +223,7 @@ const folderNames = Object.keys(sections).sort();
       ))
     }
 
-    <!-- Empty State -->
+    {/* Empty State */}
     {sortedPosts.length === 0 && (
       <div class="empty-state">
         <div class="empty-icon">📝</div>
