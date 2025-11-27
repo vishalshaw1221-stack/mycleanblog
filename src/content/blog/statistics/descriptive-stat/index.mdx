@@ -6,22 +6,214 @@ order: 999
 math: true
 ---
 
-import Math from '../../../components/Math.astro';
+
 import AutoPageNav from '../../../components/AutoPageNav.astro';
 
-<h1>Math HTML Test</h1>
-
-<p>This is a test with raw HTML containing dollar signs:</p>
-
-<p>Inline math: <span class="math inline">$E = mc^2$</span></p>
-
-<p>Another inline: <span class="math inline">$a^2 + b^2 = c^2$</span></p>
-
-<p>Display math:</p>
-<span class="math display">$$\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}$$</span>
-
-<p>Fraction test: <span class="math inline">$\frac{1}{2} + \frac{1}{3}$</span></p>
-
-<p>Mixed text with <span class="math inline">$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$</span> formula.</p>
+<h1 id="introduction"><strong>Introduction</strong></h1>
+<p>All three are measures of central tendency.</p>
+<p><strong>Mean</strong> is just the average of the data.</p>
+<p><strong>Median</strong> The median is the middle value of the data when it is arranged in ascending order. If there is an even number of data points, the median is the average of the two middle values, for example, if the data is 2, 3, 4, 2,3,4,4, then the median is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>3</mn><mo>+</mo><mn>4</mn><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mn>2</mn><mo>=</mo><mn>3.5</mn></mrow><annotation encoding="application/x-tex">(3 + 4)/2 =3.5</annotation></semantics></math>.</p>
+<p>and,</p>
+<p><strong>Mode</strong> The mode is the number that appears most frequently in a data set, as shown in the previous example, where the mode is 4. It is important to note that there can be more than one mode in a data set if multiple numbers have the same highest frequency of occurrence.</p>
+<h1 id="uses"><strong>Uses</strong></h1>
+<p><span class="underline"><strong>Mean:</strong></span></p>
+<p>It’s just an average, more like taking rate of change but at a constant rate. For example: If there are two tea stalls and one runs for 30 days and the other for 20 days. You know the data for the sales, but how would you guess which is selling more? by just adding per day sales? This is not the correct way, it’s biased to compare one’s 30 days sales with others’ 20 days then? We have a solution, after summing and dividing by the number of days per day, you will get the actual picture of which shop has higher sales volumes.</p>
+<p><span class="underline"><strong>Median:</strong></span></p>
+<p>The median comes in where the mean becomes unuseful or not enough, say in the previous case if you get an average of per day of sale Rs 500, and you are wondering if the sale is well distributed over the total selling period or if on one day there was a sudden rush of customers. Importance of knowing well distributed will be understood in this example saying there is swimming club and only 5 years old toddlers and above, the 60-year-old people are regular visitors if you ask what is the average age of the person in the swimming pool the club recipient would answer 35 years so you would expect there would be some people in their 20s then 30s and 40s basically young or mature adults but when you entered in the pool area you saw no one of your age but only children and retired person. In this case it is good to also ask median with mean since median is just middle number if numbers arranged in ascending if there are actually enough people of adulthood you would find middle number in between 20s to 40s but if not, like in this case you would get median as maybe 6 or 7 or 60s or 70s. After knowing mean you can then figure out if mean is 35 and median is 60 then there are probably more children and older people and very few or no adults.</p>
+<p><span class="underline"><strong>Mode:</strong></span></p>
+<p>The mode is more used by shopkeepers because when ordering from wholesalers they must know which product was sold the most, so that those particular products can be ordered more.</p>
+<h1 id="finding-mean-median-mode-of-frequency-distribution-tables"><strong>Finding Mean, Median, Mode of Frequency Distribution Tables</strong></h1>
+<p>Up to now it was a basic understanding of the Central tendency of raw data, but data could become so large that adding or arranging in ascending order or tracking every bit of data could become impossible, in that case even if actual value of Central tendencies are off by little margin it’s forgivable, but we want clean and most precise way to get values as close as possible.</p>
+<p><strong>“Frequency distribution table”</strong> Basically, instead of working with each data point, we create class intervals where we distribute data into small classes. For example, rather than counting separately 3 people who are 2 years old and 2 people who are 5 years old, we would say that in the class interval of 0 to 5, there are five children, or the frequency is 5. This process continues similarly.</p>
+<table>
+<caption>Table</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Class Interval</th>
+<th style="text-align: center;">Frequency</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0-5</td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">5-10</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">10-15</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">15-20</td>
+<td style="text-align: center;">4</td>
+</tr>
+</tbody>
+</table>
+<p>I would recommend you to look out this kind of table from book or online to get better clarity if you are new.</p>
+<p>Now to our main work, this bit is a little technical, but precession without proper reason seems like reading without vision (no offence to blind people I kept it because it rhymed).</p>
+<h2 id="now-to-calculate-mean"><span class="underline"><strong>Now To Calculate Mean:</strong></span></h2>
+<p><strong>Simple Direct Method:</strong> <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo>=</mo><mfrac><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>f</mi><mi>i</mi></msub><msub><mi>x</mi><mi>i</mi></msub></mrow><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>f</mi><mi>i</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">\bar{x}= \frac{\sum\limits_{i=1}^{n}f_ix_i}{\sum\limits_{i=1}^{n}f_i}</annotation></semantics></math></p>
+<p><strong>Extension of equation 1:</strong></p>
+<p>Equation 1 is just telling you to this:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><msub><mi>f</mi><mn>1</mn></msub><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><msub><mi>f</mi><mn>2</mn></msub><msub><mi>x</mi><mn>2</mn></msub><mo>+</mo><msub><mi>f</mi><mn>3</mn></msub><msub><mi>x</mi><mn>3</mn></msub><mo>+</mo><mi>⋯</mi><mo>+</mo><msub><mi>f</mi><mi>n</mi></msub><msub><mi>x</mi><mi>n</mi></msub></mrow><mrow><msub><mi>f</mi><mn>1</mn></msub><mo>+</mo><msub><mi>f</mi><mn>2</mn></msub><mo>+</mo><msub><mi>f</mi><mn>3</mn></msub><mo>+</mo><mi>⋯</mi><mo>+</mo><msub><mi>f</mi><mi>n</mi></msub></mrow></mfrac><annotation encoding="application/x-tex">\frac{f_1 x_1 + f_2 x_2 + f_3 x_3 + \cdots + f_n x_n}{f_1 + f_2 + f_3 + \cdots + f_n}</annotation></semantics></math></p>
+<p>“<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></msubsup><annotation encoding="application/x-tex">\sum_{i=1}^{n}</annotation></semantics></math>” is summation representing sign telling you to sum repeated placing i=1 then 2 and so on to ‘n’ note that equation 1 doesn’t expand to <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>f</mi><mn>1</mn></msub><mo>+</mo><msub><mi>f</mi><mn>2</mn></msub><mo>+</mo><msub><mi>f</mi><mn>3</mn></msub><mo>+</mo><mi>⋯</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub><mo>+</mo><msub><mi>x</mi><mn>3</mn></msub><mo>+</mo><mi>⋯</mi><mo>+</mo><msub><mi>x</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><mrow><msub><mi>f</mi><mn>1</mn></msub><mo>+</mo><msub><mi>f</mi><mn>2</mn></msub><mo>+</mo><msub><mi>f</mi><mn>3</mn></msub><mo>+</mo><mi>⋯</mi><mo>+</mo><msub><mi>f</mi><mi>n</mi></msub></mrow></mfrac><annotation encoding="application/x-tex">\frac{(f_1+f_2+f_3+\cdots)(x_1+x_2+x_3+\cdots+x_n)}{f_1+f_2+f_3+\cdots+f_n}</annotation></semantics></math></p>
+<p>this will just give <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub><mo>+</mo><msub><mi>x</mi><mn>3</mn></msub><mo>+</mo><mi>⋯</mi><mo>+</mo><msub><mi>x</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x_1+x_2+x_3+\cdots+x_n)</annotation></semantics></math> which is just sum of data not mean so need to be careful for beginners.</p>
+<p>Now, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mi>i</mi></msub><annotation encoding="application/x-tex">f_i</annotation></semantics></math> is representing frequency of corresponding value of class interval <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mi>i</mi></msub><mo>=</mo><mtext mathvariant="normal">class mark</mtext></mrow><annotation encoding="application/x-tex">x_i= \text{class mark}</annotation></semantics></math></p>
+<p>it’s just middle value of class interval means if class interval is 10-15 then class mark is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mn>10</mn><mo>+</mo><mn>15</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>12.5</mn></mrow><annotation encoding="application/x-tex">\frac{10+15}{2}=12.5</annotation></semantics></math></p>
+<p><span class="underline"><strong>Assumed Mean Method:</strong></span></p>
+<p>In previous method multiplying <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>i</mi></msub><msub><mi>x</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">f_ix_i</annotation></semantics></math> and then adding is nice and good for small numbers but for large numbers it’s going to be unnecessary pain because we have a simple way to bypass this, but before that let me show you something:</p>
+<table>
+<caption>Say we have a frequency distribution table:</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Class Interval</th>
+<th style="text-align: center;">Frequency</th>
+<th style="text-align: center;">Class mark</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0-10</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">10-20</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">20-30</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">25</td>
+</tr>
+</tbody>
+</table>
+<p>Now, <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>X</mi><mo accent="true">‾</mo></mover><mo>=</mo><mfrac><mrow><mn>5</mn><mo>×</mo><mn>2</mn><mo>+</mo><mn>15</mn><mo>×</mo><mn>3</mn><mo>+</mo><mn>25</mn><mo>×</mo><mn>1</mn></mrow><mrow><mn>2</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>1</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">\bar{X}=\frac{5\times2+15\times3+25\times1}{2+3+1}
+   \label{eq:meanex}</annotation></semantics></math></p>
+<p>Now, subtract a number say 5 like this:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right"></mtd><mtd columnalign="left"><mfrac><mrow><mo stretchy="false" form="prefix">(</mo><mn>5</mn><mo>−</mo><mn>5</mn><mo stretchy="false" form="postfix">)</mo><mo>×</mo><mn>2</mn><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mn>15</mn><mo>−</mo><mn>5</mn><mo stretchy="false" form="postfix">)</mo><mo>×</mo><mn>3</mn><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mn>25</mn><mo>−</mo><mn>5</mn><mo stretchy="false" form="postfix">)</mo><mo>×</mo><mn>1</mn></mrow><mrow><mn>2</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>1</mn></mrow></mfrac></mtd></mtr><mtr><mtd columnalign="right"></mtd><mtd columnalign="left"><mo>=</mo><mfrac><mrow><mn>5</mn><mo>×</mo><mn>2</mn><mo>−</mo><mn>5</mn><mo>×</mo><mn>2</mn><mo>+</mo><mn>15</mn><mo>×</mo><mn>3</mn><mo>−</mo><mn>5</mn><mo>×</mo><mn>3</mn><mo>+</mo><mn>25</mn><mo>×</mo><mn>1</mn><mo>−</mo><mn>5</mn><mo>×</mo><mn>1</mn></mrow><mrow><mn>2</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>1</mn></mrow></mfrac></mtd></mtr><mtr><mtd columnalign="right"></mtd><mtd columnalign="left"><mo>=</mo><mfrac><mrow><mn>5</mn><mo>×</mo><mn>2</mn><mo>+</mo><mn>15</mn><mo>×</mo><mn>3</mn><mo>+</mo><mn>25</mn><mo>×</mo><mn>1</mn><mo>−</mo><mn>5</mn><mo>×</mo><mn>2</mn><mo>−</mo><mn>5</mn><mo>×</mo><mn>3</mn><mo>−</mo><mn>5</mn><mo>×</mo><mn>1</mn></mrow><mrow><mn>2</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>1</mn></mrow></mfrac></mtd></mtr><mtr><mtd columnalign="right"></mtd><mtd columnalign="left"><mo>=</mo><mfrac><mrow><mn>5</mn><mo>×</mo><mn>2</mn><mo>+</mo><mn>15</mn><mo>×</mo><mn>3</mn><mo>+</mo><mn>25</mn><mo>×</mo><mn>1</mn></mrow><mrow><mn>2</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>1</mn></mrow></mfrac><mo>−</mo><mfrac><mrow><mn>5</mn><mo>×</mo><mn>2</mn><mo>+</mo><mn>5</mn><mo>×</mo><mn>3</mn><mo>+</mo><mn>5</mn><mo>×</mo><mn>1</mn></mrow><mrow><mn>2</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>1</mn></mrow></mfrac></mtd></mtr><mtr><mtd columnalign="right"></mtd><mtd columnalign="left"><mo>=</mo><mfrac><mrow><mn>5</mn><mo>×</mo><mn>2</mn><mo>+</mo><mn>15</mn><mo>×</mo><mn>3</mn><mo>+</mo><mn>25</mn><mo>×</mo><mn>1</mn></mrow><mn>6</mn></mfrac><mo>−</mo><mn>5</mn><mo>×</mo><mfrac><mn>6</mn><mn>6</mn></mfrac></mtd></mtr><mtr><mtd columnalign="right"></mtd><mtd columnalign="left"><mo>=</mo><mfrac><mrow><mn>5</mn><mo>×</mo><mn>2</mn><mo>+</mo><mn>15</mn><mo>×</mo><mn>3</mn><mo>+</mo><mn>25</mn><mo>×</mo><mn>1</mn></mrow><mn>6</mn></mfrac><mo>−</mo><mn>5</mn></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+ &amp;\frac{(5-5)\times2+(15-5)\times3+(25-5)\times1}{2+3+1}\\
+ &amp;=\frac{5\times2-5\times2+15\times3-5\times3+25\times1-5\times1}{2+3+1}\\
+ &amp;=\frac{5\times2+15\times3+25\times1-5\times2-5\times3-5\times1}{2+3+1}\\
+ &amp;=\frac{5\times2+15\times3+25\times1}{2+3+1}-\frac{5\times2+5\times3+5\times1}{2+3+1}\\
+ &amp;=\frac{5\times2+15\times3+25\times1}{6}-5\times\frac{6}{6}\\
+ &amp;=\frac{5\times2+15\times3+25\times1}{6}-5\end{aligned}</annotation></semantics></math></p>
+<p>I just want you to look at the process not the numbers, see we have subtracted 5 from each number from class mark in our mean, and it is just same as subtracting five from actual mean i.e, subtracting inside in each term of summation is just same as subtracting that outside for once.</p>
+<p>so if we counter a big class mark, we can actually subtract any number we want from each class mark and make our summation easy, then just add that subtracted number as a whole.</p>
+<p>And which number we prefer to subtract? <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>→</mo><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math> middle number from class mark because above it will become negative and below it will become positive which will help to decrease calculation.</p>
+<div id="tab:table3">
+<table>
+<caption>An example</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Class Interval</th>
+<th style="text-align: center;">Frequency</th>
+<th style="text-align: center;">Class Mark</th>
+<th style="text-align: center;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mi>i</mi></msub><mo>=</mo><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">d_i=x_i-a</annotation></semantics></math></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0-10</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">-10</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">10-20</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">20-30</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">25</td>
+<td style="text-align: center;">10</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><span id="tab:table3" label="tab:table3">[tab:table3]</span></p>
+<p>15 is apparent mean <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>. Basically we are taking it as a number which will be subtracted from all other number in class mark.</p>
+<p>Now, <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right"><mover><mi>d</mi><mo accent="true">‾</mo></mover></mtd><mtd columnalign="left"><mo>=</mo><mfrac><mrow><mo>−</mo><mn>10</mn><mo>×</mo><mn>2</mn><mo>+</mo><mn>0</mn><mo>×</mo><mn>3</mn><mo>+</mo><mn>10</mn><mo>×</mo><mn>1</mn></mrow><mn>6</mn></mfrac></mtd></mtr><mtr><mtd columnalign="right"></mtd><mtd columnalign="left"><mo>=</mo><mfrac><mrow><mo>−</mo><mn>10</mn></mrow><mn>6</mn></mfrac></mtd></mtr><mtr><mtd columnalign="right"></mtd><mtd columnalign="left"><mo>=</mo><mo>−</mo><mfrac><mn>5</mn><mn>3</mn></mfrac></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+    \bar{d} &amp;= \frac{-10\times2+0\times3+10\times1}{6}\\
+    &amp;=\frac{-10}{6}\\
+    &amp;=-\frac{5}{3}\end{aligned}</annotation></semantics></math></p>
+<p>Now, add <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math> back: <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right"><mover><mi>X</mi><mo accent="true">‾</mo></mover></mtd><mtd columnalign="left"><mo>=</mo><mover><mi>d</mi><mo accent="true">‾</mo></mover><mo>+</mo><mi>a</mi></mtd></mtr><mtr><mtd columnalign="right"></mtd><mtd columnalign="left"><mo>=</mo><mo>−</mo><mfrac><mn>5</mn><mn>3</mn></mfrac><mo>+</mo><mn>15</mn></mtd></mtr><mtr><mtd columnalign="right"></mtd><mtd columnalign="left"><mo>=</mo><mfrac><mn>40</mn><mn>3</mn></mfrac></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+\bar{X} &amp;= \bar{d} + a\\
+&amp;= -\frac{5}{3}+15\\
+&amp;=\frac{40}{3}\end{aligned}</annotation></semantics></math></p>
+<p>Let’s check our result from direct method: <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right"></mtd><mtd columnalign="left"><mfrac><mrow><mn>2</mn><mo>×</mo><mn>5</mn><mo>+</mo><mn>3</mn><mo>×</mo><mn>15</mn><mo>+</mo><mn>1</mn><mo>×</mo><mn>25</mn></mrow><mn>6</mn></mfrac></mtd></mtr><mtr><mtd columnalign="right"></mtd><mtd columnalign="left"><mo>=</mo><mfrac><mrow><mn>10</mn><mo>+</mo><mn>45</mn><mo>+</mo><mn>25</mn></mrow><mn>6</mn></mfrac></mtd></mtr><mtr><mtd columnalign="right"></mtd><mtd columnalign="left"><mo>=</mo><mfrac><mn>80</mn><mn>6</mn></mfrac><mo>=</mo><mfrac><mn>40</mn><mn>3</mn></mfrac></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+    &amp;\frac{2\times5+3\times15+1\times25}{6}\\
+    &amp;=\frac{10+45+25}{6}\\
+    &amp;=\frac{80}{6}= \frac{40}{3}\end{aligned}</annotation></semantics></math> so it works.</p>
+<p><span class="underline"><strong>Step Deviation Method:</strong></span> Now if you see <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>d</mi><mi>i</mi></msub><annotation encoding="application/x-tex">d_i</annotation></semantics></math> in Table <a href="#tab:table3" data-reference-type="ref" data-reference="tab:table3">1</a>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>d</mi><mi>i</mi></msub><annotation encoding="application/x-tex">d_i</annotation></semantics></math> is multiple of 10. If we divide each <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>d</mi><mi>i</mi></msub><annotation encoding="application/x-tex">d_i</annotation></semantics></math> by 10 then find mean of new quantity <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mi>i</mi></msub><mo>=</mo><mfrac><msub><mi>d</mi><mi>i</mi></msub><mn>10</mn></mfrac></mrow><annotation encoding="application/x-tex">u_i=\frac{d_i}{10}</annotation></semantics></math></p>
+<p>Then, <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right"><mover><mi>u</mi><mo accent="true">‾</mo></mover></mtd><mtd columnalign="left"><mo>=</mo><mrow><mtext mathvariant="normal">average of </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>u</mi><mi>i</mi></msub></mtd></mtr><mtr><mtd columnalign="right"></mtd><mtd columnalign="left"><mo>=</mo><mfrac><mrow><mo>−</mo><mn>1</mn></mrow><mn>6</mn></mfrac></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+    \bar{u}&amp;= \text{average of } u_i\\
+    &amp;=\frac{-1}{6}\end{aligned}</annotation></semantics></math></p>
+<p>then multiply it back by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>10</mn><annotation encoding="application/x-tex">10</annotation></semantics></math><br />
+i.e, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>u</mi><mo accent="true">‾</mo></mover><mo>×</mo><mn>10</mn><mo>=</mo><mfrac><mrow><mo>−</mo><mn>10</mn></mrow><mn>6</mn></mfrac><mo>=</mo><mover><mi>d</mi><mo accent="true">‾</mo></mover></mrow><annotation encoding="application/x-tex">\bar{u}\times10=\frac{-10}{6}=\bar{d}</annotation></semantics></math><br />
+which is exactly <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>d</mi><mo accent="true">‾</mo></mover><annotation encoding="application/x-tex">\bar{d}</annotation></semantics></math> we found earlier. So it makes things even easier. The concept behind it is simple, it doesn’t require a formal proof because taking common of a product term is easy. In Equation <a href="#eq:meanex" data-reference-type="ref" data-reference="eq:meanex">[eq:meanex]</a> just multiply by any number, and it will easily go inside in each class mark. And finally after finding <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>d</mi><mi>i</mi></msub><annotation encoding="application/x-tex">d_i</annotation></semantics></math> just add assumed mean <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math> to get final mean <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>X</mi><mo accent="true">‾</mo></mover><annotation encoding="application/x-tex">\bar{X}</annotation></semantics></math>.</p>
+<p>So, the final formula is: <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>X</mi><mo accent="true">‾</mo></mover><mo>=</mo><mi>a</mi><mo>+</mo><mi>h</mi><mfrac><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>f</mi><mi>i</mi></msub><msub><mi>u</mi><mi>i</mi></msub></mrow><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>f</mi><mi>i</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">\bar{X}=a+h\frac{\sum\limits_{i=1}^nf_iu_i}{\sum\limits_{i=1}^nf_i}</annotation></semantics></math></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math> is height of class interval, why divide by height and not other number because by taking assumed mean like this, always <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math> is going to come out as factor.</p>
+<h2 id="how-to-calculate-median"><span class="underline"><strong>How to calculate Median:</strong></span></h2>
+<p>Median is the middle value of all the data set if arranged in ascending order. Now, in frequency distribution things are already in ascending so we just need which class contains the value that is middle of all the values. To find these we will add all frequencies of corresponding class intervals, line by line, for all classes and see which contains the middle value.</p>
+<div id="tab:freqdistformedian">
+<table>
+<caption>An Example Of Frequency Distribution Table</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Class Interval</th>
+<th style="text-align: center;">Frequency</th>
+<th style="text-align: center;">Cumulative Frequency</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0-10</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">10-20</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">20-30</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">10</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">30-40</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">13</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><span id="tab:freqdistformedian" label="tab:freqdistformedian">[tab:freqdistformedian]</span></p>
+<h3 id="cumulative-frequency"><strong>Cumulative Frequency:</strong></h3>
+<p>CF of a class is the addition of frequencies of corresponding classes from top up to that class whose CF we are finding.</p>
+<p>so, to find middle of all class we need to find total frequency then divide it by 2 we get which class to look at. We will do this by finding which very first class contains that frequency like if half of total frequency is 50 and if a class has CF 30 then we will check next one and next one until one contains 50 or more as CF. If it’s hard to grasp, feel free to pause and ponder.</p>
+<p>Note that, CF of last class interval is sum of all frequencies thus in Table <a href="#tab:freqdistformedian" data-reference-type="ref" data-reference="tab:freqdistformedian">2</a> last CF say <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>13</mn></mrow><annotation encoding="application/x-tex">n = 13</annotation></semantics></math>.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mn>1</mn><mn>2</mn></mfrac><annotation encoding="application/x-tex">\frac{1}{2}</annotation></semantics></math> of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> is 6.5 the very first class which will carry CF 6.5 or more will be our median class.</p>
+<p>here it’s 10-20</p>
+<p>Now we reached to our class but which value from that class is our median it could be any in the class interval of the median class. To find median (one single digit value) we need to know first at which number our median lies in median class itself. As in this example our median class has frequency 5 means it carries 5 values from the data that lies between interval of 10-20. Now out of these 5 values which numbered value contains median like is 3rd one is median or fourth one? because we know at least that it contains our median, we know that in CF 6.5th value (yes we are going to keep the decimal, the reason is we will be not able to find exact value even, if we know which numbered value contains median we are anyway going to approximate. so why to tweak numbers and decrease precession of approximation.) contains median and if we subtract the CF of previous class we get 6.5-2 i.e, 4.5th value in our median class between 10-20 contains our median. Do note out of 5 values of our median class contains median not 4.5th value counting from start. As been told in parentheses we dont know any actual value from data only intervals so we are going to predict the value. Say all values in the median class is well distributed in the interval of 10-20 thus exactly 4.5th value will then become lower class limit <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>+</mo><mn>4.5</mn><mo>×</mo></mrow><annotation encoding="application/x-tex">10+ 4.5 \times</annotation></semantics></math> (equally distributed value between its own frequency) i.e, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>+</mo><mn>4.5</mn><mo>×</mo><mfrac><mn>10</mn><mn>5</mn></mfrac></mrow><annotation encoding="application/x-tex">10+4.5\times \frac{10}{5}</annotation></semantics></math></p>
+<p>class height = upper class limit - lower class limit = 10 and frequency = 5 (basically class height is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>20</mn><mo>−</mo><mn>10</mn><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">20-10=10</annotation></semantics></math> is being divided equally between its class frequency and assumed that each data in class interval will increase by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mi>/</mi><mn>5</mn></mrow><annotation encoding="application/x-tex">10/5</annotation></semantics></math> and then being found that it is being calculated what will be the value of 4.5th data).</p>
+<p>Thus final formula is: <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">Median</mtext><mo>=</mo><mi>l</mi><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mi>n</mi><mn>2</mn></mfrac><mo>−</mo><mtext mathvariant="normal">CF</mtext><mo stretchy="true" form="postfix">)</mo></mrow><mo>×</mo><mfrac><mi>h</mi><mi>f</mi></mfrac></mrow><annotation encoding="application/x-tex">\text{Median} = l+\left(\frac{n}{2}-\text{CF}\right)\times \frac{h}{f}</annotation></semantics></math></p>
+<p>where:</p>
+<ul>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>l</mi><annotation encoding="application/x-tex">l</annotation></semantics></math> = Lower class limit</p></li>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mi>n</mi><mn>2</mn></mfrac><annotation encoding="application/x-tex">\frac{n}{2}</annotation></semantics></math> = Half of cumulative frequency</p></li>
+<li><p>CF = Cumulative Frequency of previous class</p></li>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math> = Height of Class Interval</p></li>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math> = Frequency of Class Interval</p></li>
+</ul>
 
 <AutoPageNav />
