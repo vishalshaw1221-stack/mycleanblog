@@ -27,20 +27,33 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 // ------------------------------------
-// NAVIGATION LOGIC (PREV / NEXT POSTS)
+// FOLDER-SCOPED NAVIGATION (PREV / NEXT)
 // ------------------------------------
 
+// get all posts in the collection
 const allPosts = await getCollection("blog");
 
-// sort by "order" from frontmatter (optional but recommended)
-allPosts.sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
+// figure out current folder from slug
+// e.g. "statistics/descriptive-stat" → "statistics"
+const slugParts = post.slug.split("/");
+const currentFolder = slugParts[0]; // top-level folder under "blog"
 
-// find current post index
-const currentIndex = allPosts.findIndex((p) => p.slug === post.slug);
+// keep only posts from the same folder
+const folderPosts = allPosts
+  .filter((p) => (p.slug || "").split("/")[0] === currentFolder)
+  .sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
 
-// determine prev & next
-const prevPost = allPosts[currentIndex - 1] || null;
-const nextPost = allPosts[currentIndex + 1] || null;
+// find current post index inside this folder only
+const currentIndex = folderPosts.findIndex((p) => p.slug === post.slug);
+
+// determine prev & next within the folder
+const prevPost =
+  currentIndex > 0 ? folderPosts[currentIndex - 1] : null;
+
+const nextPost =
+  currentIndex >= 0 && currentIndex < folderPosts.length - 1
+    ? folderPosts[currentIndex + 1]
+    : null;
 // Pass "math" flag from frontmatter down to Layout
 const math = post.data.math || false;
 

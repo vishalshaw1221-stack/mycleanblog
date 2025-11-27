@@ -2,7 +2,7 @@
 title: "Third Test Page"
 pubDate: 2025-11-26
 description: "Navigation test page 3"
-order: 3
+order: 2
 ---
 
 import AutoPageNav from '../../../../components/AutoPageNav.astro';
