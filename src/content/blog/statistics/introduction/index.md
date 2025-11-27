@@ -135,8 +135,8 @@ for small numbers but for large numbers it's going to be unnecessary
 pain because we have a simple way to bypass this, but before that let me
 show you something:
 
-   Class Interval   Frequency   Class mark
-  ---------------- ----------- ------------
+   Class Interval |  Frequency   Class mark     |
+  ----------------| ----------- ------------     
         0-10            2           5
        10-20            3           15
        20-30            1           25
@@ -195,11 +195,11 @@ class mark because above it will become negative and below it will
 become positive which will help to decrease calculation.
 
 ::: {#tab:table3}
-   Class Interval   Frequency   Class Mark   $d_i=x_i-a$
-  ---------------- ----------- ------------ -------------
-        0-10            2           5            -10
-       10-20            3           15            0
-       20-30            1           25           10
+   Class Interval |  Frequency   Class Mark     | $d_i=x_i-a$
+  ----------------|----------- ------------ ---|---------
+        0-10      |     2           5         |  -10
+       10-20      |     3           15         |  0
+       20-30      |     1           25         | 10
 
   : An example
 :::
