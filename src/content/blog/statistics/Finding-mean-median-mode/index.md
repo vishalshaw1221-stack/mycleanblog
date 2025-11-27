@@ -29,7 +29,7 @@ Now to our main work, this bit is a little technical, but precession without pro
 [**Now To Calculate Mean:**]
 ----------------------------
 
-**Simple Direct Method:** $$\bar{x}= \frac{\sum\limits_{i=1}^{n}f_ix_i}{\sum\limits_{i=1}^{n}f_i}$$
+**Simple Direct Method:** $$\bar{x}= \frac{\sum\limits_{i=1}^{n}f_ix_i}{\sum\limits_{i=1}^{n}f_i}$$                 (1)
 
 **Extension of equation 1:**
 
@@ -57,8 +57,8 @@ In previous method multiplying $f_ix_i$ and then adding is nice and good for sma
 
   : Say we have a frequency distribution table:
 
-Now, $$\bar{X}=\frac{5\times2+15\times3+25\times1}{2+3+1}
-   \label{eq:meanex}$$
+Now, $$\bar{X}=\frac{5\times2+15\times3+25\times1}{2+3+1}$$                     (2)
+     
 
 Now, subtract a number say 5 like this:
 
@@ -117,8 +117,8 @@ Then, $$\begin{aligned}
 
 then multiply it back by $10$\
 i.e, $\bar{u}\times10=\frac{-10}{6}=\bar{d}$\
-which is exactly $\bar{d}$ we found earlier. So it makes things even easier. The concept behind it is simple, it doesn't require a formal proof because taking common of a product term is easy. In Equation [\[eq:meanex\]](#eq:meanex){reference-type="ref" reference="eq:meanex"} just multiply by any number, and it will easily go inside in each class mark. And finally after finding $d_i$ just add assumed mean $a$ to get final mean $\bar{X}$.
+which is exactly $\bar{d}$ we found earlier. So it makes things even easier. The concept behind it is simple, it doesn't require a formal proof because taking common of a product term is easy. In Equation (2) just multiply by any number, and it will easily go inside in each class mark. And finally after finding $d_i$ just add assumed mean $a$ to get final mean $\bar{X}$.
 
-So, the final formula is: $$\bar{X}=a+h\frac{\sum\limits_{i=1}^nf_iu_i}{\sum\limits_{i=1}^nf_i}$$
+So, the final formula is: $$\bar{X}=a+h\frac{\sum\limits_{i=1}^nf_iu_i}{\sum\limits_{i=1}^nf_i}$$             (3)
 
 $h$ is height of class interval, why divide by height and not other number because by taking assumed mean like this, always $h$ is going to come out as factor.
