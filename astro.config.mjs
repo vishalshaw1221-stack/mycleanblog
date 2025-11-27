@@ -1,8 +1,14 @@
+// astro.config.mjs
+
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import robotsTxt from "astro-robots-txt";
 import mdx from "@astrojs/mdx";
 import compress from "astro-compress";
+
+// ⬇️ Math plugins
+import remarkMath from "remark-math";
+import rehypeMathjax from "rehype-mathjax";
 
 export default defineConfig({
   site: "https://mycleanblog.vercel.app/",
@@ -41,7 +47,12 @@ export default defineConfig({
   },
 
   markdown: {
+    // ⬇️ keep syntax highlighting
     syntaxHighlight: "prism",
+
+    // ⬇️ enable $...$, $$...$$, \(...\), \[...\]
+    remarkPlugins: [remarkMath],
+    rehypePlugins: [rehypeMathjax],
   },
 
   vite: {
