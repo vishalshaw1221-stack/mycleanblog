@@ -89,13 +89,18 @@ Now, $$\bar{X}=\frac{5\times2+15\times3+25\times1}{2+3+1}
 
 Now, subtract a number say 5 like this:
 
-$$\begin{aligned}
- &\frac{(5-5)\times2+(15-5)\times3+(25-5)\times1}{2+3+1}\\
- &=\frac{5\times2-5\times2+15\times3-5\times3+25\times1-5\times1}{2+3+1}\\
- &=\frac{5\times2+15\times3+25\times1-5\times2-5\times3-5\times1}{2+3+1}\\
- &=\frac{5\times2+15\times3+25\times1}{2+3+1}-\frac{5\times2+5\times3+5\times1}{2+3+1}\\
- &=\frac{5\times2+15\times3+25\times1}{6}-5\times\frac{6}{6}\\
- &=\frac{5\times2+15\times3+25\times1}{6}-5\end{aligned}$$
+$$
+\begin{aligned}
+\bar{X} &=
+\frac{(5-5)\times2+(15-5)\times3+(25-5)\times1}{2+3+1} \\
+&= \frac{5\times2-5\times2+15\times3-5\times3+25\times1-5\times1}{2+3+1} \\
+&= \frac{5\times2+15\times3+25\times1-5(2+3+1)}{2+3+1} \\
+&= \frac{5\times2+15\times3+25\times1}{6} - \frac{5(2+3+1)}{6} \\
+&= \frac{5\times2+15\times3+25\times1}{6} - 5 \\
+&= \frac{80}{6} - 5 \\
+&= \frac{40}{3}
+\end{aligned}
+$$
 
 I just want you to look at the process not the numbers, see we have subtracted 5 from each number from class mark in our mean, and it is just same as subtracting five from actual mean i.e, subtracting inside in each term of summation is just same as subtracting that outside for once.
 
