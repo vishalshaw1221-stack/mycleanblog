@@ -11,6 +11,7 @@
 import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 import { SEO } from "astro-seo";
+import AutoPageNav from "../../components/AutoPageNav.astro"; // ⭐ ADDED
 
 const SITE_URL = "https://mycleanblog.vercel.app"; // <-- change to your real site if different
 
@@ -205,7 +206,7 @@ const seoProps = {
   description={description}
   image={image}
   seo={seoProps}
-  math={math}  <!-- ADD THIS LINE -->
+  math={math}  // ⭐ KEEPING YOUR MATH PROP, COMMENT MOVED HERE
 >
   <!-- inject SEO meta via astro-seo -->
   <SEO {...seoProps} />
@@ -253,6 +254,9 @@ const seoProps = {
       <a href="/" class="back-home">← Back to Home</a>
     </footer>
   </article>
+
+  <!-- ⭐ ADDED: NAV UNDER THE ARTICLE -->
+  <AutoPageNav />
 
   <!-- ============================
        STRUCTURED DATA FOR GOOGLE
