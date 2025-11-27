@@ -61,7 +61,9 @@ In previous method multiplying $f_ix_i$ and then adding is nice and good for sma
 
 Now, \begin{equation}
 \bar{X}=\frac{5\times2+15\times3+25\times1}{2+3+1}
-\end{equation}
+\tag{1
+  
+}\end{equation}
      
 
 Now, subtract a number say 5 like this:
