@@ -10,7 +10,7 @@ math: true
 import AutoPageNav from '../../../../components/AutoPageNav.astro';
 
 **Introduction**
-
+$$5+4$$
 All three are measures of central tendency.
 
 **Mean** is just the average of the data.
