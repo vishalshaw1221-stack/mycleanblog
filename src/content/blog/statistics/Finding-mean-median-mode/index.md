@@ -124,8 +124,8 @@ i.e, $\bar{u}\times10=\frac{-10}{6}=\bar{d}$\
 which is exactly $\bar{d}$ we found earlier. So it makes things even easier. The concept behind it is simple, it doesn't require a formal proof because taking common of a product term is easy. In Equation (2) just multiply by any number, and it will easily go inside in each class mark. And finally after finding $d_i$ just add assumed mean $a$ to get final mean $\bar{X}$.
 
 So, the final formula is:
-\begin{Equation}
+\begin{equation}
 \bar{X}=a+h\frac{\sum\limits_{i=1}^nf_iu_i}{\sum\limits_{i=1}^nf_i}
-\end{Equation}
+\end{equation}
 
 $h$ is height of class interval, why divide by height and not other number because by taking assumed mean like this, always $h$ is going to come out as factor.
