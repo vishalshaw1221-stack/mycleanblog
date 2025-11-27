@@ -5,10 +5,6 @@ description: "Introduction to probability"
 order: 2
 math: true
 ---
-
-import AutoPageNav from '../../../../components/AutoPageNav.astro';
-
-$5+4$
 **Introduction**
 ================
 
@@ -93,39 +89,14 @@ Now, $$\bar{X}=\frac{5\times2+15\times3+25\times1}{2+3+1}
 
 Now, subtract a number say 5 like this:
 
-Now,
-$$
-\begin{aligned}
-  &\frac{(5-5)\times2 + (15-5)\times3 + (25-5)\times1}{2+3+1} \\
-  &= \frac{5\times2 - 5\times2 + 15\times3 - 5\times3 + 25\times1 - 5\times1}{2+3+1} \\
-  &= \frac{5\times2 + 15\times3 + 25\times1 - 5\times2 - 5\times3 - 5\times1}{2+3+1} \\
-  &= \frac{5\times2 + 15\times3 + 25\times1}{2+3+1}
-     - \frac{5\times2 + 5\times3 + 5\times1}{2+3+1} \\
-  &= \frac{5\times2 + 15\times3 + 25\times1}{6}
-     - 5\times\frac{6}{6} \\
-  &= \frac{5\times2 + 15\times3 + 25\times1}{6} - 5
-\end{aligned}
-$$
+$$\begin{aligned}
+ &\frac{(5-5)\times2+(15-5)\times3+(25-5)\times1}{2+3+1}\\
+ &=\frac{5\times2-5\times2+15\times3-5\times3+25\times1-5\times1}{2+3+1}\\
+ &=\frac{5\times2+15\times3+25\times1-5\times2-5\times3-5\times1}{2+3+1}\\
+ &=\frac{5\times2+15\times3+25\times1}{2+3+1}-\frac{5\times2+5\times3+5\times1}{2+3+1}\\
+ &=\frac{5\times2+15\times3+25\times1}{6}-5\times\frac{6}{6}\\
+ &=\frac{5\times2+15\times3+25\times1}{6}-5\end{aligned}$$
 
-So, the final formula is:
-$$
-\bar{X} = a + h \frac{\sum\limits_{i=1}^n f_i u_i}{\sum\limits_{i=1}^n f_i}
-$$
-
-And the median formula is:
-$$
-\text{Median} = l + \left(\frac{n}{2} - \text{CF}\right)\frac{h}{f}
-$$
-
-where:
-
-- $l$ = Lower class limit  
-- $\frac{n}{2}$ = Half of total frequency  
-- CF = Cumulative frequency of previous class  
-- $h$ = Class interval width  
-- $f$ = Frequency of median class  
-
-<AutoPageNav />
 I just want you to look at the process not the numbers, see we have subtracted 5 from each number from class mark in our mean, and it is just same as subtracting five from actual mean i.e, subtracting inside in each term of summation is just same as subtracting that outside for once.
 
 so if we counter a big class mark, we can actually subtract any number we want from each class mark and make our summation easy, then just add that subtracted number as a whole.
@@ -222,5 +193,3 @@ where:
 -   $h$ = Height of Class Interval
 
 -   $f$ = Frequency of Class Interval
-
-<AutoPageNav />
