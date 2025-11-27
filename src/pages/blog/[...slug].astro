@@ -26,7 +26,21 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
+// ------------------------------------
+// NAVIGATION LOGIC (PREV / NEXT POSTS)
+// ------------------------------------
 
+const allPosts = await getCollection("blog");
+
+// sort by "order" from frontmatter (optional but recommended)
+allPosts.sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
+
+// find current post index
+const currentIndex = allPosts.findIndex((p) => p.slug === post.slug);
+
+// determine prev & next
+const prevPost = allPosts[currentIndex - 1] || null;
+const nextPost = allPosts[currentIndex + 1] || null;
 // Pass "math" flag from frontmatter down to Layout
 const math = post.data.math || false;
 
@@ -257,7 +271,7 @@ const seoProps = {
   </article>
 
   <!-- Table of contents / auto page nav -->
-  <AutoPageNav />
+  <AutoPageNav prev={prevPost} next={nextPost} />
 
   <!-- Structured data scripts -->
   <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
