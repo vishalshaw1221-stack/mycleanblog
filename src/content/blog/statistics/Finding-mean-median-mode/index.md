@@ -29,7 +29,9 @@ Now to our main work, this bit is a little technical, but precession without pro
 [**Now To Calculate Mean:**]
 ----------------------------
 
-**Simple Direct Method:** $$\bar{x}= \frac{\sum\limits_{i=1}^{n}f_ix_i}{\sum\limits_{i=1}^{n}f_i}$$                 (1)
+**Simple Direct Method:** \begin{equation}
+\bar{x}= \frac{\sum\limits_{i=1}^{n}f_ix_i}{\sum\limits_{i=1}^{n}f_i}
+\end{equation}
 
 **Extension of equation 1:**
 
