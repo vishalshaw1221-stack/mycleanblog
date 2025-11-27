@@ -5,7 +5,7 @@ description: "Introduction to Statistics"
 order: 1
 math: true
 ---
-**Introduction**
+**Mean, Median and Mode**
 ================
 
 All three are measures of central tendency.
