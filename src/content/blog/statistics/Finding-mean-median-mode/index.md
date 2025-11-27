@@ -61,9 +61,8 @@ In previous method multiplying $f_ix_i$ and then adding is nice and good for sma
 
 Now, \begin{equation}
 \bar{X}=\frac{5\times2+15\times3+25\times1}{2+3+1}
-\tag{1
-  
-}\end{equation}
+\tag{2}
+  \end{equation}
      
 
 Now, subtract a number say 5 like this:
@@ -115,7 +114,7 @@ Let's check our result from direct method: $$\begin{aligned}
     &=\frac{10+45+25}{6}\\
     &=\frac{80}{6}= \frac{40}{3}\end{aligned}$$ so it works.
 
-[**Step Deviation Method:**]{.underline} Now if you see $d_i$ in Table [1](#tab:table3){reference-type="ref" reference="tab:table3"}, $d_i$ is multiple of 10. If we divide each $d_i$ by 10 then find mean of new quantity $u_i=\frac{d_i}{10}$
+[**Step Deviation Method:**] Now if you see $d_i$ in Table [1], $d_i$ is multiple of 10. If we divide each $d_i$ by 10 then find mean of new quantity $u_i=\frac{d_i}{10}$
 
 Then, \begin{aligned}
     \bar{u}&= \text{average of } u_i\\
@@ -128,6 +127,6 @@ which is exactly $\bar{d}$ we found earlier. So it makes things even easier. The
 So, the final formula is:
 \begin{equation}
 \bar{X}=a+h\frac{\sum\limits_{i=1}^nf_iu_i}{\sum\limits_{i=1}^nf_i}
-\end{equation}
+\tag{3}\end{equation}
 
 $h$ is height of class interval, why divide by height and not other number because by taking assumed mean like this, always $h$ is going to come out as factor.
