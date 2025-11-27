@@ -59,7 +59,9 @@ In previous method multiplying $f_ix_i$ and then adding is nice and good for sma
 
   : Say we have a frequency distribution table:
 
-Now, $$\bar{X}=\frac{5\times2+15\times3+25\times1}{2+3+1}$$                     (2)
+Now, \begin{equation}
+\bar{X}=\frac{5\times2+15\times3+25\times1}{2+3+1}
+\end{equation}
      
 
 Now, subtract a number say 5 like this:
@@ -113,14 +115,17 @@ Let's check our result from direct method: $$\begin{aligned}
 
 [**Step Deviation Method:**]{.underline} Now if you see $d_i$ in Table [1](#tab:table3){reference-type="ref" reference="tab:table3"}, $d_i$ is multiple of 10. If we divide each $d_i$ by 10 then find mean of new quantity $u_i=\frac{d_i}{10}$
 
-Then, $$\begin{aligned}
+Then, \begin{aligned}
     \bar{u}&= \text{average of } u_i\\
-    &=\frac{-1}{6}\end{aligned}$$
+    &=\frac{-1}{6}\end{aligned}
 
 then multiply it back by $10$\
 i.e, $\bar{u}\times10=\frac{-10}{6}=\bar{d}$\
 which is exactly $\bar{d}$ we found earlier. So it makes things even easier. The concept behind it is simple, it doesn't require a formal proof because taking common of a product term is easy. In Equation (2) just multiply by any number, and it will easily go inside in each class mark. And finally after finding $d_i$ just add assumed mean $a$ to get final mean $\bar{X}$.
 
-So, the final formula is: $$\bar{X}=a+h\frac{\sum\limits_{i=1}^nf_iu_i}{\sum\limits_{i=1}^nf_i}$$             (3)
+So, the final formula is:
+\begin{Equation}
+\bar{X}=a+h\frac{\sum\limits_{i=1}^nf_iu_i}{\sum\limits_{i=1}^nf_i}
+\end{Equation}
 
 $h$ is height of class interval, why divide by height and not other number because by taking assumed mean like this, always $h$ is going to come out as factor.
