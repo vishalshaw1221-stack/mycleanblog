@@ -2,22 +2,24 @@
 ---
 <!-- 🔹 SOCIAL ICONS BOX ONLY -->
 <footer class="social-footer">
-  <div class="social-media">
-    <a href="https://www.facebook.com/profile.php?id=61583067824148" target="_blank" class="icon-link" aria-label="Facebook">
-      <i class="fab fa-facebook"></i>
-    </a>
-    <a href="https://x.com/PhysicsP32590" target="_blank" class="icon-link" aria-label="Twitter">
-      <i class="fab fa-twitter"></i>
-    </a>
-    <a href="https://www.instagram.com/physicsinphysics/" target="_blank" class="icon-link" aria-label="Instagram">
-      <i class="fab fa-instagram"></i>
-    </a>
-    <a href="https://www.linkedin.com/me?trk=p_mwlite_feed-secondary_nav" target="_blank" class="icon-link" aria-label="LinkedIn">
-      <i class="fab fa-linkedin"></i>
-    </a>
-    <a href="https://m.youtube.com/channel/UCQeEKqqidI7I0etj-Io0CZA/videos" target="_blank" class="icon-link" aria-label="YouTube">
-      <i class="fab fa-youtube"></i>
-    </a>
+  <div class="social-container">
+    <div class="social-media">
+      <a href="https://www.facebook.com/profile.php?id=61583067824148" target="_blank" class="icon-link" aria-label="Facebook">
+        <i class="fab fa-facebook"></i>
+      </a>
+      <a href="https://x.com/PhysicsP32590" target="_blank" class="icon-link" aria-label="Twitter">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://www.instagram.com/physicsinphysics/" target="_blank" class="icon-link" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a href="https://www.linkedin.com/me?trk=p_mwlite_feed-secondary_nav" target="_blank" class="icon-link" aria-label="LinkedIn">
+        <i class="fab fa-linkedin"></i>
+      </a>
+      <a href="https://m.youtube.com/channel/UCQeEKqqidI7I0etj-Io0CZA/videos" target="_blank" class="icon-link" aria-label="YouTube">
+        <i class="fab fa-youtube"></i>
+      </a>
+    </div>
   </div>
 </footer>
 
@@ -39,12 +41,25 @@
     text-align: center;
     color: white;
     font-family: 'Poppins', sans-serif;
-    padding: 20px 0;
-    /* Box styling to see boundaries */
+    /* Box styling */
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(59, 130, 246, 0.2);
     border-radius: 12px;
     margin: 0;
+    padding: 0;
+    /* Ensure proper box sizing */
+    box-sizing: border-box;
+  }
+
+  /* Container to ensure perfect centering */
+  .social-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
   }
 
   .social-media {
@@ -53,8 +68,9 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 25px;
-    max-width: 100%;
-    padding: 0 20px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
   }
 
   .icon-link {
@@ -106,75 +122,101 @@
     font-family: 'Poppins', sans-serif;
     line-height: 1.5;
     width: 100%;
-    /* No connection to footer box */
-    margin: 0;
-    padding: 20px 10px;
+    /* Completely separate positioning */
+    margin: 10px 0 0 0;
+    padding: 15px 10px;
+    /* Ensure it's outside */
+    position: relative;
+    z-index: 1;
   }
 
-  /* 📱 MOBILE: COMPLETE SEPARATION */
+  /* 📱 MOBILE: FIXED CENTERING & SEPARATION */
   @media (max-width: 768px) {
     .social-footer {
-      min-height: 110px;
-      padding: 25px 0;
-      margin-bottom: 0; /* No margin that could affect copyright */
+      min-height: 100px; /* Reduced height for mobile */
+      padding: 0;
+      margin: 0;
       /* Clear box boundary */
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid rgba(59, 130, 246, 0.2);
-      border-radius: 12px;
+      border-radius: 10px;
+    }
+
+    .social-container {
+      padding: 15px;
+      height: 100%;
     }
 
     .social-media {
-      gap: 16px;
-      padding: 0 15px;
+      gap: 15px;
+      padding: 0;
+      /* Force perfect centering */
+      justify-content: center;
+      align-items: center;
     }
 
     .icon-link {
-      width: 60px;
-      height: 60px;
-      font-size: 28px;
-      border-radius: 12px;
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+      border-radius: 10px;
     }
 
     /* Copyright completely outside and separate */
     .copyright {
       font-size: 0.78rem;
-      margin-top: 0; /* No margin connection to footer */
-      padding: 25px 15px 10px; /* Independent padding */
-      /* Visual separation line */
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 15px; /* Clear space between box and copyright */
+      padding: 10px 15px 5px;
+      /* Visual separation */
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
       /* Ensure it's outside the footer box */
       background: transparent;
+      /* Remove any connection to footer */
+      position: static;
     }
   }
 
   @media (max-width: 480px) {
+    .social-footer {
+      min-height: 90px;
+    }
+
+    .social-container {
+      padding: 12px;
+    }
+
     .social-media {
       gap: 12px;
     }
 
     .icon-link {
-      width: 55px;
-      height: 55px;
-      font-size: 24px;
-      border-radius: 10px;
+      width: 45px;
+      height: 45px;
+      font-size: 22px;
+      border-radius: 8px;
     }
 
     .copyright {
       font-size: 0.75rem;
-      padding: 20px 10px 5px;
+      margin-top: 12px;
+      padding: 8px 10px 3px;
     }
   }
 
   /* Extra small screens */
   @media (max-width: 360px) {
     .social-media {
-      gap: 8px;
+      gap: 10px;
     }
 
     .icon-link {
-      width: 50px;
-      height: 50px;
-      font-size: 22px;
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+    }
+
+    .copyright {
+      margin-top: 10px;
     }
   }
 </style>
