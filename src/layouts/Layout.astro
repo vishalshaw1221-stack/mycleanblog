@@ -460,29 +460,6 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
       <Footer />
     </footer>
 
-    <!-- 🔔 Floating notification subscribe button -->
-    <button
-      id="notify-btn"
-      style="
-        position: fixed;
-        right: 16px;
-        bottom: 16px;
-        z-index: 9999;
-        background: #3b82f6;
-        color: white;
-        border: none;
-        border-radius: 999px;
-        padding: 10px 16px;
-        font-size: 14px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      "
-    >
-      <span>🔔 Enable notifications</span>
-    </button>
-
     <!-- Search Script (keeps your original logic) -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
@@ -579,7 +556,7 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
           if (results.length > 0) {
             window.location.href = `/blog/${results[0].id}`;
           } else {
-            alert(\`No blogs found for "\${searchTerm}"\`);
+            alert(`No blogs found for "${searchTerm}"`);
           }
           hideSuggestions();
         }
@@ -609,42 +586,42 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
       });
     </script>
 
-<!-- 🔔 Floating notification subscribe button -->
-<button
-  id="notify-btn"
-  style="
-    position: fixed;
-    right: 16px;
-    bottom: 16px;
-    z-index: 9999;
-    background: #3b82f6;
-    color: white;
-    border: none;
-    border-radius: 999px;
-    padding: 10px 16px;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    cursor: pointer;
-  "
->
-  🔔 Enable notifications
-</button>
+    <!-- 🔔 Floating notification subscribe button (only ONE) -->
+    <button
+      id="notify-btn"
+      style="
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        z-index: 9999;
+        background: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 999px;
+        padding: 10px 16px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        cursor: pointer;
+      "
+    >
+      🔔 Enable notifications
+    </button>
 
-<!-- 🔔 Button click logic -->
-<script>
-(function () {
-  const btn = document.getElementById("notify-btn");
-  console.log("Button found?", !!btn);  // should log true in console
-  if (!btn) return;
+    <!-- 🔔 Button click logic -->
+    <script>
+      (function () {
+        const btn = document.getElementById("notify-btn");
+        console.log("Button found?", !!btn);
+        if (!btn) return;
 
-  btn.onclick = function () {
-    alert("Button clicked!");
-    btn.textContent = "Clicked ✅";
-  };
-})();
-</script>
+        btn.onclick = function () {
+          alert("Button clicked!");
+          btn.textContent = "Clicked ✅";
+        };
+      })();
+    </script>
   </body>
 </html>
