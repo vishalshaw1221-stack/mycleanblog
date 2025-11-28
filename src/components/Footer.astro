@@ -1,6 +1,6 @@
 ---
 ---
-<!-- 🔹 BOX WITH SOCIAL ICONS ONLY -->
+<!-- 🔹 SOCIAL ICONS FOOTER (BOX) -->
 <footer class="social-footer">
   <div class="social-media">
     <a href="https://www.facebook.com/profile.php?id=61583067824148" target="_blank" class="icon-link" aria-label="Facebook">
@@ -21,8 +21,7 @@
   </div>
 </footer>
 
-
-<!-- 🔹 COPYRIGHT COMPLETELY OUTSIDE THE BOX -->
+<!-- 🔹 COPYRIGHT TEXT (OUTSIDE / BELOW THE BOX) -->
 <div class="copyright">
   © 2025 Vishal Shaw — CC BY-NC-ND 4.0. Partial reuse with credit only.
   <br />
@@ -35,8 +34,8 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;     /* vertical centering INSIDE the box */
-    padding: 1.2rem 0;
+    align-items: center;              /* center icons vertically in this strip */
+    padding: 1.8rem 0 1.4rem;         /* pull everything a bit down */
     text-align: center;
     color: white;
     font-family: 'Poppins', sans-serif;
@@ -93,10 +92,10 @@
     color: #60a5fa;
   }
 
-  /* 🔹 COPYRIGHT TEXT – OUTSIDE THE BOX, BELOW IT */
+  /* 🔹 COPYRIGHT TEXT – SEPARATE FROM FOOTER BOX */
   .copyright {
-    margin-top: 0.5rem;
-    margin-bottom: 1.2rem;
+    margin-top: 0.6rem;              /* a bit below the box */
+    margin-bottom: 1.4rem;
     text-align: center;
     font-size: 0.82rem;
     color: #aaaaaa;
@@ -108,7 +107,7 @@
   /* 📱 MOBILE TWEAKS */
   @media (max-width: 768px) {
     .social-footer {
-      padding: 1rem 0;
+      padding: 1.6rem 0 1.2rem;      /* slightly more space on top/bottom */
     }
 
     .social-media {
@@ -125,7 +124,7 @@
 
     .copyright {
       font-size: 0.78rem;
-      margin-top: 0.4rem;
+      margin-top: 0.5rem;
     }
   }
 
@@ -146,24 +145,3 @@
     }
   }
 </style>
-/* 🚫 REMOVE COPYRIGHT FROM FOOTER FLOW */
-#copyright-outside {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: 8px;
-  font-size: 0.78rem;
-  color: #aaa;
-  text-align: center;
-  width: 100%;
-  pointer-events: none;
-}
-
-/* ✅ KEEP ICON BOX HEIGHT FIXED */
-footer {
-  height: auto;   /* do NOT change theme height */
-  min-height: unset;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
