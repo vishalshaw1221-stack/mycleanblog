@@ -1,58 +1,46 @@
+---
+---
 <footer>
-  <div class="footer-inner">
+  <div class="social-media">
+    <a href="https://www.facebook.com/profile.php?id=61583067824148" target="_blank" class="icon-link" aria-label="Facebook">
+      <i class="fab fa-facebook"></i>
+    </a>
+    <a href="https://x.com/PhysicsP32590" target="_blank" class="icon-link" aria-label="Twitter">
+      <i class="fab fa-twitter"></i>
+    </a>
+    <a href="https://www.instagram.com/physicsinphysics/" target="_blank" class="icon-link" aria-label="Instagram">
+      <i class="fab fa-instagram"></i>
+    </a>
+    <a href="https://www.linkedin.com/me?trk=p_mwlite_feed-secondary_nav" target="_blank" class="icon-link" aria-label="LinkedIn">
+      <i class="fab fa-linkedin"></i>
+    </a>
+    <a href="https://m.youtube.com/channel/UCQeEKqqidI7I0etj-Io0CZA/videos" target="_blank" class="icon-link" aria-label="YouTube">
+      <i class="fab fa-youtube"></i>
+    </a>
+  </div>
 
-    <!-- SOCIAL ICONS (LOCKED ZONE) -->
-    <div class="social-media">
-      <a href="https://www.facebook.com/profile.php?id=61583067824148" target="_blank" class="icon-link" aria-label="Facebook">
-        <i class="fab fa-facebook"></i>
-      </a>
-      <a href="https://x.com/PhysicsP32590" target="_blank" class="icon-link" aria-label="Twitter">
-        <i class="fab fa-twitter"></i>
-      </a>
-      <a href="https://www.instagram.com/physicsinphysics/" target="_blank" class="icon-link" aria-label="Instagram">
-        <i class="fab fa-instagram"></i>
-      </a>
-      <a href="https://www.linkedin.com/me?trk=p_mwlite_feed-secondary_nav" target="_blank" class="icon-link" aria-label="LinkedIn">
-        <i class="fab fa-linkedin"></i>
-      </a>
-      <a href="https://m.youtube.com/channel/UCQeEKqqidI7I0etj-Io0CZA/videos" target="_blank" class="icon-link" aria-label="YouTube">
-        <i class="fab fa-youtube"></i>
-      </a>
-    </div>
-
-    <!-- COPYRIGHT (SEPARATE, CANNOT AFFECT ICONS) -->
-    <div class="copyright">
-      © 2025 Vishal Shaw — CC BY-NC-ND 4.0. Partial reuse with credit only.
-    </div>
-
+  <div class="copyright">
+    © 2025 Vishal Shaw — CC BY-NC-ND 4.0. Partial reuse with credit only.<br />
+    Full article reproduction is not allowed.
   </div>
 
   <style>
-
     footer {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      padding: 1.5rem 0 1.2rem;
+      text-align: center;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      margin-top: 2rem;
+      padding: 1.4rem 0 1rem;
     }
 
-    /* MAIN WRAPPER */
-    .footer-inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.1rem; /* space between icons and copyright */
-      width: 100%;
-    }
-
-    /* ICON ZONE LOCKED */
+    /* ICONS AREA – STAYS TOGETHER */
     .social-media {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(55px, 75px));
+      display: flex;
       justify-content: center;
-      gap: 20px;
-      width: fit-content;
+      flex-wrap: wrap;
+      gap: 25px;
       max-width: 100%;
+      margin: 0 auto;
     }
 
     .icon-link {
@@ -65,95 +53,97 @@
       color: white;
       border-radius: 16px;
       text-decoration: none;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(59,130,246,0.3);
-      box-shadow: 0 0 15px rgba(59,130,246,0.25);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.25);
       transition: transform 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .icon-link::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      padding: 1px;
+      background: linear-gradient(135deg, #3b82f6, #9333ea, #ef4444);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      -webkit-mask-composite: destination-out;
+      pointer-events: none;
     }
 
     .icon-link:hover {
       transform: scale(1.12);
-      box-shadow: 0 0 25px rgba(147,51,234,0.6);
+      box-shadow: 0 0 25px rgba(147, 51, 234, 0.6);
     }
 
-    .icon-link i {
-      pointer-events: none;
+    .icon-link:hover i {
+      color: #60a5fa;
     }
 
-    /* COPYRIGHT */
+    /* COPYRIGHT TEXT – SMALL + SEPARATE */
     .copyright {
-      font-size: 0.82rem;
-      color: #aaa;
-      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: #aaaaaa;
       max-width: 90%;
-      line-height: 1.5;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.4;
     }
 
-    /* MOBILE FIXES */
+    /* 📱 MOBILE: make everything tighter so it stays inside the box */
     @media (max-width: 768px) {
+      footer {
+        margin-top: 1.2rem;
+        padding: 1rem 0 0.8rem;
+      }
+
       .social-media {
-        grid-template-columns: repeat(5, 60px);
-        gap: 14px;
+        gap: 15px;
+        padding: 0 10px;
       }
 
       .icon-link {
         width: 60px;
         height: 60px;
         font-size: 28px;
+        border-radius: 12px;
+      }
+
+      .copyright {
+        font-size: 0.78rem;
+        margin-top: 0.7rem;
+        padding: 0 10px;
       }
     }
 
+    /* EXTRA SMALL PHONES */
     @media (max-width: 480px) {
       .social-media {
-        grid-template-columns: repeat(3, 55px);
-        row-gap: 10px;
+        gap: 12px;
       }
 
       .icon-link {
         width: 55px;
         height: 55px;
         font-size: 24px;
+        border-radius: 10px;
+      }
+
+      .copyright {
+        font-size: 0.74rem;
       }
     }
-/* ✅ FORCE-LOCK ICONS ON MOBILE */
-@media (max-width: 768px) {
 
-  footer {
-    padding-bottom: 0.8rem;
-  }
-
-  .footer-inner {
-    gap: 0.8rem;
-  }
-
-  /* lock icon row size */
-  .social-media {
-    width: 100%;
-    max-width: 360px;
-    margin: 0 auto;
-    justify-content: center;
-  }
-
-  /* force consistent sizing */
-  .icon-link {
-    min-width: 56px;
-    max-width: 56px;
-    min-height: 56px;
-    max-height: 56px;
-    font-size: 26px;
-    padding: 0;
-  }
-
-  /* prevent wrapping glitch */
-  .social-media a {
-    flex-shrink: 0;
-  }
-
-  /* keep copyright out of icon space */
-  .copyright {
-    margin-top: 6px;
-    padding-top: 4px;
-  }
-}
+    /* LARGE DESKTOP SCREENS */
+    @media (min-width: 1200px) {
+      .social-media {
+        gap: 30px;
+      }
+    }
   </style>
 </footer>
