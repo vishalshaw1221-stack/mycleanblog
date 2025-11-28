@@ -1,6 +1,6 @@
 ---
 ---
-<!-- 🔹 SOCIAL ICONS FOOTER (BOX) -->
+<!-- 🔹 BOX WITH SOCIAL ICONS ONLY -->
 <footer class="social-footer">
   <div class="social-media">
     <a href="https://www.facebook.com/profile.php?id=61583067824148" target="_blank" class="icon-link" aria-label="Facebook">
@@ -21,7 +21,7 @@
   </div>
 </footer>
 
-<!-- 🔹 COPYRIGHT TEXT (OUTSIDE / BELOW THE BOX) -->
+<!-- 🔹 COPYRIGHT COMPLETELY OUTSIDE THE BOX -->
 <div class="copyright">
   © 2025 Vishal Shaw — CC BY-NC-ND 4.0. Partial reuse with credit only.
   <br />
@@ -29,13 +29,13 @@
 </div>
 
 <style>
-  /* 🔹 BOX THAT HOLDS THE ICONS */
+  /* 🔹 BOX THAT HOLDS THE ICONS ONLY */
   .social-footer {
     width: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;              /* center icons vertically in this strip */
-    padding: 1.8rem 0 1.4rem;         /* pull everything a bit down */
+    align-items: center;      /* icons vertically centered in this strip */
+    min-height: 120px;        /* controls “box” height */
     text-align: center;
     color: white;
     font-family: 'Poppins', sans-serif;
@@ -92,10 +92,10 @@
     color: #60a5fa;
   }
 
-  /* 🔹 COPYRIGHT TEXT – SEPARATE FROM FOOTER BOX */
+  /* 🔹 COPYRIGHT TEXT – OUTSIDE THE BOX, BELOW IT */
   .copyright {
-    margin-top: 0.6rem;              /* a bit below the box */
-    margin-bottom: 1.4rem;
+    margin-top: 0.4rem;       /* gap under the box */
+    margin-bottom: 1.2rem;
     text-align: center;
     font-size: 0.82rem;
     color: #aaaaaa;
@@ -107,7 +107,7 @@
   /* 📱 MOBILE TWEAKS */
   @media (max-width: 768px) {
     .social-footer {
-      padding: 1rem 0 0.1rem;      /* slightly more space on top/bottom */
+      min-height: 110px;      /* slightly smaller box on mobile */
     }
 
     .social-media {
