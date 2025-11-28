@@ -6,7 +6,7 @@ order: 3
 math: true
 ---
 
-[**How to calculate Median:**]{.underline}
+**How to calculate Median:**
 ------------------------------------------
 
 Median is the middle value of all the data set if arranged in ascending order. Now, in frequency distribution things are already in ascending so we just need which class contains the value that is middle of all the values. To find these we will add all frequencies of corresponding class intervals, line by line, for all classes and see which contains the middle value.
@@ -30,7 +30,7 @@ CF of a class is the addition of frequencies of corresponding classes from top u
 
 so, to find middle of all class we need to find total frequency then divide it by 2 we get which class to look at. We will do this by finding which very first class contains that frequency like if half of total frequency is 50 and if a class has CF 30 then we will check next one and next one until one contains 50 or more as CF. If it's hard to grasp, feel free to pause and ponder.
 
-Note that, CF of last class interval is sum of all frequencies thus in Table [2](#tab:freqdistformedian){reference-type="ref" reference="tab:freqdistformedian"} last CF say $n = 13$.
+Note that, CF of last class interval is sum of all frequencies thus in Table [2] last CF say $n = 13$.
 
 $\frac{1}{2}$ of $n$ is 6.5 the very first class which will carry CF 6.5 or more will be our median class.
 

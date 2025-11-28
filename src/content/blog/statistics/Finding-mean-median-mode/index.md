@@ -47,7 +47,7 @@ Now, $f_i$ is representing frequency of corresponding value of class interval $x
 
 it's just middle value of class interval means if class interval is 10-15 then class mark is $\frac{10+15}{2}=12.5$
 
-[**Assumed Mean Method:**]
+**Assumed Mean Method:**
 
 In previous method multiplying $f_ix_i$ and then adding is nice and good for small numbers but for large numbers it's going to be unnecessary pain because we have a simple way to bypass this, but before that let me show you something:
 
