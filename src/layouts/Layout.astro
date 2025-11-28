@@ -610,18 +610,52 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
       🔔 Enable notifications
     </button>
 
-    <!-- 🔔 Button click logic -->
-    <script>
-      (function () {
-        const btn = document.getElementById("notify-btn");
-        console.log("Button found?", !!btn);
-        if (!btn) return;
+    <!-- 🔔 Button click logic using OneSignal -->
+<script>
+(function () {
+  const btn = document.getElementById("notify-btn");
+  console.log("Button found?", !!btn);
+  if (!btn) return;
 
-        btn.onclick = function () {
-          alert("Button clicked!");
-          btn.textContent = "Clicked ✅";
-        };
-      })();
-    </script>
+  btn.onclick = async function () {
+    btn.disabled = true;
+    btn.style.opacity = "0.7";
+    btn.textContent = "Checking permission...";
+
+    try {
+      const OneSignal = window.OneSignal;
+
+      // SDK not loaded / blocked / unsupported
+      if (!OneSignal || !OneSignal.Notifications) {
+        console.warn("OneSignal SDK not available on this page.");
+        btn.textContent = "Notifications not available ❌";
+        btn.disabled = false;
+        btn.style.opacity = "1";
+        return;
+      }
+
+      const result = await OneSignal.Notifications.requestPermission();
+      console.log("OneSignal permission:", result);
+
+      if (result === "granted") {
+        btn.textContent = "Notifications enabled ✅";
+      } else if (result === "denied") {
+        btn.textContent = "Permission denied ❌";
+        btn.disabled = false;
+        btn.style.opacity = "1";
+      } else {
+        btn.textContent = "Click to enable 🔔";
+        btn.disabled = false;
+        btn.style.opacity = "1";
+      }
+    } catch (err) {
+      console.error("OneSignal Error:", err);
+      btn.textContent = "Error – try again 🔁";
+      btn.disabled = false;
+      btn.style.opacity = "1";
+    }
+  };
+})();
+</script>
   </body>
 </html>
