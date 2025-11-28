@@ -2,24 +2,22 @@
 ---
 <!-- 🔹 BOX WITH SOCIAL ICONS ONLY -->
 <footer class="social-footer">
-  <div class="social-container">
-    <div class="social-media">
-      <a href="https://www.facebook.com/profile.php?id=61583067824148" target="_blank" class="icon-link" aria-label="Facebook">
-        <i class="fab fa-facebook"></i>
-      </a>
-      <a href="https://x.com/PhysicsP32590" target="_blank" class="icon-link" aria-label="Twitter">
-        <i class="fab fa-twitter"></i>
-      </a>
-      <a href="https://www.instagram.com/physicsinphysics/" target="_blank" class="icon-link" aria-label="Instagram">
-        <i class="fab fa-instagram"></i>
-      </a>
-      <a href="https://www.linkedin.com/me?trk=p_mwlite_feed-secondary_nav" target="_blank" class="icon-link" aria-label="LinkedIn">
-        <i class="fab fa-linkedin"></i>
-      </a>
-      <a href="https://m.youtube.com/channel/UCQeEKqqidI7I0etj-Io0CZA/videos" target="_blank" class="icon-link" aria-label="YouTube">
-        <i class="fab fa-youtube"></i>
-      </a>
-    </div>
+  <div class="social-media">
+    <a href="https://www.facebook.com/profile.php?id=61583067824148" target="_blank" class="icon-link" aria-label="Facebook">
+      <i class="fab fa-facebook"></i>
+    </a>
+    <a href="https://x.com/PhysicsP32590" target="_blank" class="icon-link" aria-label="Twitter">
+      <i class="fab fa-twitter"></i>
+    </a>
+    <a href="https://www.instagram.com/physicsinphysics/" target="_blank" class="icon-link" aria-label="Instagram">
+      <i class="fab fa-instagram"></i>
+    </a>
+    <a href="https://www.linkedin.com/me?trk=p_mwlite_feed-secondary_nav" target="_blank" class="icon-link" aria-label="LinkedIn">
+      <i class="fab fa-linkedin"></i>
+    </a>
+    <a href="https://m.youtube.com/channel/UCQeEKqqidI7I0etj-Io0CZA/videos" target="_blank" class="icon-link" aria-label="YouTube">
+      <i class="fab fa-youtube"></i>
+    </a>
   </div>
 </footer>
 
@@ -41,24 +39,10 @@
     text-align: center;
     color: white;
     font-family: 'Poppins', sans-serif;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 12px;
-    margin: 0 auto;
-    padding: 0;
-    position: relative;
-    border: 1px solid rgba(59, 130, 246, 0.15);
+    padding: 20px 0;
   }
 
-  /* Container to ensure perfect centering */
-  .social-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-  }
-
-  /* ICONS ROW - Perfectly centered */
+  /* ICONS ROW */
   .social-media {
     display: flex;
     justify-content: center;
@@ -66,8 +50,7 @@
     flex-wrap: wrap;
     gap: 25px;
     max-width: 100%;
-    margin: 0 auto;
-    padding: 0;
+    padding: 0 20px;
   }
 
   .icon-link {
@@ -111,35 +94,27 @@
     color: #60a5fa;
   }
 
-  /* 🔹 COPYRIGHT TEXT – COMPLETELY OUTSIDE THE BOX */
+  /* 🔹 COPYRIGHT TEXT – OUTSIDE THE BOX, BELOW IT */
   .copyright {
-    margin-top: 1.5rem;       /* Increased gap to clearly separate from box */
-    margin-bottom: 1.2rem;
     text-align: center;
     font-size: 0.82rem;
     color: #aaaaaa;
     font-family: 'Poppins', sans-serif;
     line-height: 1.5;
     padding: 0 10px;
-    width: 100%;
   }
 
-  /* 📱 MOBILE TWEAKS - Ensuring perfect centering on mobile */
+  /* 📱 MOBILE TWEAKS - Copyright completely outside footer box */
   @media (max-width: 768px) {
     .social-footer {
       min-height: 110px;
-      padding: 0;
-    }
-
-    .social-container {
-      padding: 15px;
+      padding: 25px 0; /* Padding only inside the footer box */
+      margin-bottom: 0; /* No margin that could affect copyright position */
     }
 
     .social-media {
       gap: 16px;
-      padding: 0;
-      width: 100%;
-      justify-content: center;
+      padding: 0 15px;
     }
 
     .icon-link {
@@ -149,17 +124,18 @@
       border-radius: 12px;
     }
 
+    /* Copyright positioned completely outside the footer */
     .copyright {
       font-size: 0.78rem;
-      margin-top: 1.2rem; /* Maintain clear separation on mobile */
-      padding: 0 15px;
+      margin-top: 10px; /* Space between footer box and copyright */
+      padding: 15px 10px 0; /* Padding only on copyright, not connected to footer */
+      border-top: 1px solid rgba(255, 255, 255, 0.1); /* Visual separation */
     }
   }
 
   @media (max-width: 480px) {
     .social-media {
       gap: 12px;
-      justify-content: center;
     }
 
     .icon-link {
@@ -171,20 +147,8 @@
 
     .copyright {
       font-size: 0.75rem;
-      margin-top: 1rem;
-    }
-  }
-
-  /* Extra small devices */
-  @media (max-width: 360px) {
-    .social-media {
-      gap: 10px;
-    }
-
-    .icon-link {
-      width: 50px;
-      height: 50px;
-      font-size: 22px;
+      margin-top: 8px;
+      padding: 12px 10px 0;
     }
   }
 </style>
