@@ -100,46 +100,12 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-75C47971QF"></script>
    
    
-  <!-- 🔔 OneSignal push notifications -->
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
   window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function (OneSignal) {
+  OneSignalDeferred.push(async function(OneSignal) {
     await OneSignal.init({
-      appId: "243d34a0-52d2-4fc9-baa0-1fdb3598a7d5",
-      
-      // Add these settings for better compatibility
-      allowLocalhostAsSecureOrigin: true,
-      
-      // Enable automatic slidedown prompt
-      promptOptions: {
-        slidedown: {
-          enabled: true,
-          autoPrompt: true,
-          timeDelay: 5, // Show after 5 seconds
-          pageViews: 2, // Show after 2 page views
-        }
-      },
-      
-      // Service worker configuration
-      serviceWorkerParam: { scope: '/onesignal/' },
-      serviceWorkerPath: 'OneSignalSDKWorker.js',
-    });
-
-    // Let OneSignal handle the permission prompt automatically
-    // Don't force requestPermission() immediately
-    
-    // Optional: Add event listeners to track what's happening
-    OneSignal.on('permissionPromptDisplay', function() {
-      console.log("OneSignal: Permission prompt is being shown");
-    });
-    
-    OneSignal.on('notificationPermissionChange', function(permission) {
-      console.log("OneSignal: Permission changed to", permission);
-    });
-    
-    OneSignal.on('permissionPromptDismiss', function() {
-      console.log("OneSignal: User dismissed the prompt");
+      appId: "df5da758-ac7d-4f61-8402-26fbf0cec333",
     });
   });
 </script>
