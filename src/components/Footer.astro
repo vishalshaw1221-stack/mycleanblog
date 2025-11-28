@@ -21,6 +21,7 @@
   </div>
 </footer>
 
+
 <!-- 🔹 COPYRIGHT COMPLETELY OUTSIDE THE BOX -->
 <div class="copyright">
   © 2025 Vishal Shaw — CC BY-NC-ND 4.0. Partial reuse with credit only.
@@ -145,3 +146,24 @@
     }
   }
 </style>
+/* 🚫 REMOVE COPYRIGHT FROM FOOTER FLOW */
+#copyright-outside {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 8px;
+  font-size: 0.78rem;
+  color: #aaa;
+  text-align: center;
+  width: 100%;
+  pointer-events: none;
+}
+
+/* ✅ KEEP ICON BOX HEIGHT FIXED */
+footer {
+  height: auto;   /* do NOT change theme height */
+  min-height: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
