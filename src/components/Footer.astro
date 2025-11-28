@@ -1,6 +1,7 @@
 ---
 ---
-<footer>
+<!-- 🔹 BOX WITH SOCIAL ICONS ONLY -->
+<footer class="social-footer">
   <div class="social-media">
     <a href="https://www.facebook.com/profile.php?id=61583067824148" target="_blank" class="icon-link" aria-label="Facebook">
       <i class="fab fa-facebook"></i>
@@ -18,132 +19,129 @@
       <i class="fab fa-youtube"></i>
     </a>
   </div>
+</footer>
 
-  <div class="copyright">
-    © 2025 Vishal Shaw — CC BY-NC-ND 4.0. Partial reuse with credit only.<br />
-    Full article reproduction is not allowed.
-  </div>
+<!-- 🔹 COPYRIGHT COMPLETELY OUTSIDE THE BOX -->
+<div class="copyright">
+  © 2025 Vishal Shaw — CC BY-NC-ND 4.0. Partial reuse with credit only.
+  <br />
+  Full article reproduction is not allowed.
+</div>
 
-  <style>
-    footer {
-      text-align: center;
-      color: white;
-      font-family: 'Poppins', sans-serif;
-      margin-top: 2rem;
-      padding: 1.4rem 0 1rem;
+<style>
+  /* 🔹 BOX THAT HOLDS THE ICONS */
+  .social-footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;     /* vertical centering INSIDE the box */
+    padding: 1.2rem 0;
+    text-align: center;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  /* ICONS ROW */
+  .social-media {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    max-width: 100%;
+  }
+
+  .icon-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 75px;
+    height: 75px;
+    font-size: 38px;
+    color: white;
+    border-radius: 16px;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.25);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .icon-link::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    padding: 1px;
+    background: linear-gradient(135deg, #3b82f6, #9333ea, #ef4444);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: destination-out;
+    pointer-events: none;
+  }
+
+  .icon-link:hover {
+    transform: scale(1.12);
+    box-shadow: 0 0 25px rgba(147, 51, 234, 0.6);
+  }
+
+  .icon-link:hover i {
+    color: #60a5fa;
+  }
+
+  /* 🔹 COPYRIGHT TEXT – OUTSIDE THE BOX, BELOW IT */
+  .copyright {
+    margin-top: 0.5rem;
+    margin-bottom: 1.2rem;
+    text-align: center;
+    font-size: 0.82rem;
+    color: #aaaaaa;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.5;
+    padding: 0 10px;
+  }
+
+  /* 📱 MOBILE TWEAKS */
+  @media (max-width: 768px) {
+    .social-footer {
+      padding: 1rem 0;
     }
 
-    /* ICONS AREA – STAYS TOGETHER */
     .social-media {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 25px;
-      max-width: 100%;
-      margin: 0 auto;
+      gap: 16px;
+      padding: 0 8px;
     }
 
     .icon-link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 75px;
-      height: 75px;
-      font-size: 38px;
-      color: white;
-      border-radius: 16px;
-      text-decoration: none;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      box-shadow: 0 0 15px rgba(59, 130, 246, 0.25);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-      position: relative;
-      flex-shrink: 0;
+      width: 60px;
+      height: 60px;
+      font-size: 28px;
+      border-radius: 12px;
     }
 
-    .icon-link::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 16px;
-      padding: 1px;
-      background: linear-gradient(135deg, #3b82f6, #9333ea, #ef4444);
-      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      mask-composite: exclude;
-      -webkit-mask-composite: destination-out;
-      pointer-events: none;
-    }
-
-    .icon-link:hover {
-      transform: scale(1.12);
-      box-shadow: 0 0 25px rgba(147, 51, 234, 0.6);
-    }
-
-    .icon-link:hover i {
-      color: #60a5fa;
-    }
-
-    /* COPYRIGHT TEXT – SMALL + SEPARATE */
     .copyright {
-      margin-top: 1rem;
-      font-size: 0.85rem;
-      color: #aaaaaa;
-      max-width: 90%;
-      margin-left: auto;
-      margin-right: auto;
-      line-height: 1.4;
+      font-size: 0.78rem;
+      margin-top: 0.4rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .social-media {
+      gap: 12px;
     }
 
-    /* 📱 MOBILE: make everything tighter so it stays inside the box */
-    @media (max-width: 768px) {
-      footer {
-        margin-top: 1.2rem;
-        padding: 1rem 0 0.8rem;
-      }
-
-      .social-media {
-        gap: 15px;
-        padding: 0 10px;
-      }
-
-      .icon-link {
-        width: 60px;
-        height: 60px;
-        font-size: 28px;
-        border-radius: 12px;
-      }
-
-      .copyright {
-        font-size: 0.78rem;
-        margin-top: 0.7rem;
-        padding: 0 10px;
-      }
+    .icon-link {
+      width: 55px;
+      height: 55px;
+      font-size: 24px;
+      border-radius: 10px;
     }
 
-    /* EXTRA SMALL PHONES */
-    @media (max-width: 480px) {
-      .social-media {
-        gap: 12px;
-      }
-
-      .icon-link {
-        width: 55px;
-        height: 55px;
-        font-size: 24px;
-        border-radius: 10px;
-      }
-
-      .copyright {
-        font-size: 0.74rem;
-      }
+    .copyright {
+      font-size: 0.75rem;
     }
-
-    /* LARGE DESKTOP SCREENS */
-    @media (min-width: 1200px) {
-      .social-media {
-        gap: 30px;
-      }
-    }
-  </style>
-</footer>
+  }
+</style>
