@@ -79,16 +79,7 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-75C47971QF"></script>
 
-    <!-- 🔔 OneSignal: load SDK + init -->
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(async function (OneSignal) {
-        await OneSignal.init({
-          appId: "df5da758-ac7d-4f61-8402-26fbf0cec333",
-        });
-      });
-    </script>
+    
 
     <!-- ======== MathJax: only load when page sets math: true ======== -->
     {math && (
@@ -586,77 +577,24 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
       });
     </script>
 
-    <!-- 🔔 Floating notification subscribe button (only ONE) -->
-    <button
-      id="notify-btn"
-      style="
-        position: fixed;
-        right: 16px;
-        bottom: 16px;
-        z-index: 9999;
-        background: #3b82f6;
-        color: white;
-        border: none;
-        border-radius: 999px;
-        padding: 10px 16px;
-        font-size: 14px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        cursor: pointer;
-      "
-    >
-      🔔 Enable notifications
-    </button>
+    <!-- ✅ Webpushr code ONLY -->
+    <!-- start webpushr code -->
+    <script>
+      (function(w,d, s, id) {
+        if(typeof(w.webpushr)!=='undefined') return;
+        w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};
+        var js, fjs = d.getElementsByTagName(s)[0];
+        js = d.createElement(s);
+        js.id = id;
+        js.async=1;
+        js.src = "https://cdn.webpushr.com/app.min.js";
+        fjs.parentNode.appendChild(js);
+      }(window,document, 'script', 'webpushr-jssdk'));
 
-    <!-- 🔔 Button click logic using OneSignal -->
-<script>
-(function () {
-  const btn = document.getElementById("notify-btn");
-  console.log("Button found?", !!btn);
-  if (!btn) return;
-
-  btn.onclick = async function () {
-    btn.disabled = true;
-    btn.style.opacity = "0.7";
-    btn.textContent = "Checking permission...";
-
-    try {
-      const OneSignal = window.OneSignal;
-
-      // SDK not loaded / blocked / unsupported
-      if (!OneSignal || !OneSignal.Notifications) {
-        console.warn("OneSignal SDK not available on this page.");
-        btn.textContent = "Notifications not available ❌";
-        btn.disabled = false;
-        btn.style.opacity = "1";
-        return;
-      }
-
-      const result = await OneSignal.Notifications.requestPermission();
-      console.log("OneSignal permission:", result);
-
-      if (result === "granted") {
-        btn.textContent = "Notifications enabled ✅";
-      } else if (result === "denied") {
-        btn.textContent = "Permission denied ❌";
-        btn.disabled = false;
-        btn.style.opacity = "1";
-      } else {
-        btn.textContent = "Click to enable 🔔";
-        btn.disabled = false;
-        btn.style.opacity = "1";
-      }
-    } catch (err) {
-      console.error("OneSignal Error:", err);
-      btn.textContent = "Error – try again 🔁";
-      btn.disabled = false;
-      btn.style.opacity = "1";
-    }
-  };
-})();
-</script>
-<!-- start webpushr code --> <script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));webpushr('setup',{'key':'BIhe2zNhULsMJpaq7PZZLkQ9fM5yea3EqmLN9zSqYVOqhtPkxE25IInQ4Cje7DYms4dgBpSR49TOzqrX7LbVC9s' });</script><!-- end webpushr code -->
+      webpushr('setup', {
+        key: 'BIhe2zNhULsMJpaq7PZZLkQ9fM5yea3EqmLN9zSqYVOqhtPkxE25IInQ4Cje7DYms4dgBpSR49TOzqrX7LbVC9s'
+      });
+    </script>
+    <!-- end webpushr code -->
   </body>
 </html>
