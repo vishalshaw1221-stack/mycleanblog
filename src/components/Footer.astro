@@ -115,6 +115,45 @@
         font-size: 24px;
       }
     }
+/* ✅ FORCE-LOCK ICONS ON MOBILE */
+@media (max-width: 768px) {
 
+  footer {
+    padding-bottom: 0.8rem;
+  }
+
+  .footer-inner {
+    gap: 0.8rem;
+  }
+
+  /* lock icon row size */
+  .social-media {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    justify-content: center;
+  }
+
+  /* force consistent sizing */
+  .icon-link {
+    min-width: 56px;
+    max-width: 56px;
+    min-height: 56px;
+    max-height: 56px;
+    font-size: 26px;
+    padding: 0;
+  }
+
+  /* prevent wrapping glitch */
+  .social-media a {
+    flex-shrink: 0;
+  }
+
+  /* keep copyright out of icon space */
+  .copyright {
+    margin-top: 6px;
+    padding-top: 4px;
+  }
+}
   </style>
 </footer>
