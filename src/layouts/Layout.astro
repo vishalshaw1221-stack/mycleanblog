@@ -637,46 +637,12 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
 <script>
 (function () {
   const btn = document.getElementById("notify-btn");
+  console.log("Button found?", !!btn);  // should log true in console
   if (!btn) return;
 
-  btn.onclick = async function () {
-    btn.disabled = true;
-    btn.style.opacity = "0.7";
-    btn.textContent = "Checking permission...";
-
-    try {
-      const OneSignal = window.OneSignal;
-
-      // If SDK is missing or blocked
-      if (!OneSignal || !OneSignal.Notifications) {
-        btn.textContent = "Notifications not available ❌";
-        btn.disabled = false;
-        btn.style.opacity = "1";
-        return;
-      }
-
-      // Ask browser permission
-      const result = await OneSignal.Notifications.requestPermission();
-      console.log("OneSignal permission:", result);
-
-      if (result === "granted") {
-        btn.textContent = "Notifications enabled ✅";
-      } else if (result === "denied") {
-        btn.textContent = "Permission denied ❌";
-        btn.disabled = false;
-        btn.style.opacity = "1";
-      } else {
-        btn.textContent = "Click to enable 🔔";
-        btn.disabled = false;
-        btn.style.opacity = "1";
-      }
-
-    } catch (err) {
-      console.error("OneSignal Error:", err);
-      btn.textContent = "Error – try again 🔁";
-      btn.disabled = false;
-      btn.style.opacity = "1";
-    }
+  btn.onclick = function () {
+    alert("Button clicked!");
+    btn.textContent = "Clicked ✅";
   };
 })();
 </script>
