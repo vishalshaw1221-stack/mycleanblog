@@ -1,6 +1,6 @@
 ---
 ---
-<!-- 🔹 BOX WITH SOCIAL ICONS ONLY -->
+<!-- 🔹 SOCIAL ICONS BOX ONLY -->
 <footer class="social-footer">
   <div class="social-media">
     <a href="https://www.facebook.com/profile.php?id=61583067824148" target="_blank" class="icon-link" aria-label="Facebook">
@@ -21,7 +21,7 @@
   </div>
 </footer>
 
-<!-- 🔹 COPYRIGHT COMPLETELY OUTSIDE THE BOX -->
+<!-- 🔹 COPYRIGHT - COMPLETELY SEPARATE ELEMENT -->
 <div class="copyright">
   © 2025 Vishal Shaw — CC BY-NC-ND 4.0. Partial reuse with credit only.
   <br />
@@ -29,7 +29,7 @@
 </div>
 
 <style>
-  /* 🔹 BOX THAT HOLDS THE ICONS ONLY */
+  /* 🔹 SOCIAL ICONS BOX */
   .social-footer {
     width: 100%;
     display: flex;
@@ -40,9 +40,13 @@
     color: white;
     font-family: 'Poppins', sans-serif;
     padding: 20px 0;
+    /* Box styling to see boundaries */
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 12px;
+    margin: 0;
   }
 
-  /* ICONS ROW */
   .social-media {
     display: flex;
     justify-content: center;
@@ -94,22 +98,29 @@
     color: #60a5fa;
   }
 
-  /* 🔹 COPYRIGHT TEXT – OUTSIDE THE BOX, BELOW IT */
+  /* 🔹 COPYRIGHT - COMPLETELY SEPARATE FROM FOOTER */
   .copyright {
     text-align: center;
     font-size: 0.82rem;
     color: #aaaaaa;
     font-family: 'Poppins', sans-serif;
     line-height: 1.5;
-    padding: 0 10px;
+    width: 100%;
+    /* No connection to footer box */
+    margin: 0;
+    padding: 20px 10px;
   }
 
-  /* 📱 MOBILE TWEAKS - Copyright completely outside footer box */
+  /* 📱 MOBILE: COMPLETE SEPARATION */
   @media (max-width: 768px) {
     .social-footer {
       min-height: 110px;
-      padding: 25px 0; /* Padding only inside the footer box */
-      margin-bottom: 0; /* No margin that could affect copyright position */
+      padding: 25px 0;
+      margin-bottom: 0; /* No margin that could affect copyright */
+      /* Clear box boundary */
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 12px;
     }
 
     .social-media {
@@ -124,12 +135,15 @@
       border-radius: 12px;
     }
 
-    /* Copyright positioned completely outside the footer */
+    /* Copyright completely outside and separate */
     .copyright {
       font-size: 0.78rem;
-      margin-top: 10px; /* Space between footer box and copyright */
-      padding: 15px 10px 0; /* Padding only on copyright, not connected to footer */
-      border-top: 1px solid rgba(255, 255, 255, 0.1); /* Visual separation */
+      margin-top: 0; /* No margin connection to footer */
+      padding: 25px 15px 10px; /* Independent padding */
+      /* Visual separation line */
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      /* Ensure it's outside the footer box */
+      background: transparent;
     }
   }
 
@@ -147,8 +161,20 @@
 
     .copyright {
       font-size: 0.75rem;
-      margin-top: 8px;
-      padding: 12px 10px 0;
+      padding: 20px 10px 5px;
+    }
+  }
+
+  /* Extra small screens */
+  @media (max-width: 360px) {
+    .social-media {
+      gap: 8px;
+    }
+
+    .icon-link {
+      width: 50px;
+      height: 50px;
+      font-size: 22px;
     }
   }
 </style>
