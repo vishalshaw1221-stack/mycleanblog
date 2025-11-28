@@ -5,33 +5,16 @@ import Footer from "../components/Footer.astro";
 import { SEO } from "astro-seo";
 
 // CORRECT MATHJAX SETUP - Access frontmatter from props
-// Get math directly from props (passed from [...slug].astro)
 const math = !!Astro.props.math;
 
-console.log('Math enabled:', math); // Keep this for debugging
-
-// Debug line to check if math is being detected
-console.log('MathJax enabled:', math, 'for page:', Astro.url.pathname);
-
-/*
-  Layout.astro - merged & SEO-enhanced version for "Physics in physics"
-  - Author: Vishal Kumar Shaw
-  - Default site: https://mycleanblog.vercel.app/
-  - Keeps your original styling and scripts
-  - Adds OpenGraph, Twitter, canonical, robots, JSON-LD structured data
-*/
-
-// Props the pages can pass in (slug.astro will pass these)
 const {
   title = "Physics insight",
   description = "Physics insight — ideas, explanations, and notes on physics & maths.",
   image = "/og-image.png",
-  // Accept seo as an object from pages (contains canonical, keywords, openGraph, twitter)
   seo = {},
-  url = "https://mycleanblog.vercel.app/", // fallback canonical/base URL
+  url = "https://mycleanblog.vercel.app/",
 } = Astro.props;
 
-// Social profiles (you provided these)
 const socialProfiles = [
   "https://www.facebook.com/profile.php?id=61583067824148",
   "https://www.instagram.com/physicsinphysics/",
@@ -40,7 +23,6 @@ const socialProfiles = [
   "https://m.youtube.com/channel/UCQeEKqqidI7I0etj-Io0CZA/videos"
 ];
 
-// Build JSON-LD structuredData (Person + Organization + Website)
 const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
@@ -75,7 +57,6 @@ const structuredData = {
   ]
 };
 
-// If page sends article-level structured data via seo.articleSchema, merge it:
 if (seo?.articleSchema) {
   structuredData["@graph"].push({
     "@type": "Article",
@@ -84,7 +65,6 @@ if (seo?.articleSchema) {
   });
 }
 
-// Compose final meta values with fallbacks
 const metaTitle = seo?.openGraph?.title || seo?.title || title;
 const metaDescription = seo?.openGraph?.description || seo?.description || description;
 const metaImage = seo?.openGraph?.images?.[0]?.url || seo?.image || image;
@@ -98,43 +78,37 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
   <head>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-75C47971QF"></script>
-   
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 
-   <!-- 🔔 OneSignal (in the real layout) -->
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function (OneSignal) {
-    await OneSignal.init({
-      appId: "df5da758-ac7d-4f61-8402-26fbf0cec333",
-    });
-  });
-</script>
-   
+    <!-- 🔔 OneSignal: load SDK + init -->
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      OneSignalDeferred.push(async function (OneSignal) {
+        await OneSignal.init({
+          appId: "df5da758-ac7d-4f61-8402-26fbf0cec333",
+        });
+      });
+    </script>
+
     <!-- ======== MathJax: only load when page sets math: true ======== -->
     {math && (
       <>
-        
-  <script>
-  window.MathJax = {
-    tex: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']],
-      displayMath: [['$$','$$'], ['\\[','\\]']],
-
-      // important bits:
-      packages: { '[+]': ['ams'] },  // add AMS environments
-      tags: 'ams',                   // auto-number "equation", "align", etc.
-      tagSide: 'right',              // number on the right
-      tagIndent: '0.8em',            // small indent from content
-    },
-    options: {
-      skipHtmlTags: ['script','noscript','style','textarea','pre','code'],
-    },
-    startup: { typeset: true },
-  };
-</script>
-            
+        <script>
+          window.MathJax = {
+            tex: {
+              inlineMath: [['$', '$'], ['\\(', '\\)']],
+              displayMath: [['$$','$$'], ['\\[','\\]']],
+              packages: { '[+]': ['ams'] },
+              tags: 'ams',
+              tagSide: 'right',
+              tagIndent: '0.8em',
+            },
+            options: {
+              skipHtmlTags: ['script','noscript','style','textarea','pre','code'],
+            },
+            startup: { typeset: true },
+          };
+        </script>
         <script
           id="MathJax-script"
           async
@@ -142,26 +116,13 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
         ></script>
       </>
     )}
-    <!-- ============================================================== -->
 
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-75C47971QF');
-    </script>
-
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
       gtag('config', 'G-J0V6QXQ31L');
-    </script>
-
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
       gtag('config', 'G-4S50023WZL');
     </script>
 
@@ -169,7 +130,6 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <!-- Primary title + description -->
     <title>
       {metaTitle}
       {metaTitle && metaTitle.includes("Physics in physics") ? "" : ` | Physics in physics`}
@@ -180,7 +140,6 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href={canonicalUrl} />
 
-    <!-- SEO Helper (astro-seo) -->
     <SEO
       title={metaTitle}
       description={metaDescription}
@@ -202,7 +161,6 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
       }}
     />
 
-    <!-- ✅ JSON-LD Structured Data (Organization) -->
     <script type="application/ld+json">
       {JSON.stringify({
         "@context": "https://schema.org",
@@ -210,30 +168,17 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
         name: "Physics in Physics",
         url: "https://mycleanblog.vercel.app/",
         logo: "https://mycleanblog.vercel.app/favicon.svg",
-        sameAs: [
-          "https://www.facebook.com/profile.php?id=61583067824148",
-          "https://www.instagram.com/physicsinphysics/",
-          "https://x.com/PhysicsP32590",
-          "https://www.linkedin.com/me?trk=p_mwlite_feed-secondary_nav",
-          "https://m.youtube.com/channel/UCQeEKqqidI7I0etj-Io0CZA/videos",
-        ],
+        sameAs: socialProfiles,
         description: description,
-        founder: {
-          "@type": "Person",
-          name: "Vishal Kumar Shaw",
-        },
+        founder: { "@type": "Person", name: "Vishal Kumar Shaw" },
         publisher: {
           "@type": "Organization",
           name: "Physics in Physics",
-          logo: {
-            "@type": "ImageObject",
-            url: "https://mycleanblog.vercel.app/favicon.svg",
-          },
+          logo: { "@type": "ImageObject", url: "https://mycleanblog.vercel.app/favicon.svg" },
         },
       })}
     </script>
 
-    <!-- Open Graph -->
     <meta property="og:site_name" content="Physics in physics" />
     <meta property="og:type" content={seo?.openGraph?.type || "website"} />
     <meta property="og:title" content={metaTitle} />
@@ -241,7 +186,6 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
     <meta property="og:image" content={metaImage} />
     <meta property="og:url" content={canonicalUrl} />
 
-    <!-- Twitter Card -->
     <meta name="twitter:card" content={seo?.twitter?.card || "summary_large_image"} />
     <meta name="twitter:title" content={metaTitle} />
     <meta name="twitter:description" content={metaDescription} />
@@ -249,17 +193,14 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
     <meta name="twitter:site" content={twitterHandle} />
     <meta name="twitter:creator" content={twitterHandle} />
 
-    <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-    <!-- Structured data JSON-LD (graph) -->
     <script type="application/ld+json">
       {JSON.stringify(structuredData)}
     </script>
 
-    <!-- Performance / fonts -->
     <meta name="theme-color" content="#0f172a" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -268,13 +209,11 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
       rel="stylesheet"
     />
 
-    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
 
-    <!-- Your original styles -->
     <style>
       :root {
         --space-blue: #0f172a;
@@ -285,8 +224,7 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
         --electron-blue: #3b82f6;
       }
 
-      html,
-      body {
+      html, body {
         height: 100%;
         margin: 0;
         padding: 0;
@@ -297,24 +235,16 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
         flex-direction: column;
         align-items: center;
         min-height: 100vh;
-        background: linear-gradient(
-          135deg,
-          var(--space-blue) 0%,
-          var(--quantum-purple) 100%
-        );
+        background: linear-gradient(135deg, var(--space-blue) 0%, var(--quantum-purple) 100%);
         color: white;
         font-family: "Arial", sans-serif;
-        padding: 0;
         width: 100%;
       }
 
       body::before {
         content: "";
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        inset: 0;
         background:
           url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M0,50 Q25,30 50,50 T100,50' stroke='rgba(59,130,246,0.12)' stroke-width='1.5' fill='none'/%3E%3Cpath d='M0,30 Q25,70 50,30 T100,30' stroke='rgba(220,38,38,0.12)' stroke-width='1.5' fill='none'/%3E%3C/svg%3E")
             center/250px 250px,
@@ -329,10 +259,7 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
       main::before {
         content: "";
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        inset: 0;
         background: rgba(15, 23, 42, 0.3);
         backdrop-filter: blur(2px);
         border-radius: 15px;
@@ -345,8 +272,7 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
         z-index: 1;
       }
 
-      header,
-      footer {
+      header, footer {
         width: 80%;
         max-width: 1100px;
         border-radius: 15px;
@@ -409,11 +335,8 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
         border-radius: 5px;
       }
 
-      /* 🔥 MOBILE FIXES */
       @media (max-width: 768px) {
-        html {
-          font-size: 14px;
-        }
+        html { font-size: 14px; }
 
         body {
           padding: 0 10px;
@@ -421,9 +344,7 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
           box-sizing: border-box;
         }
 
-        header,
-        main,
-        footer {
+        header, main, footer {
           width: 100% !important;
           max-width: 100% !important;
           margin-left: auto !important;
@@ -447,19 +368,10 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
           min-height: 150px;
         }
 
-        h1 {
-          font-size: 1.5rem !important;
-        }
-        h2 {
-          font-size: 1.3rem !important;
-        }
-        h3 {
-          font-size: 1.1rem !important;
-        }
-        p,
-        li {
-          font-size: 0.95rem !important;
-        }
+        h1 { font-size: 1.5rem !important; }
+        h2 { font-size: 1.3rem !important; }
+        h3 { font-size: 1.1rem !important; }
+        p, li { font-size: 0.95rem !important; }
 
         .search-suggestions {
           position: fixed !important;
@@ -470,13 +382,9 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
       }
 
       @media (max-width: 480px) {
-        html {
-          font-size: 13px;
-        }
+        html { font-size: 13px; }
 
-        header,
-        main,
-        footer {
+        header, main, footer {
           border-radius: 8px;
         }
 
@@ -484,15 +392,10 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
           padding: 1rem 0.8rem !important;
         }
 
-        h1 {
-          font-size: 1.3rem !important;
-        }
-        h2 {
-          font-size: 1.1rem !important;
-        }
+        h1 { font-size: 1.3rem !important; }
+        h2 { font-size: 1.1rem !important; }
       }
 
-      /* Search Styles */
       .search-suggestions {
         position: absolute;
         top: 100%;
@@ -557,6 +460,29 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
       <Footer />
     </footer>
 
+    <!-- 🔔 Floating notification subscribe button -->
+    <button
+      id="notify-btn"
+      style="
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        z-index: 9999;
+        background: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 999px;
+        padding: 10px 16px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      "
+    >
+      <span>🔔 Enable notifications</span>
+    </button>
+
     <!-- Search Script (keeps your original logic) -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
@@ -587,10 +513,8 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
               {
                 id: "ai-future",
                 title: "The Future of Artificial Intelligence",
-                description:
-                  "Exploring AI advancements and machine learning",
-                content:
-                  "Artificial intelligence is transforming how we live and work...",
+                description: "Exploring AI advancements and machine learning",
+                content: "Artificial intelligence is transforming how we live and work...",
                 tags: ["ai", "technology", "machine-learning"],
               },
             ];
@@ -655,7 +579,7 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
           if (results.length > 0) {
             window.location.href = `/blog/${results[0].id}`;
           } else {
-            alert(`No blogs found for "${searchTerm}"`);
+            alert(\`No blogs found for "\${searchTerm}"\`);
           }
           hideSuggestions();
         }
@@ -684,51 +608,73 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
         }
       });
     </script>
-    
+
+   <!-- 🔔 Floating notification subscribe button -->
+    <button
+      id="notify-btn"
+      style="
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        z-index: 9999;
+        background: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 999px;
+        padding: 10px 16px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      "
+    >
+      <span>🔔 Enable notifications</span>
+    </button>
+
+    <!-- 🔔 Button click logic -->
     <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const btn = document.getElementById("notify-btn");
-    if (!btn) return;
+      document.addEventListener("DOMContentLoaded", function () {
+        const btn = document.getElementById("notify-btn");
+        if (!btn) return;
 
-    btn.addEventListener("click", async function () {
-      btn.disabled = true;
-      btn.style.opacity = "0.7";
-      btn.textContent = "Checking permission...";
+        btn.addEventListener("click", async function () {
+          btn.disabled = true;
+          btn.style.opacity = "0.7";
+          btn.textContent = "Checking permission...";
 
-      try {
-        const OneSignal = window.OneSignal; // <-- use global directly
+          try {
+            const OneSignal = window.OneSignal;
 
-        if (!OneSignal || !OneSignal.Notifications) {
-          // SDK not loaded / blocked / unsupported
-          btn.textContent = "Notifications not available on this browser ❌";
-          btn.disabled = false;
-          btn.style.opacity = "1";
-          return;
-        }
+            if (!OneSignal || !OneSignal.Notifications) {
+              btn.textContent = "Notifications not available on this browser ❌";
+              btn.disabled = false;
+              btn.style.opacity = "1";
+              return;
+            }
 
-        const result = await OneSignal.Notifications.requestPermission();
-        console.log("OneSignal permission:", result);
+            const result = await OneSignal.Notifications.requestPermission();
+            console.log("OneSignal permission:", result);
 
-        if (result === "granted") {
-          btn.textContent = "Notifications enabled ✅";
-        } else if (result === "denied") {
-          btn.textContent = "Permission denied ❌";
-          btn.disabled = false;
-          btn.style.opacity = "1";
-        } else {
-          btn.textContent = "Try again to enable 🔔";
-          btn.disabled = false;
-          btn.style.opacity = "1";
-        }
-      } catch (e) {
-        console.error("Permission request error:", e);
-        btn.textContent = "Error – tap to retry 🔁";
-        btn.disabled = false;
-        btn.style.opacity = "1";
-      }
-    });
-  });
-</script>
-    
+            if (result === "granted") {
+              btn.textContent = "Notifications enabled ✅";
+            } else if (result === "denied") {
+              btn.textContent = "Permission denied ❌";
+              btn.disabled = false;
+              btn.style.opacity = "1";
+            } else {
+              btn.textContent = "Try again to enable 🔔";
+              btn.disabled = false;
+              btn.style.opacity = "1";
+            }
+          } catch (e) {
+            console.error("Permission request error:", e);
+            btn.textContent = "Error – tap to retry 🔁";
+            btn.disabled = false;
+            btn.style.opacity = "1";
+          }
+        });
+      });
+    </script>
   </body>
 </html>
