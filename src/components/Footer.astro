@@ -1,55 +1,58 @@
----
----
-
 <footer>
-  <div class="social-media">
-    <a href="https://www.facebook.com/profile.php?id=61583067824148" target="_blank" class="icon-link" aria-label="Facebook">
-      <i class="fab fa-facebook"></i>
-    </a>
-    <a href="https://x.com/PhysicsP32590" target="_blank" class="icon-link" aria-label="Twitter">
-      <i class="fab fa-twitter"></i>
-    </a>
-    <a href="https://www.instagram.com/physicsinphysics/" target="_blank" class="icon-link" aria-label="Instagram">
-      <i class="fab fa-instagram"></i>
-    </a>
-    <a href="https://www.linkedin.com/me?trk=p_mwlite_feed-secondary_nav" target="_blank" class="icon-link" aria-label="LinkedIn">
-      <i class="fab fa-linkedin"></i>
-    </a>
-    <a href="https://m.youtube.com/channel/UCQeEKqqidI7I0etj-Io0CZA/videos" target="_blank" class="icon-link" aria-label="YouTube">
-      <i class="fab fa-youtube"></i>
-    </a>
-  </div>
+  <div class="footer-inner">
 
-  <!-- 🔥 MAKE IT VERY VISIBLE FOR TEST -->
-  <div class="copyright">
-    ⚠️ © 2025 VISHAL SHAW — COPYRIGHT. FULL COPY NOT ALLOWED. ⚠️
+    <!-- SOCIAL ICONS (LOCKED ZONE) -->
+    <div class="social-media">
+      <a href="https://www.facebook.com/profile.php?id=61583067824148" target="_blank" class="icon-link" aria-label="Facebook">
+        <i class="fab fa-facebook"></i>
+      </a>
+      <a href="https://x.com/PhysicsP32590" target="_blank" class="icon-link" aria-label="Twitter">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://www.instagram.com/physicsinphysics/" target="_blank" class="icon-link" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a href="https://www.linkedin.com/me?trk=p_mwlite_feed-secondary_nav" target="_blank" class="icon-link" aria-label="LinkedIn">
+        <i class="fab fa-linkedin"></i>
+      </a>
+      <a href="https://m.youtube.com/channel/UCQeEKqqidI7I0etj-Io0CZA/videos" target="_blank" class="icon-link" aria-label="YouTube">
+        <i class="fab fa-youtube"></i>
+      </a>
+    </div>
+
+    <!-- COPYRIGHT (SEPARATE, CANNOT AFFECT ICONS) -->
+    <div class="copyright">
+      © 2025 Vishal Shaw — CC BY-NC-ND 4.0. Partial reuse with credit only.
+    </div>
+
   </div>
 
   <style>
-    footer {
-      text-align: center;
-      color: white;
-      font-family: 'Poppins', sans-serif;
-      margin-top: 2.2rem;
-      padding: 1.4rem 0;
-    }
 
-    .social-media {
+    footer {
+      width: 100%;
       display: flex;
       justify-content: center;
-      flex-wrap: wrap;
-      gap: 25px;
+      padding: 1.5rem 0 1.2rem;
     }
 
-    .copyright {
-      margin-top: 1.5rem;
-      font-size: 1rem;
-      font-weight: 600;
-      color: #ffea00;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 0.6rem 1rem;
-      display: inline-block;
-      border-radius: 8px;
+    /* MAIN WRAPPER */
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.1rem; /* space between icons and copyright */
+      width: 100%;
+    }
+
+    /* ICON ZONE LOCKED */
+    .social-media {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(55px, 75px));
+      justify-content: center;
+      gap: 20px;
+      width: fit-content;
+      max-width: 100%;
     }
 
     .icon-link {
@@ -62,82 +65,56 @@
       color: white;
       border-radius: 16px;
       text-decoration: none;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      box-shadow: 0 0 15px rgba(59, 130, 246, 0.25);
-      transition: all 0.3s ease;
-      position: relative;
-    }
-
-    .icon-link::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 16px;
-      padding: 1px;
-      background: linear-gradient(135deg, #3b82f6, #9333ea, #ef4444);
-      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      mask-composite: exclude;
-      -webkit-mask-composite: destination-out;
-      pointer-events: none;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(59,130,246,0.3);
+      box-shadow: 0 0 15px rgba(59,130,246,0.25);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
     .icon-link:hover {
       transform: scale(1.12);
-      box-shadow: 0 0 25px rgba(147, 51, 234, 0.6);
+      box-shadow: 0 0 25px rgba(147,51,234,0.6);
     }
 
-    .icon-link:hover i {
-      color: #60a5fa;
+    .icon-link i {
+      pointer-events: none;
     }
 
+    /* COPYRIGHT */
+    .copyright {
+      font-size: 0.82rem;
+      color: #aaa;
+      text-align: center;
+      max-width: 90%;
+      line-height: 1.5;
+    }
+
+    /* MOBILE FIXES */
     @media (max-width: 768px) {
-      footer {
-        margin-top: 1.5rem;
-        padding: 1rem 0;
-      }
-
       .social-media {
-        gap: 15px;
-        padding: 0 10px;
+        grid-template-columns: repeat(5, 60px);
+        gap: 14px;
       }
 
       .icon-link {
         width: 60px;
         height: 60px;
         font-size: 28px;
-        border-radius: 12px;
-      }
-
-      .copyright {
-        font-size: 0.9rem;
-        padding: 0.5rem 0.8rem;
-      }
-
-      .icon-link:active {
-        transform: scale(0.95);
-        background: rgba(255, 255, 255, 0.08);
       }
     }
 
     @media (max-width: 480px) {
       .social-media {
-        gap: 12px;
+        grid-template-columns: repeat(3, 55px);
+        row-gap: 10px;
       }
 
       .icon-link {
         width: 55px;
         height: 55px;
         font-size: 24px;
-        border-radius: 10px;
       }
     }
 
-    @media (min-width: 1200px) {
-      .social-media {
-        gap: 30px;
-      }
-    }
   </style>
 </footer>
