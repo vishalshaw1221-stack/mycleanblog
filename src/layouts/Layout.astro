@@ -100,14 +100,22 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-75C47971QF"></script>
    
    
-   <!-- ✅ OneSignal goes HERE (before </body>) -->
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <!-- 🔔 OneSignal push notifications -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
   window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
+  OneSignalDeferred.push(async function (OneSignal) {
     await OneSignal.init({
       appId: "243d34a0-52d2-4fc9-baa0-1fdb3598a7d5",
     });
+
+    // 👇 Force the browser to show the permission prompt
+    try {
+      const permission = await OneSignal.Notifications.requestPermission();
+      console.log("OneSignal permission:", permission);
+    } catch (e) {
+      console.error("OneSignal permission error:", e);
+    }
   });
 </script>
     
