@@ -90,21 +90,26 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
     {math && (
       <>
         <script>
-          window.MathJax = {
-            tex: {
-              inlineMath: [['$', '$'], ['\\(', '\\)']],
-              displayMath: [['$$','$$'], ['\\[','\\]']],
-              packages: { '[+]': ['ams'] },
-              tags: 'ams',
-              tagSide: 'right',
-              tagIndent: '0.8em',
-            },
-            options: {
-              skipHtmlTags: ['script','noscript','style','textarea','pre','code'],
-            },
-            startup: { typeset: true },
-          };
-        </script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      packages: { '[+]': ['ams'] },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '0.8em',
+    },
+    options: {
+      skipHtmlTags: ['script','noscript','style','textarea','pre','code'],
+    },
+    /* 🔹 Important: let big equations wrap inside the box */
+    chtml: {
+      linebreaks: { automatic: true, width: 'container' },
+      scale: 1
+    },
+    startup: { typeset: true },
+  };
+</script>
         <script
           id="MathJax-script"
           async
