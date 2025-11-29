@@ -490,11 +490,37 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
       <slot />
     </main>
 
-    <footer>
+  Yep, I see the problem now:
+you’ve got three different systems fighting each other:
+
+wp-subscribe-btn button ✅
+
+scripts using notify-icon ❌ (button doesn’t exist)
+
+script using webpushr-subscribe-btn ❌ (wrong id)
+
+plus two different “attach” logics
+
+
+Let’s clean it up and leave one button + one script that:
+
+shows bottom-right
+
+subscribes with Webpushr
+
+auto-hides after 30 seconds if not clicked
+
+hides if already subscribed
+
+
+
+---
+
+<footer>
       <Footer />
     </footer>
 
-    <!-- Search Script (keeps your original logic) -->
+    <!-- 🔎 Search Script (keeps your original logic) -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const searchInput = document.querySelector(".search-input");
@@ -620,80 +646,8 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
         }
       });
     </script>
-    
-    <script>
-  // Called automatically by Webpushr when their script is ready
-  function _webpushrScriptReady() {
-    var btn = document.getElementById('wp-subscribe-btn');
-    if (!btn) return;
 
-    // 1️⃣ Set initial button text based on subscription state
-    webpushr('isSubscribed', function (isSubscribed) {
-      if (isSubscribed) {
-        btn.textContent = '🔔 Subscribed';
-      } else {
-        btn.textContent = '🔔 Enable notifications';
-      }
-    });
-
-    // 2️⃣ Click to subscribe / show feedback
-    btn.addEventListener('click', function () {
-      webpushr('isSubscribed', function (isSubscribed) {
-        if (isSubscribed) {
-          alert('You are already subscribed to notifications ✅');
-          return;
-        }
-
-        // Try to subscribe
-        webpushr('subscribe', function (status) {
-          console.log('webpushr subscribe status:', status);
-          if (status === 'subscribed') {
-            btn.textContent = '🔔 Subscribed';
-            alert('Subscribed! You will now get new blog notifications 🎉');
-          } else if (status === 'blocked') {
-            alert('Notifications are blocked in your browser settings ❌');
-          } else {
-            alert('Could not subscribe (' + status + '). Try again later.');
-          }
-        });
-      });
-    });
-  }
-</script>
-
-<script>
-  const notifyBtn = document.getElementById("notify-icon");
-
-  // ✅ hide button automatically after 30 seconds
-  setTimeout(() => {
-    if (notifyBtn) {
-      notifyBtn.style.display = "none";
-    }
-  }, 10000);
-
-  // ✅ click logic
-  notifyBtn.onclick = function () {
-
-    if (typeof webpushr === 'undefined') {
-      alert("Notifications not ready yet. Try again in a few seconds.");
-      return;
-    }
-
-    webpushr('isSubscribed', function(isSubscribed) {
-
-      if (isSubscribed) {
-        alert("✅ You are already subscribed!");
-        notifyBtn.style.display = "none";
-      } else {
-        webpushr('subscribe');
-      }
-
-    });
-  };
-</script>
-
-    <!-- ✅ Webpushr code ONLY -->
-    <!-- start webpushr code -->
+    <!-- ✅ Webpushr main snippet -->
     <script>
       (function(w,d, s, id) {
         if (typeof(w.webpushr) !== 'undefined') return;
@@ -712,87 +666,112 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
         key: 'BIhe2zNhULsMJpaq7PZZLkQ9fM5yea3EqmLN9zSqYVOqhtPkxE25IInQ4Cje7DYms4dgBpSR49TOzqrX7LbVC9s'
       });
     </script>
-    <!-- end webpushr code -->
-    
-  <!-- 🔔 Webpushr subscribe button (bottom-right) -->
-<button
-  id="wp-subscribe-btn"
-  style="
-    position: fixed;
-    right: 16px;
-    bottom: 16px;
-    z-index: 9999;
-    background: #3b82f6;
-    color: white;
-    border: none;
-    border-radius: 999px;
-    padding: 10px 16px;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    cursor: pointer;
-  "
->
-  🔔 Enable notifications
-</button>
 
-<script>
-  // Wait until Webpushr is ready, then wire up the button
-  (function () {
-    function attachWebpushrButton() {
-      var btn = document.getElementById("webpushr-subscribe-btn");
-      if (!btn) return;
+    <!-- 🔔 Bottom-right subscribe button -->
+    <button
+      id="wp-subscribe-btn"
+      style="
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        z-index: 9999;
+        background: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 999px;
+        padding: 10px 16px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        cursor: pointer;
+      "
+    >
+      🔔 Enable notifications
+    </button>
 
-      // Hide button if user is already subscribed
-      try {
-        webpushr('isSubscribed', function (isSubscribed) {
-          if (isSubscribed) {
-            btn.style.display = "none";
+    <!-- 🔔 Webpushr button logic + auto-hide after 30s -->
+    <script>
+      (function () {
+        function setupWebpushrButton() {
+          var btn = document.getElementById("wp-subscribe-btn");
+          if (!btn || typeof webpushr === "undefined") return;
+
+          // Initial state + auto-hide logic
+          try {
+            webpushr("isSubscribed", function (isSubscribed) {
+              if (isSubscribed) {
+                btn.textContent = "🔔 Subscribed";
+                // already subscribed? Hide soon
+                setTimeout(function () {
+                  btn.style.display = "none";
+                }, 2000);
+              } else {
+                btn.textContent = "🔔 Enable notifications";
+
+                // auto-hide after 30 seconds if NOT clicked
+                setTimeout(function () {
+                  if (btn.getAttribute("data-clicked") !== "true") {
+                    btn.style.display = "none";
+                  }
+                }, 30000);
+              }
+            });
+          } catch (e) {
+            console.warn("webpushr isSubscribed error:", e);
           }
-        });
-      } catch (e) {
-        console.warn("Webpushr not ready yet:", e);
-      }
 
-      btn.addEventListener("click", function () {
-        btn.disabled = true;
-        btn.style.opacity = "0.7";
-        btn.textContent = "Subscribing...";
+          // Click → subscribe
+          btn.addEventListener("click", function () {
+            btn.setAttribute("data-clicked", "true");
+            btn.disabled = true;
+            btn.style.opacity = "0.7";
+            btn.textContent = "Subscribing...";
 
-        try {
-          webpushr('subscribe', function (result) {
-            console.log("Webpushr subscribe result:", result);
-            if (result === true) {
-              btn.textContent = "Subscribed ✅";
-              // Optionally hide after success:
-              setTimeout(function () {
-                btn.style.display = "none";
-              }, 1500);
-            } else {
-              btn.textContent = "Try again 🔔";
+            try {
+              webpushr("subscribe", function (result) {
+                console.log("webpushr subscribe result:", result);
+                if (result === true || result === "subscribed") {
+                  btn.textContent = "Subscribed ✅";
+                  setTimeout(function () {
+                    btn.style.display = "none";
+                  }, 1500);
+                } else if (result === "blocked") {
+                  btn.textContent = "Notifications blocked ❌";
+                  btn.disabled = false;
+                  btn.style.opacity = "1";
+                } else {
+                  btn.textContent = "Try again 🔔";
+                  btn.disabled = false;
+                  btn.style.opacity = "1";
+                }
+              });
+            } catch (err) {
+              console.error("webpushr subscribe error:", err);
+              btn.textContent = "Error – tap to retry 🔁";
               btn.disabled = false;
               btn.style.opacity = "1";
             }
           });
-        } catch (err) {
-          console.error("Webpushr subscribe error:", err);
-          btn.textContent = "Error – tap to retry 🔁";
-          btn.disabled = false;
-          btn.style.opacity = "1";
         }
-      });
-    }
 
-    // Attach after page load (and after webpushr script likely loaded)
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", attachWebpushrButton);
-    } else {
-      attachWebpushrButton();
-    }
-  })();
-</script>
+        // Wait for DOM + webpushr to be ready
+        function waitForWebpushr() {
+          if (typeof webpushr !== "undefined") {
+            setupWebpushrButton();
+          } else {
+            setTimeout(waitForWebpushr, 500);
+          }
+        }
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", waitForWebpushr);
+        } else {
+          waitForWebpushr();
+        }
+      })();
+    </script>
 
   </body>
 </html>
