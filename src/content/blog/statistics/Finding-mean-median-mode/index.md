@@ -51,11 +51,11 @@ it's just middle value of class interval means if class interval is 10-15 then c
 
 In previous method multiplying $f_ix_i$ and then adding is nice and good for small numbers but for large numbers it's going to be unnecessary pain because we have a simple way to bypass this, but before that let me show you something:
 
-   Class Interval   Frequency   Class mark
-  ---------------- ----------- ------------
-        0-10            2           5
-       10-20            3           15
-       20-30            1           25
+   | Class Interval | Frequency | Class mark |
+|---------------:|----------:|-----------:|
+| 0–10           |         2 |          5 |
+| 10–20          |         3 |         15 |
+| 20–30          |         1 |         25 |
 
   : Say we have a frequency distribution table:
 
