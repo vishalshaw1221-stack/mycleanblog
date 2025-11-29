@@ -492,6 +492,26 @@ table + h3,
 table + h4 {
   white-space: nowrap;
 }
+
+ /* 🔹 Tables: keep inside the blog box and scroll if really needed */
+main table {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+}
+
+/* Optional: nice borders for tables */
+main table th,
+main table td {
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  padding: 6px 10px;
+}
+
+/* If a table is still too wide (rare), allow horizontal scroll only for the table */
+main table {
+  display: block;
+  overflow-x: auto;
+}
     </style>
   </head>
 
