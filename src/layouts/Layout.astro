@@ -1,9 +1,9 @@
 ---
-import Analytics from '@vercel/analytics/astro';
+import Analytics from '@vercel/analytics/astro'
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { SEO } from "astro-seo";
-import { getCollection } from "astro:content";
+import { getCollection } from "astro:content"; // ✅ NEW
 
 // CORRECT MATHJAX SETUP - Access frontmatter from props
 const math = !!Astro.props.math;
@@ -15,17 +15,6 @@ const {
   seo = {},
   url = "https://mycleanblog.vercel.app/",
 } = Astro.props;
-
-// ✅ Build blog index on the server for search
-const posts = await getCollection("blog");
-const blogIndex = posts.map((post) => ({
-  id: post.slug,
-  title: post.data.title ?? "",
-  description: post.data.description ?? "",
-  // small slice so we don't dump huge content into the page
-  content: (post.body ?? "").slice(0, 4000),
-  tags: post.data.tags ?? [],
-}));
 
 const socialProfiles = [
   "https://www.facebook.com/profile.php?id=61583067824148",
@@ -83,6 +72,16 @@ const metaImage = seo?.openGraph?.images?.[0]?.url || seo?.image || image;
 const canonicalUrl = seo?.canonical || Astro.url.href || url;
 const metaKeywords = seo?.keywords || "";
 const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitterhandle";
+
+// ✅ Build blog index ON SERVER
+const allPosts = await getCollection("blog");
+const blogIndexData = allPosts.map((post) => ({
+  id: post.slug,
+  title: post.data.title ?? "",
+  description: post.data.description ?? "",
+  tags: post.data.tags ?? [],
+}));
+const blogIndexJson = JSON.stringify(blogIndexData);
 ---
 
 <!DOCTYPE html>
@@ -114,6 +113,10 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
             options: {
               skipHtmlTags: ['script','noscript','style','textarea','pre','code'],
             },
+            chtml: {
+              linebreaks: { automatic: true, width: 'container' },
+              scale: 1
+            },
             startup: { typeset: true },
           };
         </script>
@@ -132,11 +135,6 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
       gtag('config', 'G-75C47971QF');
       gtag('config', 'G-J0V6QXQ31L');
       gtag('config', 'G-4S50023WZL');
-    </script>
-
-    <!-- ✅ Blog index JSON for search (safe, no TS issues) -->
-    <script type="application/json" id="blog-index">
-      {JSON.stringify(blogIndex)}
     </script>
 
     <meta charset="utf-8" />
@@ -205,10 +203,6 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
     <meta name="twitter:image" content={metaImage} />
     <meta name="twitter:site" content={twitterHandle} />
     <meta name="twitter:creator" content={twitterHandle} />
-
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <script type="application/ld+json">
       {JSON.stringify(structuredData)}
@@ -280,6 +274,11 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
         pointer-events: none;
       }
 
+      main {
+        position: relative;
+        z-index: 1;
+      }
+
       header, footer {
         width: 80%;
         max-width: 1100px;
@@ -287,9 +286,8 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
         box-sizing: border-box;
       }
 
+      /* Main content box */
       main {
-        position: relative;
-        z-index: 1;
         width: 85%;
         max-width: 1200px;
         border-radius: 15px;
@@ -451,7 +449,28 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
       .search-container {
         position: relative;
       }
+
+      /* Tables styling (from earlier) */
+      main table {
+        width: 100%;
+        max-width: 100%;
+        border-collapse: collapse;
+      }
+      main table th,
+      main table td {
+        border: 1px solid rgba(59, 130, 246, 0.4);
+        padding: 6px 10px;
+      }
+      main table {
+        display: block;
+        overflow-x: auto;
+      }
     </style>
+
+    <!-- ✅ Inject blog index JSON for the browser -->
+    <script type="application/json" id="blog-index">
+      {blogIndexJson}
+    </script>
   </head>
 
   <body>
@@ -467,34 +486,35 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
       <Footer />
     </footer>
 
-    <!-- 🔎 Search Script: uses JSON from #blog-index -->
+    <!-- 🔎 Search Script (uses pre-rendered blog index) -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const searchInput  = document.querySelector(".search-input");
+        const searchInput = document.querySelector(".search-input");
         const searchButton = document.querySelector(".search-button");
+        const indexEl = document.getElementById("blog-index");
 
-        // Read blog index from JSON script tag
         let blogData = [];
-        try {
-          const raw = document.getElementById("blog-index")?.textContent;
-          if (raw) {
-            blogData = JSON.parse(raw);
+
+        if (indexEl) {
+          try {
+            blogData = JSON.parse(indexEl.textContent || "[]");
+            console.log("Loaded blogData:", blogData);
+          } catch (e) {
+            console.error("Error parsing blog index JSON:", e);
           }
-        } catch (e) {
-          console.error("Error parsing blog index JSON:", e);
         }
 
         let suggestionsDiv = null;
 
         function searchBlogs(searchTerm) {
-          const term = (searchTerm || "").toLowerCase().trim();
+          const term = searchTerm.toLowerCase().trim();
           if (!term) return [];
           return blogData.filter((blog) =>
-            (blog.title       || "").toLowerCase().includes(term) ||
-            (blog.description || "").toLowerCase().includes(term) ||
-            (blog.content     || "").toLowerCase().includes(term) ||
-            (Array.isArray(blog.tags) &&
-              blog.tags.some((tag) => (tag || "").toLowerCase().includes(term)))
+            blog.title.toLowerCase().includes(term) ||
+            blog.description.toLowerCase().includes(term) ||
+            (blog.tags || []).some((tag) =>
+              (tag || "").toLowerCase().includes(term)
+            )
           );
         }
 
@@ -543,12 +563,11 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
           if (!searchInput) return;
           const searchTerm = searchInput.value.trim();
           if (!searchTerm) return;
-
           const results = searchBlogs(searchTerm);
           if (results.length > 0) {
             window.location.href = `/blog/${results[0].id}`;
           } else {
-            alert('No blogs found for "' + searchTerm + '"');
+            alert(`No blogs found for "${searchTerm}"`);
           }
           hideSuggestions();
         }
@@ -560,12 +579,10 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
           }
         }
 
-        if (searchInput) {
+        if (searchInput && searchButton) {
           searchInput.addEventListener("input", showSuggestions);
           searchInput.addEventListener("focus", showSuggestions);
-          if (searchButton) {
-            searchButton.addEventListener("click", performSearch);
-          }
+          searchButton.addEventListener("click", performSearch);
           searchInput.addEventListener("keypress", (e) => {
             if (e.key === "Enter") performSearch();
           });
@@ -577,7 +594,7 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
       });
     </script>
 
-    <!-- ✅ Webpushr main snippet ONLY (no custom button) -->
+    <!-- ✅ Webpushr main snippet (leave as is) -->
     <script>
       (function(w,d, s, id) {
         if (typeof(w.webpushr) !== 'undefined') return;
