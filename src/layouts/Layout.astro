@@ -620,6 +620,46 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
         }
       });
     </script>
+    
+    <script>
+  // Called automatically by Webpushr when their script is ready
+  function _webpushrScriptReady() {
+    var btn = document.getElementById('wp-subscribe-btn');
+    if (!btn) return;
+
+    // 1️⃣ Set initial button text based on subscription state
+    webpushr('isSubscribed', function (isSubscribed) {
+      if (isSubscribed) {
+        btn.textContent = '🔔 Subscribed';
+      } else {
+        btn.textContent = '🔔 Enable notifications';
+      }
+    });
+
+    // 2️⃣ Click to subscribe / show feedback
+    btn.addEventListener('click', function () {
+      webpushr('isSubscribed', function (isSubscribed) {
+        if (isSubscribed) {
+          alert('You are already subscribed to notifications ✅');
+          return;
+        }
+
+        // Try to subscribe
+        webpushr('subscribe', function (status) {
+          console.log('webpushr subscribe status:', status);
+          if (status === 'subscribed') {
+            btn.textContent = '🔔 Subscribed';
+            alert('Subscribed! You will now get new blog notifications 🎉');
+          } else if (status === 'blocked') {
+            alert('Notifications are blocked in your browser settings ❌');
+          } else {
+            alert('Could not subscribe (' + status + '). Try again later.');
+          }
+        });
+      });
+    });
+  }
+</script>
 
     <!-- ✅ Webpushr code ONLY -->
     <!-- start webpushr code -->
@@ -643,9 +683,9 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
     </script>
     <!-- end webpushr code -->
     
-    <!-- 🔔 Floating Webpushr subscribe button -->
+  <!-- 🔔 Webpushr subscribe button (bottom-right) -->
 <button
-  id="webpushr-subscribe-btn"
+  id="wp-subscribe-btn"
   style="
     position: fixed;
     right: 16px;
@@ -660,11 +700,11 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
     display: flex;
     align-items: center;
     gap: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     cursor: pointer;
   "
 >
-  🔔 Get updates
+  🔔 Enable notifications
 </button>
 
 <script>
