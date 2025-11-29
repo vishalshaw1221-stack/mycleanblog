@@ -490,29 +490,7 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
       <slot />
     </main>
 
-  Yep, I see the problem now:
-you’ve got three different systems fighting each other:
-
-wp-subscribe-btn button ✅
-
-scripts using notify-icon ❌ (button doesn’t exist)
-
-script using webpushr-subscribe-btn ❌ (wrong id)
-
-plus two different “attach” logics
-
-
-Let’s clean it up and leave one button + one script that:
-
-shows bottom-right
-
-subscribes with Webpushr
-
-auto-hides after 30 seconds if not clicked
-
-hides if already subscribed
-
-
+  
 
 ---
 
