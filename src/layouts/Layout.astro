@@ -80,12 +80,11 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-75C47971QF"></script>
 
     <!-- ✅ Website Logo / Favicon -->
-<link rel="icon" href="/favicon.ico">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
-<link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
 
     <!-- ======== MathJax: only load when page sets math: true ======== -->
     {math && (
@@ -441,6 +440,54 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
       .search-container {
         position: relative;
       }
+
+      /* 🧾 Normal article content: never scrolls horizontally */
+      .post-content {
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      /* Normal text & headings stay inside box width */
+      .post-content > :not(.wide-block) {
+        max-width: 100%;
+        overflow-wrap: break-word;
+      }
+
+      /* 📦 WIDE BLOCK: heading + table/equation can extend and scroll */
+      .post-content .wide-block {
+        margin-left: -2rem;   /* match main padding (desktop: 2rem) */
+        margin-right: -2rem;
+        padding: 0 2rem;
+        overflow-x: auto;     /* only this block scrolls horizontally */
+      }
+
+      @media (max-width: 768px) {
+        .post-content .wide-block {
+          margin-left: -1rem;  /* match main mobile padding (1rem) */
+          margin-right: -1rem;
+          padding: 0 1rem;
+        }
+      }
+
+      /* Tables inside wide-block can be wider than text but still neat */
+      .post-content .wide-block table {
+        width: max-content;   /* grow with content */
+        min-width: 100%;      /* at least fill visible width */
+        border-collapse: collapse;
+      }
+
+      .post-content .wide-block th,
+      .post-content .wide-block td {
+        white-space: nowrap;  /* prevents weird wrapping; remove if needed */
+      }
+
+      /* Big MathJax display equations inside wide-block */
+      .post-content .wide-block mjx-container[display="true"] {
+        display: block;
+        max-width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+      }
     </style>
   </head>
 
@@ -450,7 +497,10 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
     </header>
 
     <main>
-      <slot />
+      <!-- 🔹 wrap content so we can control wide blocks vs normal text -->
+      <div class="post-content">
+        <slot />
+      </div>
     </main>
 
     <footer>
@@ -572,7 +622,6 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
           searchInput.addEventListener("focus", showSuggestions);
           searchButton.addEventListener("click", performSearch);
           searchInput.addEventListener(
-            "keypress",
             (e) => e.key === "Enter" && performSearch()
           );
 
