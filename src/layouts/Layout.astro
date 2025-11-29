@@ -22,7 +22,8 @@ const blogIndex = posts.map((post) => ({
   id: post.slug,
   title: post.data.title ?? "",
   description: post.data.description ?? "",
-  content: (post.body ?? "").slice(0, 4000), // keep it small-ish
+  // small slice so we don't dump huge content into the page
+  content: (post.body ?? "").slice(0, 4000),
   tags: post.data.tags ?? [],
 }));
 
@@ -133,9 +134,9 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
       gtag('config', 'G-4S50023WZL');
     </script>
 
-    <!-- ✅ Expose blog index to the browser for search -->
-    <script>
-      window.__BLOG_INDEX__ = {JSON.stringify(blogIndex)};
+    <!-- ✅ Blog index JSON for search (safe, no TS issues) -->
+    <script type="application/json" id="blog-index">
+      {JSON.stringify(blogIndex)}
     </script>
 
     <meta charset="utf-8" />
@@ -466,13 +467,22 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
       <Footer />
     </footer>
 
-    <!-- 🔎 Search Script: uses server-side blog index -->
+    <!-- 🔎 Search Script: uses JSON from #blog-index -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const searchInput  = document.querySelector(".search-input");
         const searchButton = document.querySelector(".search-button");
 
-        const blogData = Array.isArray(window.__BLOG_INDEX__) ? window.__BLOG_INDEX__ : [];
+        // Read blog index from JSON script tag
+        let blogData = [];
+        try {
+          const raw = document.getElementById("blog-index")?.textContent;
+          if (raw) {
+            blogData = JSON.parse(raw);
+          }
+        } catch (e) {
+          console.error("Error parsing blog index JSON:", e);
+        }
 
         let suggestionsDiv = null;
 
