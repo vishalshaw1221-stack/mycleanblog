@@ -90,26 +90,26 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
     {math && (
       <>
         <script>
-  window.MathJax = {
-    tex: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']],
-      displayMath: [['$$','$$'], ['\\[','\\]']],
-      packages: { '[+]': ['ams'] },
-      tags: 'ams',
-      tagSide: 'right',
-      tagIndent: '0.8em',
-    },
-    options: {
-      skipHtmlTags: ['script','noscript','style','textarea','pre','code'],
-    },
-    /* 🔹 Important: let big equations wrap inside the box */
-    chtml: {
-      linebreaks: { automatic: true, width: 'container' },
-      scale: 1
-    },
-    startup: { typeset: true },
-  };
-</script>
+          window.MathJax = {
+            tex: {
+              inlineMath: [['$', '$'], ['\\(', '\\)']],
+              displayMath: [['$$','$$'], ['\\[','\\]']],
+              packages: { '[+]': ['ams'] },
+              tags: 'ams',
+              tagSide: 'right',
+              tagIndent: '0.8em',
+            },
+            options: {
+              skipHtmlTags: ['script','noscript','style','textarea','pre','code'],
+            },
+            /* 🔹 Let big equations wrap inside the container */
+            chtml: {
+              linebreaks: { automatic: true, width: 'container' },
+              scale: 1
+            },
+            startup: { typeset: true },
+          };
+        </script>
         <script
           id="MathJax-script"
           async
@@ -194,6 +194,7 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
     <meta name="twitter:site" content={twitterHandle} />
     <meta name="twitter:creator" content={twitterHandle} />
 
+    <!-- (favicon tags duplicated but harmless, leaving as-is for now) -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -225,7 +226,8 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
         --electron-blue: #3b82f6;
       }
 
-      html, body {
+      html,
+      body {
         height: 100%;
         margin: 0;
         padding: 0;
@@ -257,6 +259,30 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
         pointer-events: none;
       }
 
+      header,
+      footer {
+        width: 80%;
+        max-width: 1100px;
+        border-radius: 15px;
+        box-sizing: border-box;
+      }
+
+      main {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto 2rem auto;
+        border-radius: 15px;
+        box-sizing: border-box;
+        flex-grow: 1;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        box-shadow: 0 0 40px rgba(59, 130, 246, 0.25);
+        padding: 3rem 2rem;
+        overflow-x: visible; /* no weird clipping */
+      }
+
       main::before {
         content: "";
         position: absolute;
@@ -268,33 +294,6 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
         pointer-events: none;
       }
 
-      main {
-        position: relative;
-        z-index: 1;
-      }
-
-      header, footer {
-        width: 80%;
-        max-width: 1100px;
-        border-radius: 15px;
-        box-sizing: border-box;
-      }
-
-      /* 🔹 Main blog box – a bit wider + safe horizontal overflow */
-main {
-  width: 100%;                 /* was 85% */
-  max-width: 1200px;           /* keeps it nice on big screens */
-  margin: 0 auto 2rem auto;
-  border-radius: 15px;
-  box-sizing: border-box;
-  flex-grow: 1;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  box-shadow: 0 0 40px rgba(59, 130, 246, 0.25);
-  padding: 3rem 2rem;
-  overflow-x: auto;            /* if something is still wider, show a scroll */
-}
-
       header {
         background: rgba(15, 23, 42, 0.9);
         border: 1px solid var(--electron-blue);
@@ -303,17 +302,9 @@ main {
         margin: 1.5rem auto;
       }
 
-      main {
-        flex-grow: 1;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(59, 130, 246, 0.3);
-        box-shadow: 0 0 40px rgba(59, 130, 246, 0.25);
-        padding: 3rem 2rem;
-      }
-
       footer {
         background: rgba(15, 23, 42, 0.9);
-        border: 1px solid var(--electron-blue); /* ✅ back to 1px, not 1em */
+        border: 1px solid var(--electron-blue);
         box-shadow: 0 0 25px rgba(59, 130, 246, 0.25);
         padding: 3rem 2rem 2rem;
         text-align: center;
@@ -343,6 +334,36 @@ main {
         border-radius: 5px;
       }
 
+      /* 🔹 MathJax block equations: keep inside and scroll if too wide */
+      mjx-container[display="true"] {
+        max-width: 100%;
+        overflow-x: auto;
+        padding: 0.5rem 0.25rem;
+        display: block;
+      }
+
+      /* 🔹 Tables: stay inside box, scroll only if really huge */
+      main table {
+        width: 100%;
+        max-width: 100%;
+        border-collapse: collapse;
+        display: block;
+        overflow-x: auto;
+      }
+
+      main table th,
+      main table td {
+        border: 1px solid rgba(59, 130, 246, 0.4);
+        padding: 6px 10px;
+      }
+
+      /* Normal text never causes horizontal scroll */
+      main p,
+      main li {
+        word-wrap: break-word;
+        overflow-x: hidden;
+      }
+
       @media (max-width: 768px) {
         html { font-size: 14px; }
 
@@ -352,7 +373,9 @@ main {
           box-sizing: border-box;
         }
 
-        header, main, footer {
+        header,
+        main,
+        footer {
           width: 100% !important;
           max-width: 100% !important;
           margin-left: auto !important;
@@ -379,7 +402,8 @@ main {
         h1 { font-size: 1.5rem !important; }
         h2 { font-size: 1.3rem !important; }
         h3 { font-size: 1.1rem !important; }
-        p, li { fontsize: 0.95rem !important; }
+        p,
+        li { font-size: 0.95rem !important; }
 
         .search-suggestions {
           position: fixed !important;
@@ -392,7 +416,9 @@ main {
       @media (max-width: 480px) {
         html { font-size: 13px; }
 
-        header, main, footer {
+        header,
+        main,
+        footer {
           border-radius: 8px;
         }
 
@@ -452,66 +478,6 @@ main {
       .search-container {
         position: relative;
       }
-/* 🔥 Make blog box auto-expand for equations & tables */
-main {
-  overflow-x: visible !important;     /* allow widening */
-}
-
-/* ✅ MathJax block equations: break padding rule safely */
-mjx-container[display="true"] {
-  overflow-x: auto !important;        /* horizontal scroll if extreme */
-  max-width: 100%;
-  padding: 0.5rem 0.25rem;
-  display: block;
-}
-
-/* ✅ Tables can grow without breaking layout */
-table {
-  max-width: none;                    /* allow full width */
-  width: auto;
-  border-collapse: collapse;
-}
-
-/* ✅ Wrap tables only, not text */
-main > table,
-main table {
-  overflow-x: auto;
-  display: block;
-}
-
-/* ✅ Normal text NEVER scrolls */
-p, li, .content, article {
-  overflow-x: hidden;
-  word-wrap: break-word;
-}
-
-/* ✅ Headings follow table width if table expands */
-table + h1,
-table + h2,
-table + h3,
-table + h4 {
-  white-space: nowrap;
-}
-
- /* 🔹 Tables: keep inside the blog box and scroll if really needed */
-main table {
-  width: 100%;
-  max-width: 100%;
-  border-collapse: collapse;
-}
-
-/* Optional: nice borders for tables */
-main table th,
-main table td {
-  border: 1px solid rgba(59, 130, 246, 0.4);
-  padding: 6px 10px;
-}
-
-/* If a table is still too wide (rare), allow horizontal scroll only for the table */
-main table {
-  display: block;
-  overflow-x: auto;
-}
     </style>
   </head>
 
@@ -559,7 +525,8 @@ main table {
                 id: "ai-future",
                 title: "The Future of Artificial Intelligence",
                 description: "Exploring AI advancements and machine learning",
-                content: "Artificial intelligence is transforming how we live and work...",
+                content:
+                  "Artificial intelligence is transforming how we live and work...",
                 tags: ["ai", "technology", "machine-learning"],
               },
             ];
@@ -593,10 +560,10 @@ main table {
             suggestionsDiv.innerHTML = results
               .map(
                 (blog) => `
-              <div class="suggestion-item" data-blog-id="${blog.id}">
-                <div class="suggestion-title">${blog.title}</div>
-                <div class="suggestion-desc">${blog.description}</div>
-              </div>`
+                  <div class="suggestion-item" data-blog-id="${blog.id}">
+                    <div class="suggestion-title">${blog.title}</div>
+                    <div class="suggestion-desc">${blog.description}</div>
+                  </div>`
               )
               .join("");
           } else {
@@ -658,12 +625,14 @@ main table {
     <!-- start webpushr code -->
     <script>
       (function(w,d, s, id) {
-        if(typeof(w.webpushr)!=='undefined') return;
-        w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};
+        if (typeof(w.webpushr) !== 'undefined') return;
+        w.webpushr = w.webpushr || function(){
+          (w.webpushr.q = w.webpushr.q || []).push(arguments)
+        };
         var js, fjs = d.getElementsByTagName(s)[0];
         js = d.createElement(s);
         js.id = id;
-        js.async=1;
+        js.async = 1;
         js.src = "https://cdn.webpushr.com/app.min.js";
         fjs.parentNode.appendChild(js);
       }(window,document, 'script', 'webpushr-jssdk'));
