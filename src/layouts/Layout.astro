@@ -189,7 +189,6 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
     <meta name="twitter:site" content={twitterHandle} />
     <meta name="twitter:creator" content={twitterHandle} />
 
-    <!-- (You had these again; keeping them is harmless) -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -284,19 +283,25 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
         margin: 0 auto 2rem auto;
       }
 
-      /* 🔹 This is the important part: allow horizontal scroll if content is wider */
+      header {
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid var(--electron-blue);
+        box-shadow: 0 0 25px rgba(59, 130, 246, 0.25);
+        padding: 1rem;
+        margin: 1.5rem auto;
+      }
+
       main {
         flex-grow: 1;
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid rgba(59, 130, 246, 0.3);
         box-shadow: 0 0 40px rgba(59, 130, 246, 0.25);
         padding: 3rem 2rem;
-        overflow-x: auto; /* 👈 now wide tables/equations can extend & scroll */
       }
 
       footer {
         background: rgba(15, 23, 42, 0.9);
-        border: 1px solid var(--electron-blue);
+        border: 1px solid var(--electron-blue); /* ✅ back to 1px, not 1em */
         box-shadow: 0 0 25px rgba(59, 130, 246, 0.25);
         padding: 3rem 2rem 2rem;
         text-align: center;
@@ -362,7 +367,7 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
         h1 { font-size: 1.5rem !important; }
         h2 { font-size: 1.3rem !important; }
         h3 { font-size: 1.1rem !important; }
-        p, li { font-size: 0.95rem !important; }
+        p, li { fontsize: 0.95rem !important; }
 
         .search-suggestions {
           position: fixed !important;
@@ -393,7 +398,7 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
         left: 0;
         right: 0;
         background: rgba(15, 23, 42, 0.98);
-        border: 1px solid var(--electron-blue);
+        border: 1px solid rgba(59, 130, 246, 0.3);
         border-radius: 8px;
         margin-top: 5px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
