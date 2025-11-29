@@ -661,6 +661,37 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
   }
 </script>
 
+<script>
+  const notifyBtn = document.getElementById("notify-icon");
+
+  // ✅ hide button automatically after 30 seconds
+  setTimeout(() => {
+    if (notifyBtn) {
+      notifyBtn.style.display = "none";
+    }
+  }, 30000);
+
+  // ✅ click logic
+  notifyBtn.onclick = function () {
+
+    if (typeof webpushr === 'undefined') {
+      alert("Notifications not ready yet. Try again in a few seconds.");
+      return;
+    }
+
+    webpushr('isSubscribed', function(isSubscribed) {
+
+      if (isSubscribed) {
+        alert("✅ You are already subscribed!");
+        notifyBtn.style.display = "none";
+      } else {
+        webpushr('subscribe');
+      }
+
+    });
+  };
+</script>
+
     <!-- ✅ Webpushr code ONLY -->
     <!-- start webpushr code -->
     <script>
