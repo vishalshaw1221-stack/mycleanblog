@@ -275,13 +275,20 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
         box-sizing: border-box;
       }
 
-      main {
-        width: 85%;
-        max-width: 1200px;
-        border-radius: 15px;
-        box-sizing: border-box;
-        margin: 0 auto 2rem auto;
-      }
+      /* 🔹 Main blog box – a bit wider + safe horizontal overflow */
+main {
+  width: 100%;                 /* was 85% */
+  max-width: 1200px;           /* keeps it nice on big screens */
+  margin: 0 auto 2rem auto;
+  border-radius: 15px;
+  box-sizing: border-box;
+  flex-grow: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 40px rgba(59, 130, 246, 0.25);
+  padding: 3rem 2rem;
+  overflow-x: auto;            /* if something is still wider, show a scroll */
+}
 
       header {
         background: rgba(15, 23, 42, 0.9);
