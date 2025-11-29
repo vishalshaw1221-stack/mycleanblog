@@ -13,12 +13,12 @@ Up to now it was a basic understanding of the Central tendency of raw data, but 
 
 **"Frequency distribution table"** Basically, instead of working with each data point, we create class intervals where we distribute data into small classes. For example, rather than counting separately 3 people who are 2 years old and 2 people who are 5 years old, we would say that in the class interval of 0 to 5, there are five children, or the frequency is 5. This process continues similarly.
 
-   Class Interval   Frequency
-  ---------------- -----------
-        0-5             5
-        5-10            1
-       10-15            0
-       15-20            4
+   | Class Interval | Frequency |
+|---------------:|----------:|
+| 0–5            | 5        |
+| 5–10           | 1        |
+| 10–15          | 0        |
+| 15–20          | 4        |
 
   
 

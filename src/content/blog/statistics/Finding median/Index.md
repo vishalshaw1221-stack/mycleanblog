@@ -12,12 +12,12 @@ math: true
 Median is the middle value of all the data set if arranged in ascending order. Now, in frequency distribution things are already in ascending so we just need which class contains the value that is middle of all the values. To find these we will add all frequencies of corresponding class intervals, line by line, for all classes and see which contains the middle value.
 
 
-   Class Interval   Frequency   Cumulative Frequency
-  ---------------- ----------- ----------------------
-        0-10            2                2
-       10-20            5                7
-       20-30            3                10
-       30-40            3                13
+   | Class Interval | Frequency | Cumulative Frequency |
+|---------------:|----------:|---------------------:|
+| 0–10           | 2        | 2                   |
+| 10–20          | 5        | 7                   |
+| 20–30          | 3        | 10                  |
+| 30–40          | 3        | 13                  |
 
   : An Example Of Frequency Distribution Table
 ::
