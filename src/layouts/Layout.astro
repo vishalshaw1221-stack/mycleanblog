@@ -495,261 +495,326 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
 ---
 
 <footer>
-      <Footer />
-    </footer>
+    <Footer />
+  </footer>
 
-    <!-- 🔎 Search Script (keeps your original logic) -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const searchInput = document.querySelector(".search-input");
-        const searchButton = document.querySelector(".search-button");
+  <!-- 🔎 Search Script (keeps your original logic) -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const searchInput = document.querySelector(".search-input");
+      const searchButton = document.querySelector(".search-button");
 
-        let blogData = [];
+      let blogData = [];
 
-        async function loadBlogData() {
-          try {
-            const posts = await getCollection("blog");
-            blogData = posts.map((post) => ({
-              id: post.slug,
-              title: post.data.title,
-              description: post.data.description,
-              content: post.body,
-              tags: post.data.tags || [],
-            }));
-          } catch (error) {
-            blogData = [
-              {
-                id: "quantum-physics",
-                title: "Understanding Quantum Physics",
-                description: "Quantum physics is a very interesting subject...",
-                content: "Your blog content here...",
-                tags: ["physics", "science"],
-              },
-              {
-                id: "ai-future",
-                title: "The Future of Artificial Intelligence",
-                description: "Exploring AI advancements and machine learning",
-                content:
-                  "Artificial intelligence is transforming how we live and work...",
-                tags: ["ai", "technology", "machine-learning"],
-              },
-            ];
-          }
+      async function loadBlogData() {
+        try {
+          const posts = await getCollection("blog");
+          blogData = posts.map((post) => ({
+            id: post.slug,
+            title: post.data.title,
+            description: post.data.description,
+            content: post.body,
+            tags: post.data.tags || [],
+          }));
+        } catch (error) {
+          blogData = [
+            {
+              id: "quantum-physics",
+              title: "Understanding Quantum Physics",
+              description: "Quantum physics is a very interesting subject...",
+              content: "Your blog content here...",
+              tags: ["physics", "science"],
+            },
+            {
+              id: "ai-future",
+              title: "The Future of Artificial Intelligence",
+              description: "Exploring AI advancements and machine learning",
+              content:
+                "Artificial intelligence is transforming how we live and work...",
+              tags: ["ai", "technology", "machine-learning"],
+            },
+          ];
+        }
+      }
+
+      let suggestionsDiv = null;
+
+      function searchBlogs(searchTerm) {
+        const term = searchTerm.toLowerCase().trim();
+        if (!term) return [];
+        return blogData.filter(
+          (blog) =>
+            blog.title.toLowerCase().includes(term) ||
+            blog.description.toLowerCase().includes(term) ||
+            blog.content.toLowerCase().includes(term) ||
+            blog.tags.some((tag) => tag.toLowerCase().includes(term))
+        );
+      }
+
+      function showSuggestions() {
+        const searchTerm = searchInput.value;
+        if (suggestionsDiv) suggestionsDiv.remove();
+        if (!searchTerm) return;
+
+        const results = searchBlogs(searchTerm);
+        suggestionsDiv = document.createElement("div");
+        suggestionsDiv.className = "search-suggestions";
+
+        if (results.length > 0) {
+          suggestionsDiv.innerHTML = results
+            .map(
+              (blog) => `
+                <div class="suggestion-item" data-blog-id="${blog.id}">
+                  <div class="suggestion-title">${blog.title}</div>
+                  <div class="suggestion-desc">${blog.description}</div>
+                </div>`
+            )
+            .join("");
+        } else {
+          suggestionsDiv.innerHTML =
+            '<div class="no-results">No blogs found matching your search</div>';
         }
 
-        let suggestionsDiv = null;
+        const searchContainer = searchInput.closest(".search-container");
+        searchContainer.appendChild(suggestionsDiv);
 
-        function searchBlogs(searchTerm) {
-          const term = searchTerm.toLowerCase().trim();
-          if (!term) return [];
-          return blogData.filter(
-            (blog) =>
-              blog.title.toLowerCase().includes(term) ||
-              blog.description.toLowerCase().includes(term) ||
-              blog.content.toLowerCase().includes(term) ||
-              blog.tags.some((tag) => tag.toLowerCase().includes(term))
-          );
-        }
-
-        function showSuggestions() {
-          const searchTerm = searchInput.value;
-          if (suggestionsDiv) suggestionsDiv.remove();
-          if (!searchTerm) return;
-
-          const results = searchBlogs(searchTerm);
-          suggestionsDiv = document.createElement("div");
-          suggestionsDiv.className = "search-suggestions";
-
-          if (results.length > 0) {
-            suggestionsDiv.innerHTML = results
-              .map(
-                (blog) => `
-                  <div class="suggestion-item" data-blog-id="${blog.id}">
-                    <div class="suggestion-title">${blog.title}</div>
-                    <div class="suggestion-desc">${blog.description}</div>
-                  </div>`
-              )
-              .join("");
-          } else {
-            suggestionsDiv.innerHTML =
-              '<div class="no-results">No blogs found matching your search</div>';
-          }
-
-          const searchContainer = searchInput.closest(".search-container");
-          searchContainer.appendChild(suggestionsDiv);
-
-          suggestionsDiv
-            .querySelectorAll(".suggestion-item")
-            .forEach((item) => {
-              item.addEventListener("click", () => {
-                const blogId = item.dataset.blogId;
-                window.location.href = `/blog/${blogId}`;
-              });
+        suggestionsDiv
+          .querySelectorAll(".suggestion-item")
+          .forEach((item) => {
+            item.addEventListener("click", () => {
+              const blogId = item.dataset.blogId;
+              window.location.href = `/blog/${blogId}`;
             });
-        }
-
-        function performSearch() {
-          const searchTerm = searchInput.value.trim();
-          if (!searchTerm) return;
-          const results = searchBlogs(searchTerm);
-          if (results.length > 0) {
-            window.location.href = `/blog/${results[0].id}`;
-          } else {
-            alert(`No blogs found for "${searchTerm}"`);
-          }
-          hideSuggestions();
-        }
-
-        function hideSuggestions() {
-          if (suggestionsDiv) {
-            suggestionsDiv.remove();
-            suggestionsDiv = null;
-          }
-        }
-
-        loadBlogData();
-
-        if (searchInput) {
-          searchInput.addEventListener("input", showSuggestions);
-          searchInput.addEventListener("focus", showSuggestions);
-          searchButton.addEventListener("click", performSearch);
-          searchInput.addEventListener(
-            "keypress",
-            (e) => e.key === "Enter" && performSearch()
-          );
-
-          document.addEventListener("click", (e) => {
-            if (!e.target.closest(".search-container")) hideSuggestions();
           });
+      }
+
+      function performSearch() {
+        const searchTerm = searchInput.value.trim();
+        if (!searchTerm) return;
+        const results = searchBlogs(searchTerm);
+        if (results.length > 0) {
+          window.location.href = `/blog/${results[0].id}`;
+        } else {
+          alert(`No blogs found for "${searchTerm}"`);
         }
-      });
-    </script>
+        hideSuggestions();
+      }
 
-    <!-- ✅ Webpushr main snippet -->
-    <script>
-      (function(w,d, s, id) {
-        if (typeof(w.webpushr) !== 'undefined') return;
-        w.webpushr = w.webpushr || function(){
-          (w.webpushr.q = w.webpushr.q || []).push(arguments)
-        };
-        var js, fjs = d.getElementsByTagName(s)[0];
-        js = d.createElement(s);
-        js.id = id;
-        js.async = 1;
-        js.src = "https://cdn.webpushr.com/app.min.js";
-        fjs.parentNode.appendChild(js);
-      }(window,document, 'script', 'webpushr-jssdk'));
+      function hideSuggestions() {
+        if (suggestionsDiv) {
+          suggestionsDiv.remove();
+          suggestionsDiv = null;
+        }
+      }
 
-      webpushr('setup', {
-        key: 'BIhe2zNhULsMJpaq7PZZLkQ9fM5yea3EqmLN9zSqYVOqhtPkxE25IInQ4Cje7DYms4dgBpSR49TOzqrX7LbVC9s'
-      });
-    </script>
+      loadBlogData();
 
-    <!-- 🔔 Bottom-right subscribe button -->
-    <button
-      id="wp-subscribe-btn"
-      style="
-        position: fixed;
-        right: 16px;
-        bottom: 16px;
-        z-index: 9999;
-        background: #3b82f6;
-        color: white;
-        border: none;
-        border-radius: 999px;
-        padding: 10px 16px;
-        font-size: 14px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        cursor: pointer;
-      "
-    >
-      🔔 Enable notifications
-    </button>
+      if (searchInput) {
+        searchInput.addEventListener("input", showSuggestions);
+        searchInput.addEventListener("focus", showSuggestions);
+        searchButton.addEventListener("click", performSearch);
+        searchInput.addEventListener(
+          "keypress",
+          (e) => e.key === "Enter" && performSearch()
+        );
 
-    <!-- 🔔 Webpushr button logic + auto-hide after 30s -->
-    <script>
-      (function () {
-        function setupWebpushrButton() {
-          var btn = document.getElementById("wp-subscribe-btn");
-          if (!btn || typeof webpushr === "undefined") return;
+        document.addEventListener("click", (e) => {
+          if (!e.target.closest(".search-container")) hideSuggestions();
+        });
+      }
+    });
+  </script>
 
-          // Initial state + auto-hide logic
-          try {
-            webpushr("isSubscribed", function (isSubscribed) {
-              if (isSubscribed) {
-                btn.textContent = "🔔 Subscribed";
-                // already subscribed? Hide soon
-                setTimeout(function () {
-                  btn.style.display = "none";
-                }, 2000);
-              } else {
-                btn.textContent = "🔔 Enable notifications";
+  <!-- ✅ Webpushr main snippet (unchanged) -->
+  <script>
+    (function(w,d, s, id) {
+      if (typeof(w.webpushr) !== 'undefined') return;
+      w.webpushr = w.webpushr || function(){
+        (w.webpushr.q = w.webpushr.q || []).push(arguments)
+      };
+      var js, fjs = d.getElementsByTagName(s)[0];
+      js = d.createElement(s);
+      js.id = id;
+      js.async = 1;
+      js.src = "https://cdn.webpushr.com/app.min.js";
+      fjs.parentNode.appendChild(js);
+    }(window,document, 'script', 'webpushr-jssdk'));
 
-                // auto-hide after 30 seconds if NOT clicked
-                setTimeout(function () {
-                  if (btn.getAttribute("data-clicked") !== "true") {
-                    btn.style.display = "none";
-                  }
-                }, 30000);
+    webpushr('setup', {
+      key: 'BIhe2zNhULsMJpaq7PZZLkQ9fM5yea3EqmLN9zSqYVOqhtPkxE25IInQ4Cje7DYms4dgBpSR49TOzqrX7LbVC9s'
+    });
+  </script>
+
+  <!-- 🔔 Small bottom-right bell (auto-hides after 30s) -->
+  <style>
+    #wp-subscribe-icon {
+      position: fixed;
+      right: 18px;            /* 👈 change to left: 18px if you ever want left side */
+      bottom: 18px;
+      z-index: 99999;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: linear-gradient(135deg,#3b82f6,#7c3aed);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+      cursor: pointer;
+      font-size: 20px;
+      transition: transform .14s ease, opacity .2s ease;
+      user-select: none;
+    }
+    #wp-subscribe-icon:hover {
+      transform: translateY(-3px) scale(1.04);
+    }
+    #wp-subscribe-badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 4px;
+      border-radius: 999px;
+      background: #ef4444;
+      color: #fff;
+      font-size: 11px;
+      line-height: 18px;
+      display: none;
+    }
+  </style>
+
+  <button
+    id="wp-subscribe-icon"
+    aria-label="Subscribe to notifications"
+    title="Subscribe to notifications"
+  >
+    🔔
+    <span id="wp-subscribe-badge">!</span>
+  </button>
+
+  <script>
+    (function () {
+      const btn = document.getElementById('wp-subscribe-icon');
+      const badge = document.getElementById('wp-subscribe-badge');
+      if (!btn) return;
+
+      const AUTO_HIDE_MS = 30000; // 30 seconds
+
+      function flash(text, ms = 1500) {
+        const el = document.createElement('div');
+        el.textContent = text;
+        Object.assign(el.style, {
+          position: 'fixed',
+          right: '18px',
+          bottom: '72px',
+          zIndex: 99999,
+          background: 'rgba(15,23,42,0.95)',
+          color: '#fff',
+          padding: '8px 12px',
+          borderRadius: '8px',
+          fontSize: '13px',
+          boxShadow: '0 6px 18px rgba(0,0,0,0.35)'
+        });
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), ms);
+      }
+
+      function waitForWebpushr(timeout = 8000) {
+        return new Promise((resolve) => {
+          if (typeof webpushr !== 'undefined') return resolve(true);
+          let done = false;
+          const t = setTimeout(() => {
+            if (!done) { done = true; resolve(false); }
+          }, timeout);
+          const interval = setInterval(() => {
+            if (typeof webpushr !== 'undefined') {
+              clearInterval(interval);
+              clearTimeout(t);
+              if (!done) {
+                done = true;
+                resolve(true);
               }
-            });
-          } catch (e) {
-            console.warn("webpushr isSubscribed error:", e);
-          }
+            }
+          }, 200);
+        });
+      }
 
-          // Click → subscribe
-          btn.addEventListener("click", function () {
-            btn.setAttribute("data-clicked", "true");
-            btn.disabled = true;
-            btn.style.opacity = "0.7";
-            btn.textContent = "Subscribing...";
-
-            try {
-              webpushr("subscribe", function (result) {
-                console.log("webpushr subscribe result:", result);
-                if (result === true || result === "subscribed") {
-                  btn.textContent = "Subscribed ✅";
-                  setTimeout(function () {
-                    btn.style.display = "none";
-                  }, 1500);
-                } else if (result === "blocked") {
-                  btn.textContent = "Notifications blocked ❌";
-                  btn.disabled = false;
-                  btn.style.opacity = "1";
-                } else {
-                  btn.textContent = "Try again 🔔";
-                  btn.disabled = false;
-                  btn.style.opacity = "1";
-                }
-              });
-            } catch (err) {
-              console.error("webpushr subscribe error:", err);
-              btn.textContent = "Error – tap to retry 🔁";
-              btn.disabled = false;
-              btn.style.opacity = "1";
+      async function updateState() {
+        const ready = await waitForWebpushr();
+        if (!ready) {
+          badge.style.display = 'block';
+          badge.textContent = '';
+          btn.title = 'Notifications (loading…)';
+          return;
+        }
+        try {
+          webpushr('isSubscribed', function (isSubscribed) {
+            if (isSubscribed) {
+              btn.title = 'You are subscribed';
+              badge.style.display = 'none';
+            } else {
+              btn.title = 'Subscribe to notifications';
+              badge.style.display = 'none';
             }
           });
+        } catch (e) {
+          console.warn('webpushr isSubscribed error:', e);
+        }
+      }
+
+      // Initial state
+      updateState();
+
+      // Auto-hide after 30s if never clicked
+      let hideTimer = setTimeout(() => {
+        btn.style.display = 'none';
+      }, AUTO_HIDE_MS);
+
+      btn.addEventListener('click', async function (e) {
+        e.preventDefault();
+        clearTimeout(hideTimer); // user interacted
+
+        const ready = await waitForWebpushr();
+        if (!ready) {
+          flash('Notification service not ready yet. Try again.');
+          return;
         }
 
-        // Wait for DOM + webpushr to be ready
-        function waitForWebpushr() {
-          if (typeof webpushr !== "undefined") {
-            setupWebpushrButton();
-          } else {
-            setTimeout(waitForWebpushr, 500);
-          }
-        }
+        try {
+          webpushr('isSubscribed', function (isSubscribed) {
+            if (isSubscribed) {
+              flash('You are already subscribed ✅');
+              // optional: hide after confirming
+              setTimeout(() => { btn.style.display = 'none'; }, 1500);
+              return;
+            }
 
-        if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", waitForWebpushr);
-        } else {
-          waitForWebpushr();
+            flash('Opening permission prompt…');
+            webpushr('subscribe', function (result) {
+              console.log('webpushr subscribe result:', result);
+              const ok = (result === true || result === 'subscribed' || result === 'success');
+              if (ok) {
+                flash('Subscribed! You will get new posts 🎉', 2200);
+                setTimeout(() => { btn.style.display = 'none'; }, 1500);
+              } else if (result === 'blocked') {
+                flash('Notifications are blocked in your browser settings ❌');
+              } else {
+                flash('Could not subscribe. Try again later.');
+              }
+            });
+          });
+        } catch (err) {
+          console.error('webpushr subscribe error:', err);
+          flash('Subscribe error — check console.');
         }
-      })();
-    </script>
+      });
 
-  </body>
+      // Re-check state periodically (in case user changes it elsewhere)
+      setInterval(updateState, 10000);
+    })();
+  </script>
+
+</body>
 </html>
