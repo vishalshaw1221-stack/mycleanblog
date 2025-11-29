@@ -440,6 +440,46 @@ const twitterHandle = seo?.twitter?.creator || seo?.twitter?.site || "@yourtwitt
       .search-container {
         position: relative;
       }
+/* 🔥 Make blog box auto-expand for equations & tables */
+main {
+  overflow-x: visible !important;     /* allow widening */
+}
+
+/* ✅ MathJax block equations: break padding rule safely */
+mjx-container[display="true"] {
+  overflow-x: auto !important;        /* horizontal scroll if extreme */
+  max-width: 100%;
+  padding: 0.5rem 0.25rem;
+  display: block;
+}
+
+/* ✅ Tables can grow without breaking layout */
+table {
+  max-width: none;                    /* allow full width */
+  width: auto;
+  border-collapse: collapse;
+}
+
+/* ✅ Wrap tables only, not text */
+main > table,
+main table {
+  overflow-x: auto;
+  display: block;
+}
+
+/* ✅ Normal text NEVER scrolls */
+p, li, .content, article {
+  overflow-x: hidden;
+  word-wrap: break-word;
+}
+
+/* ✅ Headings follow table width if table expands */
+table + h1,
+table + h2,
+table + h3,
+table + h4 {
+  white-space: nowrap;
+}
     </style>
   </head>
 
