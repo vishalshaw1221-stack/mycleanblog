@@ -381,3 +381,37 @@ footer .social-media a:hover {
     justify-content: center;
   }
 }
+
+.text-size-control {
+  width: min(500px, 90%);
+  margin: 2rem auto 1rem;
+  padding: 0.7rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  justify-content: center;
+
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.text-size-control input[type="range"] {
+  flex: 1;
+  min-width: 0;
+  accent-color: var(--electron-blue);
+}
+
+.size-label {
+  font-weight: 700;
+  color: white;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .text-size-control {
+    width: 90%;
+    padding: 0.6rem 0.8rem;
+  }
+}

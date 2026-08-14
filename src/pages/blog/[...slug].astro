@@ -282,7 +282,32 @@ const seoProps = {
       <a href="/" class="back-home">← Back to Home</a>
     </footer>
   </article>
+<div class="text-size-control">
+  <span class="size-label">A−</span>
 
+  <input
+    type="range"
+    id="text-size-slider"
+    min="16"
+    max="36"
+    value="20"
+    step="1"
+    aria-label="Change article text size"
+  />
+
+  <span class="size-label">A+</span>
+</div>
+
+<script>
+  const slider = document.getElementById("text-size-slider");
+  const content = document.querySelector(".content-wrapper");
+
+  if (slider && content) {
+    slider.addEventListener("input", () => {
+      content.style.fontSize = `${slider.value}px`;
+    });
+  }
+</script>
   <!-- Table of contents / auto page nav -->
   <AutoPageNav prev={prevPost} next={nextPost} />
 
@@ -422,17 +447,20 @@ const seoProps = {
     background: rgba(59, 130, 246, 0.12);
   }
 
-  @media (max-width: 900px) {
-    .post-title {
-      font-size: 2.1rem;
-    }
-    .blog-post {
-      padding: 1.4rem;
-    }
-    .content-wrapper {
-      font-size: 1rem;
-    }
+@media (max-width: 900px) {
+  .post-title {
+    font-size: 2.1rem;
   }
+
+  .blog-post {
+    padding: 1.4rem;
+  }
+
+  .content-wrapper {
+    font-size: 20px;
+    line-height: 1.75;
+  }
+}
 
   @media (max-width: 480px) {
     .post-title {

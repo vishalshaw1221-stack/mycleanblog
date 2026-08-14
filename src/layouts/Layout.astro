@@ -341,7 +341,7 @@ const blogIndexJson = JSON.stringify(blogIndexData);
       }
 
       @media (max-width: 768px) {
-        html { font-size: 14px; }
+        html { font-size: 16px; }
 
         body {
           padding: 0 10px;
@@ -376,8 +376,10 @@ const blogIndexJson = JSON.stringify(blogIndexData);
         h1 { font-size: 1.5rem !important; }
         h2 { font-size: 1.3rem !important; }
         h3 { font-size: 1.1rem !important; }
-        p, li { font-size: 0.95rem !important; }
-
+p, li {
+  font-size: 18px !important;
+  line-height: 1.7;
+}
         .search-suggestions {
           position: fixed !important;
           left: 10px !important;
@@ -386,9 +388,8 @@ const blogIndexJson = JSON.stringify(blogIndexData);
         }
       }
 
-      @media (max-width: 480px) {
-        html { font-size: 13px; }
-
+      @@media (max-width: 480px) {
+  html { font-size: 16px; }
         header, main, footer {
           border-radius: 8px;
         }
